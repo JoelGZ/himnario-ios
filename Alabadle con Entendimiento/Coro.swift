@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Firebase
 
 class Coro: NSObject {
     
@@ -24,9 +25,12 @@ class Coro: NSObject {
     var autorletra: String
     var cita: String
     var historia: String
-    var searchableName: String
+    var sName: String
     
-    init(_id: Int, orden: Int, nombre: String, cuerpo: String, tonalidad: String, ton_alt: String, velletra: String, tiempo: Int, audio: String, partitura: String, autormusica: String, autorletra: String, cita: String, historia: String, searchableName: String){
+    let ref: FIRDatabaseReference?
+    let key: String
+    
+    init(_id: Int, orden: Int, nombre: String, cuerpo: String, tonalidad: String, ton_alt: String, velletra: String, tiempo: Int, audio: String, partitura: String, autormusica: String, autorletra: String, cita: String, historia: String, sName: String){
         self._id = _id
         self.orden = orden
         self.nombre = nombre
@@ -41,9 +45,55 @@ class Coro: NSObject {
         self.autorletra = autorletra
         self.cita = cita
         self.historia = historia
-        self.searchableName = searchableName
+        self.sName = sName
+        
+        self.ref = nil
+        self.key = ""
     }
     
+    init(snapshot: FIRDataSnapshot, dbRef: FIRDatabaseReference){
+        key = snapshot.key
+        let snapshotValue = snapshot.value as! [String: AnyObject]
+        
+        _id = (dbRef.key as NSString).integerValue
+        orden = snapshotValue["orden"] as! Int
+        nombre = snapshotValue["nombre"] as! String
+        cuerpo = snapshotValue["cuerpo"] as! String
+        tonalidad = snapshotValue["tonalidad"] as! String
+        ton_alt = snapshotValue["ton_alt"] as! String
+        velletra = snapshotValue["velletra"] as! String
+        tiempo = snapshotValue["tiempo"] as! Int
+        audio = snapshotValue["audio"] as! String
+        partitura = snapshotValue["partitura"] as! String
+        autormusica = snapshotValue["autormusica"] as! String
+        autorletra = snapshotValue["autorletra"] as! String
+        cita = snapshotValue["cita"] as! String
+        historia = snapshotValue["historia"] as! String
+        sName = snapshotValue["sName"] as! String
+        ref = snapshot.ref
+    }
+    
+    init(snapshot: FIRDataSnapshot, coroId: Int) {
+        key = snapshot.key
+        let snapshotValue = snapshot.value as! [String: AnyObject]
+        
+        _id = coroId
+        orden = snapshotValue["orden"] as! Int
+        nombre = snapshotValue["nombre"] as! String
+        cuerpo = snapshotValue["cuerpo"] as! String
+        tonalidad = snapshotValue["tonalidad"] as! String
+        ton_alt = snapshotValue["ton_alt"] as! String
+        velletra = snapshotValue["velletra"] as! String
+        tiempo = snapshotValue["tiempo"] as! Int
+        audio = snapshotValue["audio"] as! String
+        partitura = snapshotValue["partitura"] as! String
+        autormusica = snapshotValue["autormusica"] as! String
+        autorletra = snapshotValue["autorletra"] as! String
+        cita = snapshotValue["cita"] as! String
+        historia = snapshotValue["historia"] as! String
+        sName = snapshotValue["sName"] as! String
+        ref = snapshot.ref
+    }
     func isEqual(object: AnyObject?) -> Bool {
         if let coro = object as? Coro {
             return self.nombre == coro.nombre

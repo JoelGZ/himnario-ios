@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		34610DF7255A98A9846C7894 /* Pods_Alabadle_con_EntendimientoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88ABAAB3DC8AA2284E8A8592 /* Pods_Alabadle_con_EntendimientoUITests.framework */; };
 		3E6261177A9525C368E61831 /* Pods_Alabadle_con_Entendimiento.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ADC7D7DC64D37F98611500F /* Pods_Alabadle_con_Entendimiento.framework */; };
+		6113BD2B1DA47BFD00FB7A64 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6113BD2A1DA47BFD00FB7A64 /* GoogleService-Info.plist */; };
 		6150575F1D9ABC020008CC96 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6150575E1D9ABC020008CC96 /* AppDelegate.swift */; };
 		615057631D9ABC020008CC96 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615057621D9ABC020008CC96 /* SecondViewController.swift */; };
 		615057661D9ABC020008CC96 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 615057641D9ABC020008CC96 /* Main.storyboard */; };
@@ -21,7 +22,6 @@
 		61A0E3181DA4201900DCB7D2 /* VelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A0E3171DA4201900DCB7D2 /* VelButton.swift */; };
 		61A0E31A1DA4220600DCB7D2 /* CorosTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A0E3191DA4220600DCB7D2 /* CorosTableViewCell.swift */; };
 		61A0E31C1DA422DB00DCB7D2 /* GetReadableText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A0E31B1DA422DB00DCB7D2 /* GetReadableText.swift */; };
-		61A0E31E1DA43A2600DCB7D2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 61A0E31D1DA43A2600DCB7D2 /* GoogleService-Info.plist */; };
 		802807FB11025BA10FBFFCA3 /* Pods_Alabadle_con_EntendimientoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71645278A2ED188177FF104C /* Pods_Alabadle_con_EntendimientoTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +46,7 @@
 		3ADC7D7DC64D37F98611500F /* Pods_Alabadle_con_Entendimiento.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Alabadle_con_Entendimiento.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		415A691A1E659C6D10182ACE /* Pods-Alabadle con Entendimiento.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alabadle con Entendimiento.release.xcconfig"; path = "Pods/Target Support Files/Pods-Alabadle con Entendimiento/Pods-Alabadle con Entendimiento.release.xcconfig"; sourceTree = "<group>"; };
 		604F214152BA922485DDE262 /* Pods-Alabadle con EntendimientoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alabadle con EntendimientoTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Alabadle con EntendimientoTests/Pods-Alabadle con EntendimientoTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6113BD2A1DA47BFD00FB7A64 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6150575B1D9ABC020008CC96 /* Alabadle con Entendimiento.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Alabadle con Entendimiento.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6150575E1D9ABC020008CC96 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		615057621D9ABC020008CC96 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
@@ -64,7 +65,6 @@
 		61A0E3171DA4201900DCB7D2 /* VelButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VelButton.swift; sourceTree = "<group>"; };
 		61A0E3191DA4220600DCB7D2 /* CorosTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CorosTableViewCell.swift; sourceTree = "<group>"; };
 		61A0E31B1DA422DB00DCB7D2 /* GetReadableText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetReadableText.swift; sourceTree = "<group>"; };
-		61A0E31D1DA43A2600DCB7D2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		71645278A2ED188177FF104C /* Pods_Alabadle_con_EntendimientoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Alabadle_con_EntendimientoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		83FA11621E375AEB9D755686 /* Pods-Alabadle con EntendimientoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alabadle con EntendimientoUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Alabadle con EntendimientoUITests/Pods-Alabadle con EntendimientoUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		88ABAAB3DC8AA2284E8A8592 /* Pods_Alabadle_con_EntendimientoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Alabadle_con_EntendimientoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,18 +126,18 @@
 		6150575D1D9ABC020008CC96 /* Alabadle con Entendimiento */ = {
 			isa = PBXGroup;
 			children = (
-				61A0E31D1DA43A2600DCB7D2 /* GoogleService-Info.plist */,
 				6150575E1D9ABC020008CC96 /* AppDelegate.swift */,
 				615057621D9ABC020008CC96 /* SecondViewController.swift */,
 				615057641D9ABC020008CC96 /* Main.storyboard */,
 				615057671D9ABC020008CC96 /* Assets.xcassets */,
 				615057691D9ABC020008CC96 /* LaunchScreen.storyboard */,
-				6150576C1D9ABC020008CC96 /* Info.plist */,
 				61A0E3131DA41C6000DCB7D2 /* CorosTableViewController.swift */,
 				61A0E3191DA4220600DCB7D2 /* CorosTableViewCell.swift */,
 				61A0E3151DA41FF800DCB7D2 /* Coro.swift */,
 				61A0E3171DA4201900DCB7D2 /* VelButton.swift */,
 				61A0E31B1DA422DB00DCB7D2 /* GetReadableText.swift */,
+				6150576C1D9ABC020008CC96 /* Info.plist */,
+				6113BD2A1DA47BFD00FB7A64 /* GoogleService-Info.plist */,
 			);
 			path = "Alabadle con Entendimiento";
 			sourceTree = "<group>";
@@ -302,7 +302,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6150576B1D9ABC020008CC96 /* LaunchScreen.storyboard in Resources */,
-				61A0E31E1DA43A2600DCB7D2 /* GoogleService-Info.plist in Resources */,
+				6113BD2B1DA47BFD00FB7A64 /* GoogleService-Info.plist in Resources */,
 				615057681D9ABC020008CC96 /* Assets.xcassets in Resources */,
 				615057661D9ABC020008CC96 /* Main.storyboard in Resources */,
 			);

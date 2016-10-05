@@ -62,7 +62,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="62" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ri0-HP-nOS">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="FGE-X2-Lse" customClass="CorosTableViewCell" customModule="Alabadle_con_Entendimiento" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="CorosTableViewCell" id="FGE-X2-Lse" customClass="CorosTableViewCell" customModule="Alabadle_con_Entendimiento" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="62"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FGE-X2-Lse" id="D2Z-u1-Kma">
@@ -133,7 +133,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="VhR-bw-F7b"/>
                     <connections>
-                        <outlet property="lentoButton" destination="OcK-m1-ERi" id="b4S-1U-iLX"/>
                         <outlet property="lentosButton" destination="OcK-m1-ERi" id="OFy-pb-WG1"/>
                         <outlet property="mediosButton" destination="6xV-ge-1Fz" id="dQP-SR-FrN"/>
                         <outlet property="rapidosButton" destination="D6H-ov-PyM" id="QKm-k0-UWy"/>

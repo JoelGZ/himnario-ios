@@ -13,11 +13,18 @@ import Firebase
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-
+    override init() {
+        FIRApp.configure()
+    }
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        FIRApp.configure()
+        let rootRef = FIRDatabase.database().reference()
+        let safeRef = rootRef.child("isSafe")
+        safeRef.observe(FIRDataEventType.value, with: {(snapshot) in
+            let defaults = UserDefaults.standard
+            let isSafeToDisplayDb = snapshot.value as! Bool
+            defaults.set(Bool(isSafeToDisplayDb), forKey: "SAFE")
+        })
         return true
     }
 

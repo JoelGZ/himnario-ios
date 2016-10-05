@@ -21,16 +21,21 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
     // MARK: Properties
     var scope: String = "Todos"
     var corosArray: Array<Coro>?
+    var safeCoros = [Int]()
     var filteredCorosArray: Array<Coro>?
   //  var databaseManager: DatabaseManager?
     let searchController = UISearchController(searchResultsController: nil)
     var velocidadDic: [String: Bool] = ["R": false, "M": false , "L": false]
     
     let rootRef = FIRDatabase.database().reference()
+    var corosRef: FIRDatabaseReference!
+    var safeCorosRef: FIRDatabaseReference!
+    var isSafeToDisplayFlag = false      /// change this later to FALSE
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadData()
+        
+        corosRef = rootRef.child("coros")
         
         // Keyboard subscriptions
         self.subscribeToKeyboardNotificationShow()
@@ -41,6 +46,16 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
         let defaults = UserDefaults.standard
         let tabBarHeight = tabBarController!.tabBar.bounds.height
         defaults.set(Int(tabBarHeight), forKey: "tabBarHeight")
+        
+        isSafeToDisplayFlag = defaults.bool(forKey: "SAFE")
+        print(isSafeToDisplayFlag)
+        //if (isSafeToDisplayFlag) {
+        if (false){
+            loadData()
+        } else {
+            loadSafeData()
+        }
+    
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -49,11 +64,59 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func loadData() {
-    //    databaseManager = DatabaseManager()
+        corosRef.observe(FIRDataEventType.value, with: {(snapshot) in
+            var tempCoroArray = [Coro]()
+            
+            for coroSnap in snapshot.children {
+                let coro = Coro(snapshot: coroSnap as! FIRDataSnapshot, dbRef: self.corosRef)
+                tempCoroArray.append(coro)
+            }
+            
+            self.corosArray = tempCoroArray
+            self.tableView.reloadData()
+        })
         
-  //      corosArray = (databaseManager?.getRowsCoros(""))!
+        loadFakeData()
+    }
     
+    func loadSafeData() {
+        safeCorosRef = rootRef.child("safeCoros")
+        safeCorosRef.observe(FIRDataEventType.value, with: {(snapshot) in
+            for coroSnap in snapshot.children {
+                let coroId = (coroSnap as! FIRDataSnapshot).value
+                self.safeCoros.append(coroId as! Int)
+            }
 
+            for coroId in self.safeCoros {
+                let coroRef = self.corosRef.child(String(coroId))
+                print(coroRef)
+                let nombre = coroRef.child("nombre")
+                print(nombre.value)
+                nombre.observe(FIRDataEventType.value, with: {(snapshot) in
+                    print(snapshot.value)
+                })
+                coroRef.observe(FIRDataEventType.value, with: {(snapshot) in
+                    print(snapshot.value)
+                    var tempCoroArray = [Coro]()
+                    
+                    for coroSnap in snapshot.children {
+                        let coro = Coro(snapshot: coroSnap as! FIRDataSnapshot, coroId: coroId)
+                        tempCoroArray.append(coro)
+                    }
+                    
+                    self.corosArray = tempCoroArray
+                    self.tableView.reloadData()
+                })
+            }
+            
+        })
+        
+        loadFakeData()
+    }
+    
+    func loadFakeData() {
+        let coro = Coro(_id: 1, orden: 1, nombre: "nombre", cuerpo: "cuerpo", tonalidad: "oton", ton_alt: "tond", velletra: "vel", tiempo: 1, audio: "sldkfj", partitura: "sldkf", autormusica: "sldkf", autorletra: "", cita: "", historia: "", sName: "")
+        corosArray = [coro]
     }
     
     // MARK: Velocidad Button actions
@@ -134,7 +197,7 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
             filteredCorosArray = corosArray!.filter { coro in
                 let tonMatch = (scope == "Todos") || (coro.tonalidad == scope.getReadableText()) || (coro.ton_alt == scope.getReadableText())
                 if searchText != "" {
-                    return coro.velletra.contains(velValuesArray[0]) && tonMatch && (coro.nombre.lowercased().contains(searchText.lowercased()) || coro.searchableName.lowercased().contains(searchText.lowercased()))
+                    return coro.velletra.contains(velValuesArray[0]) && tonMatch && (coro.nombre.lowercased().contains(searchText.lowercased()) || coro.sName.lowercased().contains(searchText.lowercased()))
                 } else {
                     return tonMatch && coro.velletra.contains(velValuesArray[0])
                 }
@@ -144,7 +207,7 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
             let filterArray1: Array<Coro> = corosArray!.filter { coro in
                 let tonMatch = (scope == "Todos") || (coro.tonalidad == scope.getReadableText()) || (coro.ton_alt == scope.getReadableText())
                 if searchText != "" {
-                    return coro.velletra.contains(velValuesArray[0]) && tonMatch && (coro.nombre.lowercased().contains(searchText.lowercased()) || coro.searchableName.lowercased().contains(searchText.lowercased()))
+                    return coro.velletra.contains(velValuesArray[0]) && tonMatch && (coro.nombre.lowercased().contains(searchText.lowercased()) || coro.sName.lowercased().contains(searchText.lowercased()))
                 } else {
                     return tonMatch && coro.velletra.contains(velValuesArray[0])
                 }
@@ -153,7 +216,7 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
             let filterArray2: Array<Coro> = corosArray!.filter { coro in
                 let tonMatch = (scope == "Todos") || (coro.tonalidad == scope.getReadableText()) || (coro.ton_alt == scope.getReadableText())
                 if searchText != "" {
-                    return coro.velletra.contains(velValuesArray[1]) && tonMatch && (coro.nombre.lowercased().contains(searchText.lowercased()) || coro.searchableName.lowercased().contains(searchText.lowercased()))
+                    return coro.velletra.contains(velValuesArray[1]) && tonMatch && (coro.nombre.lowercased().contains(searchText.lowercased()) || coro.sName.lowercased().contains(searchText.lowercased()))
                 } else {
                     return tonMatch && coro.velletra.contains(velValuesArray[1])
                 }
@@ -167,7 +230,7 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
             filteredCorosArray = corosArray!.filter { coro in
                 let tonMatch = (scope == "Todos") || (coro.tonalidad == scope.getReadableText()) || (coro.ton_alt == scope.getReadableText())
                 if searchText != "" {
-                    return tonMatch && (coro.nombre.lowercased().contains(searchText.lowercased()) || coro.searchableName.lowercased().contains(searchText.lowercased()))
+                    return tonMatch && (coro.nombre.lowercased().contains(searchText.lowercased()) || coro.sName.lowercased().contains(searchText.lowercased()))
                 } else {
                     return tonMatch
                 }
