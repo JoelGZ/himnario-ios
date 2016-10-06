@@ -11,7 +11,6 @@ import UIKit
 class CoroDetailViewController: UIViewController, UIAlertViewDelegate {
     
     //MARK: Properties
-    
     @IBOutlet weak var nombreCoroLabel: UILabel!
     @IBOutlet weak var numeroCoroLabel: UILabel!
     @IBOutlet weak var infoGeneralLabel: UILabel!
@@ -47,8 +46,8 @@ class CoroDetailViewController: UIViewController, UIAlertViewDelegate {
         
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        self.tabBarController?.tabBar.hidden = false
+    override func viewWillDisappear(_ animated: Bool) {
+        self.tabBarController?.tabBar.isHidden = false
     }
     
     func setupViews(){
@@ -82,13 +81,13 @@ class CoroDetailViewController: UIViewController, UIAlertViewDelegate {
         velocidadLabel.text = coro!.velletra.getReadableText()
         tiempoLabel.text = String(coro!.tiempo)
         
-        letraCoroLabel.lineBreakMode = .ByWordWrapping
+        letraCoroLabel.lineBreakMode = .byWordWrapping
         letraCoroLabel.numberOfLines = 0
         letraCoroLabel.text = coro!.cuerpo
         
         if (coro!.cita == "") {
-            citaTituloLabel.hidden = true
-            citaLabel.hidden = true
+            citaTituloLabel.isHidden = true
+            citaLabel.isHidden = true
         } else {
             citaTituloLabel.text = "Cita Biblica:"
             citaLabel.text = coro!.cita
@@ -109,19 +108,20 @@ class CoroDetailViewController: UIViewController, UIAlertViewDelegate {
         if (coro!.historia != "") {
             self.historiaLabel.text = coro!.historia
         } else {
-            self.historiaLabel.hidden = true
+            self.historiaLabel.isHidden = true
         }
     }
     
     @IBAction func tonAltInfoAction(sender: AnyObject) {
         
-        let alert = UIAlertController(title: "Tonalidades Alternativas", message: "Se recomienda siempre cantar los coros en su tonalidad original.", preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "Tonalidades Alternativas", message: "Se recomienda siempre cantar los coros en su tonalidad original.", preferredStyle: UIAlertControllerStyle.alert)
         
-        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         alert.popoverPresentationController?.sourceView = self.view
         alert.popoverPresentationController?.sourceRect = self.view.bounds
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
 }
+
 

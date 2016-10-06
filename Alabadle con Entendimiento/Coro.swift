@@ -52,6 +52,7 @@ class Coro: NSObject {
     }
     
     init(snapshot: FIRDataSnapshot, dbRef: FIRDatabaseReference){
+        let dollarSign = "$"
         key = snapshot.key
         let snapshotValue = snapshot.value as! [String: AnyObject]
         
@@ -59,21 +60,37 @@ class Coro: NSObject {
         orden = snapshotValue["orden"] as! Int
         nombre = snapshotValue["nombre"] as! String
         cuerpo = snapshotValue["cuerpo"] as! String
-        tonalidad = snapshotValue["tonalidad"] as! String
+        tonalidad = snapshotValue["ton"] as! String
         ton_alt = snapshotValue["ton_alt"] as! String
-        velletra = snapshotValue["velletra"] as! String
+        if ton_alt == dollarSign {
+            ton_alt = ""
+        }
+        velletra = snapshotValue["vel_letra"] as! String
         tiempo = snapshotValue["tiempo"] as! Int
         audio = snapshotValue["audio"] as! String
         partitura = snapshotValue["partitura"] as! String
-        autormusica = snapshotValue["autormusica"] as! String
-        autorletra = snapshotValue["autorletra"] as! String
+        autormusica = snapshotValue["aut_mus"] as! String
+        if autormusica == dollarSign {
+            autormusica = ""
+        }
+        autorletra = snapshotValue["aut_let"] as! String
+        if autorletra == dollarSign {
+            autorletra = ""
+        }
         cita = snapshotValue["cita"] as! String
+        if cita == dollarSign {
+            cita = ""
+        }
         historia = snapshotValue["historia"] as! String
+        if historia == dollarSign {
+            historia = ""
+        }
         sName = snapshotValue["sName"] as! String
         ref = snapshot.ref
     }
     
     init(snapshot: FIRDataSnapshot, coroId: Int) {
+        let dollarSign = "$"
         key = snapshot.key
         let snapshotValue = snapshot.value as! [String: AnyObject]
         
@@ -83,17 +100,33 @@ class Coro: NSObject {
         cuerpo = snapshotValue["cuerpo"] as! String
         tonalidad = snapshotValue["ton"] as! String
         ton_alt = snapshotValue["ton_alt"] as! String
+        if ton_alt == dollarSign {
+            ton_alt = ""
+        }
         velletra = snapshotValue["vel_letra"] as! String
         tiempo = snapshotValue["tiempo"] as! Int
         audio = snapshotValue["audio"] as! String
         partitura = snapshotValue["partitura"] as! String
         autormusica = snapshotValue["aut_mus"] as! String
+        if autormusica == dollarSign {
+            autormusica = ""
+        }
         autorletra = snapshotValue["aut_let"] as! String
+        if autorletra == dollarSign {
+            autorletra = ""
+        }
         cita = snapshotValue["cita"] as! String
+        if cita == dollarSign {
+            cita = ""
+        }
         historia = snapshotValue["historia"] as! String
+        if historia == dollarSign {
+            historia = ""
+        }
         sName = snapshotValue["sName"] as! String
         ref = snapshot.ref
     }
+    
     func isEqual(object: AnyObject?) -> Bool {
         if let coro = object as? Coro {
             return self.nombre == coro.nombre

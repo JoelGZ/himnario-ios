@@ -165,7 +165,7 @@
         <!--Letra-->
         <scene sceneID="6V4-8g-P8f">
             <objects>
-                <viewController id="ckD-tn-0NV" sceneMemberID="viewController">
+                <viewController id="ckD-tn-0NV" customClass="CoroDetailViewController" customModule="Alabadle_con_Entendimiento" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Z1D-gx-ibQ"/>
                         <viewControllerLayoutGuide type="bottom" id="h6n-nk-wFg"/>
@@ -243,6 +243,9 @@
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KwU-0t-mCg">
                                         <rect key="frame" x="78" y="106" width="22" height="22"/>
+                                        <connections>
+                                            <action selector="tonAltInfoActionWithSender:" destination="ckD-tn-0NV" eventType="touchUpInside" id="Slm-uu-E7l"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kLx-j1-5qQ">
                                         <rect key="frame" x="108" y="107" width="204" height="21"/>
@@ -409,6 +412,9 @@
                                     <constraint firstItem="Sgx-iG-FLr" firstAttribute="top" secondItem="Ugt-J8-7fb" secondAttribute="bottom" constant="8" id="yh3-yP-cEw"/>
                                     <constraint firstItem="QlW-4a-h4f" firstAttribute="baseline" secondItem="kLx-j1-5qQ" secondAttribute="baseline" id="zPU-LN-wYD"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="delegate" destination="ckD-tn-0NV" id="KA5-Uz-cFq"/>
+                                </connections>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -422,6 +428,30 @@
                     <tabBarItem key="tabBarItem" title="Letra" id="yiU-w3-vZQ"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="600"/>
+                    <connections>
+                        <outlet property="autorLetraLabel" destination="hiu-XS-iF4" id="aHW-Zi-88Q"/>
+                        <outlet property="autorLetraTituloLabel" destination="qHV-7q-kMb" id="H6L-HL-tnQ"/>
+                        <outlet property="autorMusicaLabel" destination="2D0-Y8-j4g" id="X3P-t9-6Ec"/>
+                        <outlet property="autorMusicaTituloLabel" destination="D4n-9Y-b2U" id="zIk-zc-1aQ"/>
+                        <outlet property="citaLabel" destination="aVP-Rd-1Rl" id="PH0-te-gkZ"/>
+                        <outlet property="citaTituloLabel" destination="C1a-Ws-DPM" id="wLy-qO-FiB"/>
+                        <outlet property="historiaCoroTituloLabel" destination="IPR-f5-kTt" id="dml-sb-fyt"/>
+                        <outlet property="historiaLabel" destination="ugt-5W-5TY" id="TTK-U4-87Y"/>
+                        <outlet property="infoGeneralLabel" destination="Pqw-oi-HyK" id="T5L-fW-FsW"/>
+                        <outlet property="letraCoroLabel" destination="YGL-89-GMd" id="2TV-fC-EXo"/>
+                        <outlet property="letraCoroTituloLabel" destination="YZE-4K-3Md" id="Duj-wE-QKq"/>
+                        <outlet property="nombreCoroLabel" destination="TQ8-mu-0Gn" id="ovJ-tu-eIH"/>
+                        <outlet property="numeroCoroLabel" destination="D5s-ta-pys" id="9Wq-WN-yeR"/>
+                        <outlet property="scrollView" destination="2WO-0B-Jw6" id="qbI-XG-SXc"/>
+                        <outlet property="tiempoLabel" destination="eo9-7u-gFb" id="IXh-No-6mZ"/>
+                        <outlet property="tiempoTituloLabel" destination="1nK-Nh-WVr" id="wmT-8R-ewd"/>
+                        <outlet property="tonAltLabel" destination="kLx-j1-5qQ" id="fMT-in-yli"/>
+                        <outlet property="tonAltTituloLabel" destination="QlW-4a-h4f" id="psO-re-8AN"/>
+                        <outlet property="tonalidadLabel" destination="dR4-2D-WRv" id="Bl7-4E-xeq"/>
+                        <outlet property="tonalidadTituloLabel" destination="Sgx-iG-FLr" id="U8x-pB-5lJ"/>
+                        <outlet property="velocidadLabel" destination="XSU-L5-SXI" id="cdr-0i-Crf"/>
+                        <outlet property="velocidadTituloLabel" destination="yzX-Lu-lbo" id="Whm-jR-uHb"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P7I-b0-6WF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
