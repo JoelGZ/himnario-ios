@@ -90,12 +90,6 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
             
             for coroId in self.safeCoros {
                 let coroRef = self.corosRef.child(String(coroId))
-                print(coroRef)
-                
-                /*let nombre = coroRef.child("nombre")
-                 nombre.observe(FIRDataEventType.value, with: {(sn) in
-                 print(sn.value)
-                 })*/
                 
                 coroRef.observe(FIRDataEventType.value, with: {(sp) in
                    // print(sp.value)
@@ -284,8 +278,8 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
         return cell
         
     }
-  /*
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showCoroDetail" {
             let tabBarController = segue.destination as? UITabBarController
             let destinationVC = tabBarController?.viewControllers?.first as? CoroDetailViewController
@@ -309,7 +303,7 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
             self.tabBarController?.tabBar.isHidden = true
         }
     }
-    */
+    
     //MARK: Keyboard
     
     // keyboard is dismissed with return key
