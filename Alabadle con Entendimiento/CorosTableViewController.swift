@@ -80,35 +80,33 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func loadSafeData() {
+        var tempCoroArray2 = [Coro]()
         safeCorosRef = rootRef.child("safeCoros")
         safeCorosRef.observe(FIRDataEventType.value, with: {(snapshot) in
             for coroSnap in snapshot.children {
                 let coroId = (coroSnap as! FIRDataSnapshot).value
                 self.safeCoros.append(coroId as! Int)
             }
-
+            
             for coroId in self.safeCoros {
                 let coroRef = self.corosRef.child(String(coroId))
                 print(coroRef)
-                let nombre = coroRef.child("nombre")
-                print(nombre.value)
-                nombre.observe(FIRDataEventType.value, with: {(snapshot) in
-                    print(snapshot.value)
-                })
-                coroRef.observe(FIRDataEventType.value, with: {(snapshot) in
-                    print(snapshot.value)
-                    var tempCoroArray = [Coro]()
-                    
-                    for coroSnap in snapshot.children {
-                        let coro = Coro(snapshot: coroSnap as! FIRDataSnapshot, coroId: coroId)
-                        tempCoroArray.append(coro)
+                
+                /*let nombre = coroRef.child("nombre")
+                 nombre.observe(FIRDataEventType.value, with: {(sn) in
+                 print(sn.value)
+                 })*/
+                
+                coroRef.observe(FIRDataEventType.value, with: {(sp) in
+                   // print(sp.value)
+                    let coro = Coro(snapshot: sp, coroId: coroId)
+                    tempCoroArray2.append(coro)
+                    if tempCoroArray2.count == self.safeCoros.count {
+                        self.corosArray = tempCoroArray2
+                        self.tableView.reloadData()
                     }
-                    
-                    self.corosArray = tempCoroArray
-                    self.tableView.reloadData()
                 })
             }
-            
         })
         
         loadFakeData()
