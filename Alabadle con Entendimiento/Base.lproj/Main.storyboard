@@ -154,13 +154,47 @@
                     <view key="view" contentMode="scaleToFill" id="ROm-B4-iak">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pd7-LC-RIP">
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="a_cristo_coronad" translatesAutoresizingMaskIntoConstraints="NO" id="CZp-k9-zxF">
+                                        <rect key="frame" x="0.0" y="-64" width="375" height="554"/>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="CZp-k9-zxF" secondAttribute="trailing" id="KRe-kc-LSs"/>
+                                    <constraint firstItem="CZp-k9-zxF" firstAttribute="leading" secondItem="pd7-LC-RIP" secondAttribute="leading" id="bGR-E1-ErR"/>
+                                    <constraint firstItem="CZp-k9-zxF" firstAttribute="top" secondItem="pd7-LC-RIP" secondAttribute="top" id="nm0-Zn-Wkb"/>
+                                    <constraint firstAttribute="bottom" secondItem="CZp-k9-zxF" secondAttribute="bottom" id="y0O-kZ-vwj"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="pd7-LC-RIP" firstAttribute="leading" secondItem="ROm-B4-iak" secondAttribute="leading" id="gOT-my-4PP"/>
+                            <constraint firstItem="cIn-1b-NRd" firstAttribute="top" secondItem="pd7-LC-RIP" secondAttribute="bottom" id="h9P-Lu-PLQ"/>
+                            <constraint firstItem="pd7-LC-RIP" firstAttribute="top" secondItem="zlb-Ss-qkQ" secondAttribute="bottom" id="xcV-3u-0Dg"/>
+                            <constraint firstAttribute="trailing" secondItem="pd7-LC-RIP" secondAttribute="trailing" id="xjz-9y-fsp"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="9dO-kw-Yhz" appends="YES" id="mF4-SN-0Td"/>
+                        </connections>
                     </view>
                     <tabBarItem key="tabBarItem" title="Musica" id="U6w-lB-tMD"/>
+                    <connections>
+                        <outlet property="partituraImageView" destination="CZp-k9-zxF" id="XRm-pZ-y1T"/>
+                        <outlet property="scrollView" destination="pd7-LC-RIP" id="91J-sB-Go4"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jyW-wM-Dnq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="9dO-kw-Yhz">
+                    <connections>
+                        <action selector="imageTappedWithSender:" destination="ucH-kK-ETH" id="GO0-Pv-oFV"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3382" y="8"/>
+            <point key="canvasLocation" x="3381.5999999999999" y="7.6461769115442282"/>
         </scene>
         <!--Letra-->
         <scene sceneID="6V4-8g-P8f">
@@ -328,7 +362,6 @@
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" red="0.92816368588197629" green="1" blue="0.41867289798161667" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="qHV-7q-kMb" firstAttribute="leading" secondItem="2WO-0B-Jw6" secondAttribute="leading" constant="25" id="2e1-HQ-v2X"/>
                                     <constraint firstItem="Sgx-iG-FLr" firstAttribute="leading" secondItem="2WO-0B-Jw6" secondAttribute="leading" constant="25" id="3no-Yn-Clb"/>
@@ -390,7 +423,7 @@
                                 </constraints>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" red="0.10033332671114481" green="1" blue="0.34649069995606674" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="2WO-0B-Jw6" secondAttribute="trailing" id="0bB-Bl-Uqp"/>
                             <constraint firstItem="2WO-0B-Jw6" firstAttribute="leading" secondItem="OaH-hN-dtO" secondAttribute="leading" id="acM-Oe-ucI"/>
@@ -433,7 +466,8 @@
         <!--Tab Bar Controller-->
         <scene sceneID="tjK-uX-rPK">
             <objects>
-                <tabBarController id="hjV-qA-eTH" sceneMemberID="viewController">
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="hjV-qA-eTH" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="YDG-pE-gjb"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="xsD-80-CW6">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -526,6 +560,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="a_cristo_coronad" width="1277" height="1652"/>
         <image name="first" width="30" height="30"/>
         <image name="second" width="30" height="30"/>
     </resources>

@@ -40,7 +40,7 @@ class MusicaViewController: UIViewController {
         
         scrollView.delegate = self
         //partituraImageView.image = UIImage(named: coro!.musica)
-        partituraImageView.image = UIImage(named: "blabla")
+        partituraImageView.image = UIImage(named: "a_cristo_coronad")
         setZoomParametersSize(scrollViewSize: scrollView.bounds.size, landscape: UIDevice().orientation.isLandscape)
         flag = true
         
@@ -135,7 +135,7 @@ class MusicaViewController: UIViewController {
         scrollView.contentOffset.y = 0
     }
     
-   /* override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         if flag {
             if UIDevice.current.orientation.isLandscape {
                 setZoomParametersSize(scrollViewSize: CGSize(width: scrollViewHeightPortrait!, height: scrollViewWidthPortrait!), landscape: true)
@@ -144,7 +144,7 @@ class MusicaViewController: UIViewController {
                 setZoomParametersSize(scrollViewSize: CGSize(width: scrollViewWidthPortrait!, height: scrollViewHeightPortrait!), landscape: false)
             }
         }
-    }*/
+    }
     
     override func viewWillLayoutSubviews() {
         if contAux < 2 {
@@ -163,7 +163,7 @@ class MusicaViewController: UIViewController {
 }
 
 extension MusicaViewController: UIScrollViewDelegate {
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    private func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         return partituraImageView
     }
 }
