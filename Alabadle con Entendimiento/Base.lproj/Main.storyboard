@@ -533,7 +533,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="qYd-Ka-RXy"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="qYd-Ka-RXy"/>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LQo-Kb-DKZ">
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="HoH-4V-Aoz"/>
@@ -548,7 +548,7 @@
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qwv-8q-MYz">
                                 <state key="normal" title="Crear Usuario">
@@ -596,7 +596,7 @@
                         <outlet property="logoImageView" destination="qYd-Ka-RXy" id="kEV-sm-F7r"/>
                         <outlet property="passwordTextField" destination="NUn-IK-OgN" id="BCK-Qo-Dx7"/>
                         <outlet property="signInButton" destination="Zyp-yo-PqT" id="A6x-0n-jNx"/>
-                        <segue destination="49e-Tb-3d3" kind="show" identifier="loggedInSegue" id="wdV-CI-S8l"/>
+                        <segue destination="49e-Tb-3d3" kind="show" identifier="loggedInSegue" animates="NO" id="wdV-CI-S8l"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VdI-b7-eft" userLabel="First Responder" sceneMemberID="firstResponder"/>

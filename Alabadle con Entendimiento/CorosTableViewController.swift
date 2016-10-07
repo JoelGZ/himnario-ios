@@ -23,7 +23,6 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
     var corosArray: Array<Coro>?
     var safeCoros = [Int]()
     var filteredCorosArray: Array<Coro>?
-  //  var databaseManager: DatabaseManager?
     let searchController = UISearchController(searchResultsController: nil)
     var velocidadDic: [String: Bool] = ["R": false, "M": false , "L": false]
     
@@ -61,6 +60,10 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        self.unsubscribeFromKeyboardNotifications()
     }
     
     func loadData() {

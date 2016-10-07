@@ -9,7 +9,7 @@
 import UIKit
 import FirebaseAuth
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var emailTextField: UITextField!
@@ -19,30 +19,41 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setupUI()
-        
+     
         FIRAuth.auth()?.addStateDidChangeListener() {auth, user in
             if user != nil {
                 self.performSegue(withIdentifier: "loggedInSegue", sender: nil)
             }
         }
+
+        setupUI()
+        
+        // Keyboard subscriptions
+        self.subscribeToKeyboardNotificationShow()
+        self.subscribeToKeyboardNotificationHide()
+
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        self.unsubscribeFromKeyboardNotifications()
     }
     
     func setupUI() {
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        
         signInButton.layer.cornerRadius = 5
         signInButton.layer.borderWidth = 1
         signInButton.layer.borderColor = UIColor.white.cgColor
         crearUsuarioButton.layer.cornerRadius = 5
         crearUsuarioButton.layer.borderWidth = 1
         crearUsuarioButton.layer.borderColor = UIColor.white.cgColor
-        logoImageView.layer.cornerRadius = logoImageView.frame.size.width / 2
+        
+        logoImageView.layer.cornerRadius = logoImageView.frame.size.height / 2
 
     }
     @IBAction func signInAction(_ sender: AnyObject) {
-        
         if (emailTextField.text?.isEmpty)! {
-            
             //check if user exists
             let alert = UIAlertController(title: "Campo requerido", message: "Ingrese su correo en el campo provisto.", preferredStyle: .alert)
             let okAlertAction = UIAlertAction(title: "OK", style: .default)
@@ -67,7 +78,6 @@ class LoginViewController: UIViewController {
                 present(alert, animated: true, completion: nil)
             }
         }
-
     }
     
     @IBAction func createUserAction(_ sender: AnyObject) {
@@ -89,7 +99,6 @@ class LoginViewController: UIViewController {
                     if error == nil {
                         FIRAuth.auth()!.signIn(withEmail: self.emailTextField.text!,
                                                password: self.passwordTextField.text!)
-                        self.performSegue(withIdentifier: "loggedInSegue", sender: nil)
                     }
                 }
             } else {
@@ -108,18 +117,35 @@ class LoginViewController: UIViewController {
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailTest.evaluate(with: testStr)
     }
-}
-
-extension LoginViewController: UITextFieldDelegate {
     
+    
+    //MARK: Keyboard
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == emailTextField {
             passwordTextField.becomeFirstResponder()
         }
         if textField == passwordTextField {
             textField.resignFirstResponder()
+            self.view.endEditing(true)
         }
         return true
     }
     
+    func subscribeToKeyboardNotificationShow() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+    }
+    
+    func subscribeToKeyboardNotificationHide() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    func unsubscribeFromKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {}
+    
+    func keyboardWillHide(notification: NSNotification) {}
+
 }
