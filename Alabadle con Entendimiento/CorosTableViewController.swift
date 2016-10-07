@@ -302,6 +302,7 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
             // hide current tab bar to show other tab bar
             self.tabBarController?.tabBar.isHidden = true
         }
+
     }
     
     //MARK: Keyboard
