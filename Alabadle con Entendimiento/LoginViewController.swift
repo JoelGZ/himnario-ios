@@ -49,7 +49,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         crearUsuarioButton.layer.borderWidth = 1
         crearUsuarioButton.layer.borderColor = UIColor.white.cgColor
         
-        logoImageView.layer.cornerRadius = logoImageView.frame.size.height / 2
+        logoImageView.layer.borderWidth=1.0
+        logoImageView.layer.masksToBounds = false
+        logoImageView.layer.borderColor = UIColor.black.cgColor
+        logoImageView.layer.cornerRadius = 50
+        logoImageView.clipsToBounds = true
+
 
     }
     @IBAction func signInAction(_ sender: AnyObject) {
