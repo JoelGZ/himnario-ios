@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
 
 class CorosTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UISearchControllerDelegate {
     
@@ -22,6 +23,7 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
     var scope: String = "Todos"
     var corosArray: Array<Coro>?
     var safeCoros = [Int]()
+    var user: User!
     var filteredCorosArray: Array<Coro>?
     let searchController = UISearchController(searchResultsController: nil)
     var velocidadDic: [String: Bool] = ["R": false, "M": false , "L": false]
@@ -55,6 +57,10 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
             loadSafeData()
         }
     
+        FIRAuth.auth()!.addStateDidChangeListener { auth, user in
+            guard let user = user else { return }
+            self.user = User(authData: user)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
