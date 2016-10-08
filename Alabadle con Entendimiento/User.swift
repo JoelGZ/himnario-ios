@@ -24,4 +24,8 @@ struct User {
         self.email = email
     }
     
+    func getUID() -> String{
+        return self.uid
+    }
+    
 }
