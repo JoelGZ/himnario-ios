@@ -40,7 +40,10 @@ class MusicaViewController: UIViewController {
         
         scrollView.delegate = self
         //partituraImageView.image = UIImage(named: coro!.musica)
-        partituraImageView.image = UIImage(named: "a_cristo_coronad")
+        print("Partitura: \(coro!.partitura)")
+        let url = URL(string: coro!.partitura)
+        let data = try? Data(contentsOf: url!)
+        partituraImageView.image = UIImage(data: data!)
         setZoomParametersSize(scrollViewSize: scrollView.bounds.size, landscape: UIDevice().orientation.isLandscape)
         flag = true
         
