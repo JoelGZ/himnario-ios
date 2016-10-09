@@ -16,6 +16,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var crearUsuarioButton: UIButton!
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,14 +60,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     @IBAction func signInAction(_ sender: AnyObject) {
         if (emailTextField.text?.isEmpty)! {
-            //check if user exists
             let alert = UIAlertController(title: "Campo requerido", message: "Ingrese su correo en el campo provisto.", preferredStyle: .alert)
             let okAlertAction = UIAlertAction(title: "OK", style: .default)
             
             alert.addAction(okAlertAction)
             present(alert, animated: true, completion: nil)
         } else if (passwordTextField.text?.isEmpty)! {
-            //check if pasword is correct
             let alert = UIAlertController(title: "Campo requerido", message: "Ingrese su contraseña en el campo provisto.", preferredStyle: .alert)
             let okAlertAction = UIAlertAction(title: "OK", style: .default)
             
@@ -74,7 +73,25 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             present(alert, animated: true, completion: nil)
         } else {
             if isValidEmail(testStr: emailTextField.text!) {
-                FIRAuth.auth()?.signIn(withEmail: emailTextField.text!, password: passwordTextField.text!)
+                FIRAuth.auth()?.signIn(withEmail: emailTextField.text!, password: passwordTextField.text!) {
+                    user, error in
+                    
+                    if error != nil {
+                        let errCode = FIRAuthErrorCode(rawValue: error!._code)
+                        
+                        switch errCode?.rawValue {
+                        case FIRAuthErrorCode.errorCodeWrongPassword.rawValue?:
+                            self.errorAlert(flag: 4)
+                            break
+                        case FIRAuthErrorCode.errorCodeUserNotFound.rawValue?:
+                            self.errorAlert(flag: 6)
+                            break
+                        default:
+                            break
+                        }
+                        print(error)
+                    }
+                }
             } else {
                 let alert = UIAlertController(title: "Email invalido", message: "Ingrese un correo valido.", preferredStyle: .alert)
                 let okAlertAction = UIAlertAction(title: "OK", style: .default)
@@ -87,33 +104,91 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func createUserAction(_ sender: AnyObject) {
         if (emailTextField.text?.isEmpty)! {
-            let alert = UIAlertController(title: "Campo requerido", message: "Ingrese su correo en el campo provisto.", preferredStyle: .alert)
-            let okAlertAction = UIAlertAction(title: "OK", style: .default)
-            
-            alert.addAction(okAlertAction)
-            present(alert, animated: true, completion: nil)
+            errorAlert(flag: 2)
         } else if (passwordTextField.text?.isEmpty)! {
-            let alert = UIAlertController(title: "Campo requerido", message: "Ingrese su contraseña en el campo provisto.", preferredStyle: .alert)
-            let okAlertAction = UIAlertAction(title: "OK", style: .default)
-            
-            alert.addAction(okAlertAction)
-            present(alert, animated: true, completion: nil)
+            errorAlert(flag: 0)
         } else {
             if isValidEmail(testStr: emailTextField.text!) {
                 FIRAuth.auth()?.createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { user, error in
                     if error == nil {
-                        FIRAuth.auth()!.signIn(withEmail: self.emailTextField.text!,
-                                               password: self.passwordTextField.text!)
+                        FIRAuth.auth()!.signIn(withEmail: self.emailTextField.text!, password: self.passwordTextField.text!){
+                            user, error in
+                                                
+                            if error != nil {
+                                let errCode = FIRAuthErrorCode(rawValue: error!._code)
+                                                    
+                                switch errCode?.rawValue {
+                                case FIRAuthErrorCode.errorCodeWrongPassword.rawValue?:
+                                    self.errorAlert(flag: 4)
+                                    break
+                                case FIRAuthErrorCode.errorCodeUserNotFound.rawValue?:
+                                    self.errorAlert(flag: 6)
+                                    break
+                                default:
+                                    break
+                                }
+                                print(error)
+                            }
+                        }
+                    } else {
+                        let errCode = FIRAuthErrorCode(rawValue: error!._code)
+
+                        switch errCode?.rawValue {
+                        case FIRAuthErrorCode.errorCodeWeakPassword.rawValue?:
+                            self.errorAlert(flag: 1)
+                            break
+                        case FIRAuthErrorCode.errorCodeEmailAlreadyInUse.rawValue?:
+                            self.errorAlert(flag: 5)
+                            break
+                        default:
+                            break
+                        }
                     }
                 }
             } else {
-                let alert = UIAlertController(title: "Email invalido", message: "Ingrese un correo valido.", preferredStyle: .alert)
-                let okAlertAction = UIAlertAction(title: "OK", style: .default)
-                
-                alert.addAction(okAlertAction)
-                present(alert, animated: true, completion: nil)
+                errorAlert(flag: 3)
             }
         }
+    }
+    
+    func errorAlert(flag: Int) {
+        var message: String!
+        var titulo: String!
+        switch flag {
+        case 0:
+            titulo = "Campo requerido"
+            message = "Ingrese su contraseña el campo provisto."
+            break
+        case 1:
+            titulo = "Contraseña insegura"
+            message = "Porfavor provea una contraseña mas segura. Utilice 6 o más caracteres."
+            break
+        case 2:
+            titulo = "Campo requerido"
+            message = "Ingrese su correo en el campo provisto."
+            break
+        case 3:
+            titulo = "Error"
+            message = "Ingrese un correo valido."
+            break
+        case 4:
+            titulo = "Contraseña incorrecta"
+            message = "La contraseña es incorrecta."
+            break
+        case 5:
+            titulo = "Error"
+            message = "Ya existe una cuenta asociada con este correo. Porfavor utilice un correo diferente."
+        case 6:
+            titulo = "Usuario no existe"
+            message = "No existe una cuenta asociada con este correo. Porfavor cree una cuenta nueva."
+        default:
+            break
+        }
+        let alert = UIAlertController(title: titulo, message: message, preferredStyle: .alert)
+        let okAlertAction = UIAlertAction(title: "OK", style: .default)
+        
+        alert.addAction(okAlertAction)
+        present(alert, animated: true, completion: nil)
     }
     
     func isValidEmail(testStr:String) -> Bool {
@@ -149,8 +224,20 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    func keyboardWillShow(notification: NSNotification) {}
+    func adjustInsetForKeyboardShow(show: Bool, notification: NSNotification) {
+        guard let value = notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue else { return }
+        let keyboardFrame = value.cgRectValue
+        let adjustmentHeight = (keyboardFrame.height + 10) * (show ? 1 : -1)
+        scrollView.contentInset.bottom += adjustmentHeight
+        scrollView.scrollIndicatorInsets.bottom += adjustmentHeight
+    }
     
-    func keyboardWillHide(notification: NSNotification) {}
+    func keyboardWillShow(notification: NSNotification) {
+        adjustInsetForKeyboardShow(show: true, notification: notification)
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        adjustInsetForKeyboardShow(show: false, notification: notification)
+    }
 
 }

@@ -14,11 +14,13 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    @IBOutlet weak var signInOutLabel: UILabel!
+    
     let APP_ID = "1118729781"
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        activityIndicator.isHidden = true
+      //  activityIndicator.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -39,7 +41,7 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     
     func rateApp() {
         let rateString = "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=\(APP_ID)&onlyLatestVersion=true&pageNumber=0&sortOrdering=1)"
-        UIApplication.shared.open(NSURL(string: rateString)! as URL, options: <#T##[String : Any]#>, completionHandler: <#T##((Bool) -> Void)?##((Bool) -> Void)?##(Bool) -> Void#>)
+        UIApplication.shared.open(NSURL(string: rateString)! as URL)
        // UIApplication.shared.openURL(NSURL(string : rateString)! as URL)
     }
     
@@ -63,8 +65,78 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
         }
     }
     
-    func signOut() {
-        try! FIRAuth.auth()?.signOut()
+    func signInOut() {
+        if signInOutLabel.text! == "Salir" {
+            try! FIRAuth.auth()?.signOut()
+            
+            let alert = UIAlertController(title: "Éxito", message: "Ha salido con exito. Para visualizar sus listas es necesario que vuelva a ingresar.", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default)
+            
+            alert.addAction(okAction)
+            present(alert, animated: true, completion: nil)
+            
+            signInOutLabel.text = "Iniciar sesión"
+        } else {
+            let alert = UIAlertController(title: "Iniciar sesión", message: "Ingresa los campos requeridos para iniciar sesión.", preferredStyle: .alert)
+            
+            let ingresarAction = UIAlertAction(title: "Ingresar", style: .default)
+                { action in
+                    let emailField = alert.textFields![0]
+                    let passwordField = alert.textFields![1]
+                    
+                    FIRAuth.auth()?.signIn(withEmail: emailField.text! , password: passwordField.text!){
+                        user, error in
+                        
+                        if error == nil {
+                            let signInSuccessAlert = UIAlertController(title: "Éxito", message: "Ha iniciado sesión exitosamente.", preferredStyle: .alert)
+                            let okAction = UIAlertAction(title: "OK", style: .default)
+                            signInSuccessAlert.addAction(okAction)
+                            
+                            self.present(signInSuccessAlert, animated: true, completion: nil)
+                        } else {
+                            let errCode = FIRAuthErrorCode(rawValue: error!._code)
+                            
+                            switch errCode?.rawValue {
+                            case FIRAuthErrorCode.errorCodeWrongPassword.rawValue?:
+                                let alert = UIAlertController(title: "Contraseña incorrecta", message: "La contraseña incorrecta.", preferredStyle: .alert)
+                                let okAlertAction = UIAlertAction(title: "OK", style: .default)
+                                
+                                alert.addAction(okAlertAction)
+                                self.present(alert, animated: true, completion: nil)
+                                break
+                            case FIRAuthErrorCode.errorCodeUserNotFound.rawValue?:
+                                let alert = UIAlertController(title: "Usuario no existe", message: "No existe una cuenta asociada con este correo. Porfavor cree una cuenta nueva.", preferredStyle: .alert)
+                                let okAlertAction = UIAlertAction(title: "OK", style: .default)
+                                
+                                alert.addAction(okAlertAction)
+                                self.present(alert, animated: true, completion: nil)
+                                break
+                            default:
+                                break
+                            }
+                            print(error)
+                        }
+                    }
+                }
+            
+            let cancelAction = UIAlertAction(title: "Cancelar",
+                                             style: .default)
+            
+            alert.addTextField { textEmail in
+                textEmail.placeholder = "Correo electronico"
+            }
+            
+            alert.addTextField { textPassword in
+                textPassword.isSecureTextEntry = true
+                textPassword.placeholder = "Contraseña"
+            }
+            
+            alert.addAction(ingresarAction)
+            alert.addAction(cancelAction)
+            
+            present(alert, animated: true, completion: nil)
+        }
+        
     }
     
     func configurarCorreoVC(message: String, recipients: [String], subject: String) -> MFMailComposeViewController {
@@ -92,43 +164,39 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
             return 1
-            break
         case 1:
             return 2
-            break
         case 2:
             return 2
-            break
         default:
             return 1
         }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 {
-            let url = NSURL(string: "https://innovateideasjg.wordpress.com/tutoriales/")
-            UIApplication.shared.open(url! as URL, options: <#T##[String : Any]#>, completionHandler: <#T##((Bool) -> Void)?##((Bool) -> Void)?##(Bool) -> Void#>)
-           // UIApplication.shared.openURL(url! as URL)
-        }
         
-        if indexPath.section == 1 {
+        switch indexPath.section {
+        case 0:
+            let url = NSURL(string: "https://innovateideasjg.wordpress.com/tutoriales/")
+            UIApplication.shared.open(url! as URL)
+            break
+        case 1:
             switch indexPath.row {
             case 0:
-                signOut()
+                signInOut()
                 break;
             default:
                 break;
             }
-        }
-        
-        if indexPath.section == 2 {
+            break
+        case 2:
             switch indexPath.row {
             case 0:
                 reportProblem()
@@ -151,7 +219,11 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
              default:
              break;
              }*/
+            break
+        default:
+            break
         }
+    
         self.tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
 }
