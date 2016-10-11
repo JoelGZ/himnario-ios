@@ -84,6 +84,31 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
         
     }
     
+    func changePassword() {
+        let defaults = UserDefaults.standard
+        let userEmail = defaults.value(forKey: "USER_EMAIL") as! String
+        
+        FIRAuth.auth()?.sendPasswordReset(withEmail: userEmail) {
+            error in
+            
+            if error == nil {
+                let alert = UIAlertController(title: "Solicitud enviada", message: "Su solicitud de cambio de contraseña ha sido enviada. Revise su correo.", preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "OK", style: .default)
+                
+                alert.addAction(okAction)
+                
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                let alert = UIAlertController(title: "Error", message: "Su solicitud no pudo ser enviada. Porfavor intente mas tarde.", preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "OK", style: .default)
+                
+                alert.addAction(okAction)
+                
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
     func configurarCorreoVC(message: String, recipients: [String], subject: String) -> MFMailComposeViewController {
         let mailComposerViewController = MFMailComposeViewController()
         mailComposerViewController.mailComposeDelegate = self
@@ -136,6 +161,9 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
             switch indexPath.row {
             case 0:
                 signInOut()
+                break;
+            case 1:
+                changePassword()
                 break;
             default:
                 break;

@@ -60,6 +60,9 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
         FIRAuth.auth()!.addStateDidChangeListener { auth, user in
             guard let user = user else { return }
             self.user = User(authData: user)
+            
+            defaults.set(user.uid, forKey: "USER_UID")
+            defaults.set(user.email, forKey: "USER_EMAIL")
         }
     }
     
