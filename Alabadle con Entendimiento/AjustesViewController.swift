@@ -77,64 +77,9 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
             
             signInOutLabel.text = "Iniciar sesión"
         } else {
-            let alert = UIAlertController(title: "Iniciar sesión", message: "Ingresa los campos requeridos para iniciar sesión.", preferredStyle: .alert)
-            
-            let ingresarAction = UIAlertAction(title: "Ingresar", style: .default)
-                { action in
-                    let emailField = alert.textFields![0]
-                    let passwordField = alert.textFields![1]
-                    
-                    FIRAuth.auth()?.signIn(withEmail: emailField.text! , password: passwordField.text!){
-                        user, error in
-                        
-                        if error == nil {
-                            let signInSuccessAlert = UIAlertController(title: "Éxito", message: "Ha iniciado sesión exitosamente.", preferredStyle: .alert)
-                            let okAction = UIAlertAction(title: "OK", style: .default)
-                            signInSuccessAlert.addAction(okAction)
-                            
-                            self.present(signInSuccessAlert, animated: true, completion: nil)
-                        } else {
-                            let errCode = FIRAuthErrorCode(rawValue: error!._code)
-                            
-                            switch errCode?.rawValue {
-                            case FIRAuthErrorCode.errorCodeWrongPassword.rawValue?:
-                                let alert = UIAlertController(title: "Contraseña incorrecta", message: "La contraseña incorrecta.", preferredStyle: .alert)
-                                let okAlertAction = UIAlertAction(title: "OK", style: .default)
-                                
-                                alert.addAction(okAlertAction)
-                                self.present(alert, animated: true, completion: nil)
-                                break
-                            case FIRAuthErrorCode.errorCodeUserNotFound.rawValue?:
-                                let alert = UIAlertController(title: "Usuario no existe", message: "No existe una cuenta asociada con este correo. Porfavor cree una cuenta nueva.", preferredStyle: .alert)
-                                let okAlertAction = UIAlertAction(title: "OK", style: .default)
-                                
-                                alert.addAction(okAlertAction)
-                                self.present(alert, animated: true, completion: nil)
-                                break
-                            default:
-                                break
-                            }
-                            print(error)
-                        }
-                    }
-                }
-            
-            let cancelAction = UIAlertAction(title: "Cancelar",
-                                             style: .default)
-            
-            alert.addTextField { textEmail in
-                textEmail.placeholder = "Correo electronico"
-            }
-            
-            alert.addTextField { textPassword in
-                textPassword.isSecureTextEntry = true
-                textPassword.placeholder = "Contraseña"
-            }
-            
-            alert.addAction(ingresarAction)
-            alert.addAction(cancelAction)
-            
-            present(alert, animated: true, completion: nil)
+            self.navigationController?.isNavigationBarHidden = true
+            self.tabBarController?.tabBar.isHidden = true
+            performSegue(withIdentifier: "goToLogScreenSegue", sender: nil)
         }
         
     }
