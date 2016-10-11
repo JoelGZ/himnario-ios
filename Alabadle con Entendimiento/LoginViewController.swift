@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseDatabase
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
@@ -18,12 +19,22 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var scrollView: UIScrollView!
     
+    let usersRef = FIRDatabase.database().reference().child("users")
+    
     override func viewDidLoad() {
         super.viewDidLoad()
      
         FIRAuth.auth()?.addStateDidChangeListener() {auth, user in
             if user != nil {
                 self.performSegue(withIdentifier: "loggedInSegue", sender: nil)
+                
+                //add user to db if it does not exist
+                let userToAdd = User(authData: user!)
+                if !self.userExists(email: userToAdd.email) {
+                    let userItemRef = self.usersRef.child(userToAdd.uid)
+
+                    userItemRef.setValue(userToAdd.toAnyObject())
+                }
             }
         }
 
@@ -58,6 +69,57 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
 
     }
+    
+    @IBAction func forgotPasswordAction(_ sender: AnyObject) {
+        let alert = UIAlertController(title: "Enviar solicitud", message: "Para resetear su contraseña, porfavor provea su correo de usuario.", preferredStyle: .alert)
+        let enviarAction = UIAlertAction(title: "Enviar", style: .default) { action in
+            let emailField = alert.textFields![0]
+            let emailText = emailField.text!
+            
+            self.usersRef.queryOrdered(byChild: "email").queryEqual(toValue: emailText).observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.exists() {
+                    FIRAuth.auth()?.sendPasswordReset(withEmail: emailText) {
+                        error in
+                        
+                        if error == nil {
+                            let alert = UIAlertController(title: "Solicitud enviada", message: "Su solicitud de cambio de contraseña ha sido enviada. Revise su correo.", preferredStyle: .alert)
+                            let okAction = UIAlertAction(title: "OK", style: .default)
+                            
+                            alert.addAction(okAction)
+                            
+                            self.present(alert, animated: true, completion: nil)
+                        } else {
+                            let alert = UIAlertController(title: "Error", message: "Su solicitud no pudo ser enviada. Porfavor intente mas tarde.", preferredStyle: .alert)
+                            let okAction = UIAlertAction(title: "OK", style: .default)
+                            
+                            alert.addAction(okAction)
+                            
+                            self.present(alert, animated: true, completion: nil)
+                        }
+                    }
+                } else {
+                    let alert = UIAlertController(title: "Usuario no existe", message: "El usuario ingresado no existe.", preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default)
+                    alert.addAction(okAction)
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }) { (error) in
+                print(error.localizedDescription)
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancelar", style: .default)
+        
+        alert.addTextField { textEmail in
+            textEmail.placeholder = "Correo electrónico"
+        }
+        
+        alert.addAction(enviarAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
     @IBAction func signInAction(_ sender: AnyObject) {
         if (emailTextField.text?.isEmpty)! {
             let alert = UIAlertController(title: "Campo requerido", message: "Ingrese su correo en el campo provisto.", preferredStyle: .alert)
@@ -149,6 +211,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 errorAlert(flag: 3)
             }
         }
+    }
+    
+    func userExists(email: String) -> Bool {
+        
+        self.usersRef.queryOrdered(byChild: "email").queryEqual(toValue: email).observeSingleEvent(of: .value, with: { (snapshot) in
+            return snapshot.exists()
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+        return false
     }
     
     func errorAlert(flag: Int) {

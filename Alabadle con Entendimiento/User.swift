@@ -6,7 +6,7 @@
 //  Copyright © 2016 Joel García. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import FirebaseAuth
 
 struct User {
@@ -24,8 +24,23 @@ struct User {
         self.email = email
     }
     
-    func getUID() -> String{
-        return self.uid
+    func toAnyObject() -> Any {
+        var device: String
+        switch UIDevice.current.userInterfaceIdiom {
+        case .phone:
+            device = "iPhone"
+        case .pad:
+            device = "iPad"
+        case .unspecified:
+            device = "Unspecified"
+        default:
+            device = ""
+        }
+        
+        return [
+            "email": email,
+            "uid": uid,
+            "os": device
+        ]
     }
-    
 }

@@ -134,22 +134,22 @@
 		6150575D1D9ABC020008CC96 /* Alabadle con Entendimiento */ = {
 			isa = PBXGroup;
 			children = (
+				61A17E771DA8900100737049 /* AjustesViewController.swift */,
 				6150575E1D9ABC020008CC96 /* AppDelegate.swift */,
-				615057641D9ABC020008CC96 /* Main.storyboard */,
-				615057671D9ABC020008CC96 /* Assets.xcassets */,
-				615057691D9ABC020008CC96 /* LaunchScreen.storyboard */,
-				616F0C8B1DA5E58700830F84 /* CoroDetailViewController.swift */,
-				61A0E3131DA41C6000DCB7D2 /* CorosTableViewController.swift */,
-				61A0E3191DA4220600DCB7D2 /* CorosTableViewCell.swift */,
 				61A0E3151DA41FF800DCB7D2 /* Coro.swift */,
+				616F0C8B1DA5E58700830F84 /* CoroDetailViewController.swift */,
+				61A0E3191DA4220600DCB7D2 /* CorosTableViewCell.swift */,
+				61A0E3131DA41C6000DCB7D2 /* CorosTableViewController.swift */,
+				61A0E31B1DA422DB00DCB7D2 /* GetReadableText.swift */,
 				610D844D1DA7654600F525A2 /* LoginViewController.swift */,
 				616F0C8D1DA5F90300830F84 /* MusicaViewController.swift */,
 				61A0E3171DA4201900DCB7D2 /* VelButton.swift */,
 				61A17E751DA83C7100737049 /* User.swift */,
-				61A0E31B1DA422DB00DCB7D2 /* GetReadableText.swift */,
+				615057671D9ABC020008CC96 /* Assets.xcassets */,
+				615057641D9ABC020008CC96 /* Main.storyboard */,
+				615057691D9ABC020008CC96 /* LaunchScreen.storyboard */,
 				6150576C1D9ABC020008CC96 /* Info.plist */,
 				6113BD2A1DA47BFD00FB7A64 /* GoogleService-Info.plist */,
-				61A17E771DA8900100737049 /* AjustesViewController.swift */,
 			);
 			path = "Alabadle con Entendimiento";
 			sourceTree = "<group>";

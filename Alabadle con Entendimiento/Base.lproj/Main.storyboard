@@ -657,7 +657,7 @@
                                             <constraint firstAttribute="height" constant="250" id="nZU-Vi-aPr"/>
                                         </constraints>
                                     </imageView>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LQo-Kb-DKZ">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Correo electrónico" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LQo-Kb-DKZ">
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="HoH-4V-Aoz"/>
                                         </constraints>
@@ -702,6 +702,9 @@
                                         <state key="normal" title="Olvide la contraseña">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="forgotPasswordAction:" destination="h3e-HK-bXZ" eventType="touchUpInside" id="cay-BL-vtB"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
