@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
 
 class CorosTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UISearchControllerDelegate {
     
@@ -22,8 +23,8 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
     var scope: String = "Todos"
     var corosArray: Array<Coro>?
     var safeCoros = [Int]()
+    var user: User!
     var filteredCorosArray: Array<Coro>?
-  //  var databaseManager: DatabaseManager?
     let searchController = UISearchController(searchResultsController: nil)
     var velocidadDic: [String: Bool] = ["R": false, "M": false , "L": false]
     
@@ -56,11 +57,22 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
             loadSafeData()
         }
     
+        FIRAuth.auth()!.addStateDidChangeListener { auth, user in
+            guard let user = user else { return }
+            self.user = User(authData: user)
+            
+            defaults.set(user.uid, forKey: "USER_UID")
+            defaults.set(user.email, forKey: "USER_EMAIL")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        self.unsubscribeFromKeyboardNotifications()
     }
     
     func loadData() {
@@ -302,6 +314,7 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
             // hide current tab bar to show other tab bar
             self.tabBarController?.tabBar.isHidden = true
         }
+
     }
     
     //MARK: Keyboard
