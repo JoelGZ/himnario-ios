@@ -49,9 +49,8 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
         defaults.set(Int(tabBarHeight), forKey: "tabBarHeight")
         
         isSafeToDisplayFlag = defaults.bool(forKey: "SAFE")
-        print(isSafeToDisplayFlag)
-        //if (isSafeToDisplayFlag) {
-        if (false){
+        print("Pring: \(isSafeToDisplayFlag)")
+        if (isSafeToDisplayFlag) {
             loadData()
         } else {
             loadSafeData()
@@ -314,7 +313,6 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
             // hide current tab bar to show other tab bar
             self.tabBarController?.tabBar.isHidden = true
         }
-
     }
     
     //MARK: Keyboard
