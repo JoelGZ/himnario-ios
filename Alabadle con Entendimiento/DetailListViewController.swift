@@ -51,8 +51,8 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         splitViewController!.presentsWithGesture = false
         activityIndicator.isHidden = true
         
-        deleteListButton = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: #selector(DetailListViewController.deleteListAction(_:)))
-        actionInListButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(DetailListViewController.shareListAction(_:)))
+        deleteListButton = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: #selector(deleteListAction(_:)))
+        actionInListButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(shareListAction(_:)))
         if UIDevice.current.userInterfaceIdiom == .phone {
             addCorosButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(DetailListViewController.addCorosToList))
         } else if UIDevice.current.userInterfaceIdiom == .pad {
@@ -155,8 +155,8 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func loadCorosEnListaData() -> Int {
-        let whereLentos = "\(celContract.COLUMN_VELOCIDAD)='L'"
-        let whereRapidosMedios = "\(celContract.COLUMN_VELOCIDAD)='RM'"
+        let whereLentos = "\(celContract.KEY_VELOCIDAD)='L'"
+        let whereRapidosMedios = "\(celContract.KEY_VELOCIDAD)='RM'"
         lentosArray = databaseManager.getAllRowsCoroEnLista(lista._id, whereClause: whereLentos)
         rapidosMediosArray = databaseManager.getAllRowsCoroEnLista(lista._id, whereClause: whereRapidosMedios)
         todosArray = lentosArray + rapidosMediosArray
@@ -344,7 +344,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "CoroInListaCell"
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! CoroEnListaTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! CoroEnListaTableViewCell
         
         
         let section = indexPath.section
@@ -362,32 +362,32 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         cell.tituloCoroLabel.text = coro!.nombre
         
         if coroEnLista!.tonalidad == "" {
-            cell.settleTonalidadButton.setTitle("\(coro!.tonalidad)/\(coro!.ton_alt)", forState: .Normal)
+            cell.settleTonalidadButton.setTitle("\(coro!.tonalidad)/\(coro!.ton_alt)", for: .normal)
             cell.settleTonalidadButton.tag = coroEnLista!._id
-            cell.settleTonalidadButton.setTitleColor(self.view.tintColor, forState: .Normal)
-            cell.settleTonalidadButton.hidden = false
-            cell.settleTonalidadButton.enabled = true
+            cell.settleTonalidadButton.setTitleColor(self.view.tintColor, for: .normal)
+            cell.settleTonalidadButton.isHidden = false
+            cell.settleTonalidadButton.isEnabled = true
         } else {
             
             let tonRapidosArray = lista.ton_rap.components(separatedBy: ",")
             let tonLentosArray = lista.ton_lent.components(separatedBy: ",")
             if section == 0 {
                 if tonRapidosArray.count > 1 {
-                    cell.settleTonalidadButton.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
-                    cell.settleTonalidadButton.setTitle(coroEnLista!.tonalidad, forState: .Normal)
-                    cell.settleTonalidadButton.hidden = false
-                    cell.settleTonalidadButton.enabled = false
+                    cell.settleTonalidadButton.setTitleColor(UIColor.lightGray, for: .normal)
+                    cell.settleTonalidadButton.setTitle(coroEnLista!.tonalidad, for: .normal)
+                    cell.settleTonalidadButton.isHidden = false
+                    cell.settleTonalidadButton.isEnabled = false
                 } else {
-                    cell.settleTonalidadButton.hidden = true
+                    cell.settleTonalidadButton.isHidden = true
                 }
             } else if section == 1 {
                 if tonLentosArray.count > 1 {
-                    cell.settleTonalidadButton.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
-                    cell.settleTonalidadButton.setTitle(coroEnLista!.tonalidad, forState: .Normal)
-                    cell.settleTonalidadButton.hidden = false
-                    cell.settleTonalidadButton.enabled = false
+                    cell.settleTonalidadButton.setTitleColor(UIColor.lightGray, for: .normal)
+                    cell.settleTonalidadButton.setTitle(coroEnLista!.tonalidad, for: .normal)
+                    cell.settleTonalidadButton.isHidden = false
+                    cell.settleTonalidadButton.isEnabled = false
                 } else {
-                    cell.settleTonalidadButton.hidden = true
+                    cell.settleTonalidadButton.isHidden = true
                 }
             }
         }

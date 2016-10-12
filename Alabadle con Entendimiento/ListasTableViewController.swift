@@ -52,10 +52,9 @@ class ListasTableViewController: UITableViewController,UISplitViewControllerDele
     }
     
     
-    func loadListasData() -> Int{
+    func loadListasData(){
         databaseManager = DatabaseManager()
         resultArray = (databaseManager?.getAllListas())!
-        return resultArray.count
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
