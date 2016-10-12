@@ -1,5 +1,5 @@
 //
-//  ListasTableViewCell.swift
+//  CoroEnListaTableViewCell.swift
 //  Alabadle con Entendimiento
 //
 //  Created by Joel García on 10/11/16.
@@ -8,12 +8,10 @@
 
 import UIKit
 
-class ListaTableViewCell: UITableViewCell {
+class CoroEnListaTableViewCell: UITableViewCell {
     
-    // MARK: Properties
-    
-    @IBOutlet weak var nombreListaLabel: UILabel!
-    @IBOutlet weak var tonalidadListaLabel: UILabel!
+    @IBOutlet weak var tituloCoroLabel: UILabel!
+    @IBOutlet weak var settleTonalidadButton: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -22,5 +20,4 @@ class ListaTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-    
 }
