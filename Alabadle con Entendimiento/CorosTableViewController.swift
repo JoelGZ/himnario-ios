@@ -118,7 +118,7 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func loadFakeData() {
-        let coro = Coro(_id: 1, orden: 1, nombre: "", cuerpo: "", tonalidad: "", ton_alt: "", velletra: "", tiempo: 1, audio: "", partitura: "", autormusica: "", autorletra: "", cita: "", historia: "", sName: "")
+        let coro = Coro(id: 1, orden: 1, nombre: "", cuerpo: "", tonalidad: "", ton_alt: "", velletra: "", tiempo: 1, audio: "", partitura: "", autormusica: "", autorletra: "", cita: "", historia: "", sName: "")
         corosArray = [coro]
     }
     

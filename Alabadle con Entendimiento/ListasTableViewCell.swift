@@ -10,8 +10,7 @@ import UIKit
 
 class ListaTableViewCell: UITableViewCell {
     
-    // MARK: Properties
-    
+    // MARK: Properties    
     @IBOutlet weak var nombreListaLabel: UILabel!
     @IBOutlet weak var tonalidadListaLabel: UILabel!
     

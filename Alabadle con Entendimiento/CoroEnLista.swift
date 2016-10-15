@@ -7,24 +7,28 @@
 //
 
 import Foundation
+import FirebaseDatabase
 
 class CoroEnLista{
-    var _id: Int
+    var id: Int
     var orden: Int
     var nombre: String
     var velocidad: String
     var tonalidad: String
     
-    init(_id: Int, orden: Int, nombre: String, velocidad: String, tonalidad: String) {
-        self._id = _id
+    init(id: Int, orden: Int, nombre: String, velocidad: String, tonalidad: String) {
+        self.id = id
         self.orden = orden
         self.nombre = nombre
         self.velocidad = velocidad
         self.tonalidad = tonalidad
     }
     
-    func convertToCoro() -> Coro {
-        let databaseManager = DatabaseManager()
-        return databaseManager.getCoroByID(self._id)
+    func convertToCoro(completion:@escaping (_ coro: Coro) -> Void ) {
+        let corosRef = FIRDatabase.database().reference().child("coros")
+        corosRef.child("\(self.id)").observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
+            let coroFIR = Coro(snapshot: snapshot, dbRef: corosRef)
+            completion(coroFIR)
+        })
     }
 }

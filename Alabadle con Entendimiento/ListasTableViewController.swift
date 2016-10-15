@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FirebaseDatabase
+import FirebaseAuth
 
 protocol ListaSelectionDelegate: class {
     func listaSelected(newLista: Lista)
@@ -15,7 +17,7 @@ protocol ListaSelectionDelegate: class {
 class ListasTableViewController: UITableViewController,UISplitViewControllerDelegate {
     
     @IBOutlet weak var navBar: UINavigationItem!
-    var resultArray: Array<Lista> = [Lista(_id: 10000, nombreLista: "", ton_global: "", ton_rap: "", ton_lent: "", archivo: "")]
+    var resultArray: Array<Lista> = []
    // var databaseManager: DatabaseManager?
     var resultNumber: Int?
     var noListView: UIView?
@@ -23,38 +25,70 @@ class ListasTableViewController: UITableViewController,UISplitViewControllerDele
     var flag = false
     var detailViewController: DetailListViewController?
     
+    let rootRef = FIRDatabase.database().reference()
+    var listaRef: FIRDatabaseReference!
+    
     weak var delegate: ListaSelectionDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // TODO: localize
+        let defaults = UserDefaults.standard
+        listaRef = rootRef.child("listas/\(defaults.string(forKey: "USER_UID"))")
+               // TODO: localize
         navBar.title = "Mis Listas"
         flag = true
         
         navigationItem.leftBarButtonItem = editButtonItem
         
-        loadListasData()
+        loadFakeData()
         splitViewController!.delegate = self
         
-        if let split = self.splitViewController {
+       /* if let split = self.splitViewController {
             let controllers = split.viewControllers
             self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailListViewController
-        }
+        }*/
+        
+        self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.primaryOverlay
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        FIRAuth.auth()?.addStateDidChangeListener { auth, user in
+            if user != nil {
+                self.loadListasData()
+                self.tableView.reloadData()
+            } else {
+                let alert = UIAlertController(title: "Inicie sesión", message: "Para poder visualizar sus listas, por favor inicie sesión.", preferredStyle: .alert)
+                let inicarSesionAction = UIAlertAction(title: "Iniciar sesión", style: .default, handler: {_ in
+                    self.navigationController?.navigationBar.isHidden = true
+                    self.performSegue(withIdentifier: "goToLogInScreen", sender: nil) // do not permit to go back
+                })
+                alert.addAction(inicarSesionAction)
+                
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
         self.tabBarController?.tabBar.isHidden = false
-        loadListasData()
-        self.tableView.reloadData()
+        
+        
     }
     
+    func loadFakeData() {
+        resultArray.append(Lista(id: 10000, nombreLista: "", ton_global: "", ton_rap: "", ton_lent: ""))
+    }
     
     func loadListasData(){
-        databaseManager = DatabaseManager()
-        resultArray = (databaseManager?.getAllListas())!
+        listaRef.observe(FIRDataEventType.value, with: {(snapshot) in
+            var tempListArray = [Lista]()
+            for listaDbItem in snapshot.children {
+                let lista = Lista(snapshot: listaDbItem as! FIRDataSnapshot, dbRef: self.listaRef)
+                tempListArray.append(lista)
+            }
+            self.resultArray = tempListArray
+        })
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -106,7 +140,7 @@ class ListasTableViewController: UITableViewController,UISplitViewControllerDele
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let lista = self.resultArray[indexPath.row]
-            databaseManager?.deleteLista(lista._id)
+          //  databaseManager?.deleteLista(lista._id)
             resultArray.remove(at: indexPath.row)
             if indexPath.row != 0 {
                 self.delegate?.listaSelected(newLista: resultArray[indexPath.row - 1])
@@ -116,7 +150,7 @@ class ListasTableViewController: UITableViewController,UISplitViewControllerDele
             tableView.deleteRows(at: [indexPath], with: .fade)
             if resultArray.count == 0 {
                 if let detailViewController = self.delegate as? DetailListViewController{
-                    detailViewController.lista = Lista(_id: 10000, nombreLista: "", ton_global: "", ton_rap: "", ton_lent: "", archivo: "")
+                    detailViewController.lista = Lista(id: 10000, nombreLista: "", ton_global: "", ton_rap: "", ton_lent: "")
                     detailViewController.setupNoListView()
                 }
             }
@@ -126,7 +160,7 @@ class ListasTableViewController: UITableViewController,UISplitViewControllerDele
     
     //MARK: UISplitViewControllerDelegate
     func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
-        if resultArray.first?._id == 10000 {
+        if resultArray.first?.id == 10000 {
             return true
         }
         return true

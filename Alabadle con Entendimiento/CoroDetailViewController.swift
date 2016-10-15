@@ -70,7 +70,7 @@ class CoroDetailViewController: UIViewController, UIAlertViewDelegate {
         //Cambios dinamicos
         nombreCoroLabel.text = coro!.nombre
         
-        numeroCoroLabel.text = String(coro!._id)
+        numeroCoroLabel.text = String(coro!.id)
         tonalidadLabel.text = "\(coro!.tonalidad.getReadableText()) (\(coro!.tonalidad))"
         if coro!.ton_alt != "" {
             tonAltLabel.text = "\(coro!.ton_alt.getReadableText()) (\(coro!.ton_alt))"

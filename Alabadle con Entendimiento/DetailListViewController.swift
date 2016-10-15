@@ -51,8 +51,8 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         splitViewController!.presentsWithGesture = false
         activityIndicator.isHidden = true
         
-        deleteListButton = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: #selector(deleteListAction(_:)))
-        actionInListButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(shareListAction(_:)))
+        deleteListButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(self.deleteListAction(sender:)))
+        actionInListButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(self.shareListAction(sender:)))
         if UIDevice.current.userInterfaceIdiom == .phone {
             addCorosButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(DetailListViewController.addCorosToList))
         } else if UIDevice.current.userInterfaceIdiom == .pad {
@@ -103,7 +103,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             label = UILabel(frame: CGRect(x: 16, y: 25, width: 325, height: 100))
         }
         
-        if lista._id == 10000 {
+        if lista.id == 10000 {
             noListView!.tag = 100
             noListView!.backgroundColor = UIColor(red: 229/255, green: 229/255, blue: 229/255, alpha: 1.0)
             label!.textColor = UIColor.black
@@ -135,7 +135,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     override func viewWillLayoutSubviews() {
-        if lista._id != 10000 {
+        if lista.id != 10000 {
             if noListView!.tag == 100 {
                 noListView!.removeFromSuperview()
             }
@@ -155,12 +155,14 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func loadCorosEnListaData() -> Int {
-        let whereLentos = "\(celContract.KEY_VELOCIDAD)='L'"
+   /*     let whereLentos = "\(celContract.KEY_VELOCIDAD)='L'"
         let whereRapidosMedios = "\(celContract.KEY_VELOCIDAD)='RM'"
         lentosArray = databaseManager.getAllRowsCoroEnLista(lista._id, whereClause: whereLentos)
         rapidosMediosArray = databaseManager.getAllRowsCoroEnLista(lista._id, whereClause: whereRapidosMedios)
         todosArray = lentosArray + rapidosMediosArray
-        return todosArray.count
+        return todosArray.count*/
+        
+        return 1 //temporal
     }
     
     //MARK: Actions
@@ -205,7 +207,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     @IBAction func settleTonalidadAction(sender: UIButton) {
-        
+    /*
         let alert = UIAlertController(title: "Establezca la tonalidad", message: "Establezca la tonalidad en la que desea cantar este coro.", preferredStyle: .alert)
         let coro = databaseManager.getCoroByID(sender.tag)
         let tonPrincipalAction = UIAlertAction(title: coro.tonalidad.getReadableText(), style: .Default, handler: {(alert: UIAlertAction!) -> Void in self.updateTonalidadDeCoro(coro, tonalidad: coro.tonalidad)})
@@ -220,7 +222,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         alert.popoverPresentationController?.sourceView = self.view
         alert.popoverPresentationController?.sourceRect = self.view.bounds
         
-        self.present(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)*/
     }
     
     //MARK: Deleting, sharing and updating functions
@@ -258,13 +260,13 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         } else {
             print("FILE NOT AVAILABLE")
         }
-        */
+ 
         databaseManager.deleteLista(lista._id)
-        self.navigationController?.navigationController!.popToRootViewController(animated: true)
+        self.navigationController?.navigationController!.popToRootViewController(animated: true)*/
     }
     
     func updateTonalidadDeCoro(coro: Coro, tonalidad: String) {
-        let flag = databaseManager.updateTonalidadDeCoroEnLista(lista._id, coroId: coro._id, tonalidad: tonalidad)
+        /*let flag = databaseManager.updateTonalidadDeCoroEnLista(lista._id, coroId: coro._id, tonalidad: tonalidad)
         
         DispatchQueue.main.async(execute: {
             if flag {
@@ -272,11 +274,11 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
                 self.tableView.reloadData()
                 self.setupLabels()
             }
-        });
+        });*/
     }
     
     func shareList(sender: AnyObject){
-        
+        /*
         var sharingItems = [AnyObject]()
         let sharingText = self.lista.toString()
         sharingItems.append(sharingText as AnyObject)
@@ -287,7 +289,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             popoverController.barButtonItem = sender as? UIBarButtonItem
         }
         
-        self.present(shareVC, animated: true, completion: nil)
+        self.present(shareVC, animated: true, completion: nil)*/
     }
     
     
@@ -305,7 +307,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        var title = ""
+        /*var title = ""
         let lentosArray = databaseManager.getAllRowsCoroEnLista(lista._id, whereClause: "\(celContract.COLUMN_VELOCIDAD)='L'")
         let rapidosArray = databaseManager.getAllRowsCoroEnLista(lista._id, whereClause: "\(celContract.COLUMN_VELOCIDAD)='RM'")
         if section == 0 {
@@ -319,11 +321,12 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
                 title += " - \(lista.ton_lent)"
             }
         }
-        return title
+        return title*/
+        return "" // temporal
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        let headerView = view as! UITableViewHeaderFooterView
+       /* let headerView = view as! UITableViewHeaderFooterView
         var title = ""
         let lentosArray = databaseManager.getAllRowsCoroEnLista(lista._id, whereClause: "\(celContract.COLUMN_VELOCIDAD)='L'")
         let rapidosArray = databaseManager.getAllRowsCoroEnLista(lista._id, whereClause: "\(celContract.COLUMN_VELOCIDAD)='RM'")
@@ -339,7 +342,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             }
         }
         
-        headerView.textLabel!.text = title
+        headerView.textLabel!.text = title*/
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -348,22 +351,30 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         
         
         let section = indexPath.section
-        let coro:Coro?
-        let coroEnLista: CoroEnLista?
         
         if section == 0 {
-            coroEnLista = rapidosMediosArray[indexPath.row]
-            coro = coroEnLista!.convertToCoro()
+            let coroEnLista = rapidosMediosArray[indexPath.row]
+            coroEnLista.convertToCoro(){ (coroResultante:Coro) in
+                let coro = coroResultante
+                self.cellSetup(cell: cell, coro: coro, coroEnLista: coroEnLista, section: section)
+            }
         } else {
-            coroEnLista = lentosArray[indexPath.row]
-            coro = coroEnLista!.convertToCoro()
+            let coroEnLista = lentosArray[indexPath.row]
+            coroEnLista.convertToCoro(){(coroResultante: Coro) in
+                let coro = coroResultante
+                self.cellSetup(cell: cell, coro: coro, coroEnLista: coroEnLista, section: section)
+            }
         }
+    
+        return cell
+    }
+    
+    func cellSetup(cell: CoroEnListaTableViewCell, coro: Coro, coroEnLista: CoroEnLista, section: Int) {
+        cell.tituloCoroLabel.text = coro.nombre
         
-        cell.tituloCoroLabel.text = coro!.nombre
-        
-        if coroEnLista!.tonalidad == "" {
-            cell.settleTonalidadButton.setTitle("\(coro!.tonalidad)/\(coro!.ton_alt)", for: .normal)
-            cell.settleTonalidadButton.tag = coroEnLista!._id
+        if coroEnLista.tonalidad == "" {
+            cell.settleTonalidadButton.setTitle("\(coro.tonalidad)/\(coro.ton_alt)", for: .normal)
+            cell.settleTonalidadButton.tag = coroEnLista.id
             cell.settleTonalidadButton.setTitleColor(self.view.tintColor, for: .normal)
             cell.settleTonalidadButton.isHidden = false
             cell.settleTonalidadButton.isEnabled = true
@@ -374,7 +385,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             if section == 0 {
                 if tonRapidosArray.count > 1 {
                     cell.settleTonalidadButton.setTitleColor(UIColor.lightGray, for: .normal)
-                    cell.settleTonalidadButton.setTitle(coroEnLista!.tonalidad, for: .normal)
+                    cell.settleTonalidadButton.setTitle(coroEnLista.tonalidad, for: .normal)
                     cell.settleTonalidadButton.isHidden = false
                     cell.settleTonalidadButton.isEnabled = false
                 } else {
@@ -383,7 +394,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             } else if section == 1 {
                 if tonLentosArray.count > 1 {
                     cell.settleTonalidadButton.setTitleColor(UIColor.lightGray, for: .normal)
-                    cell.settleTonalidadButton.setTitle(coroEnLista!.tonalidad, for: .normal)
+                    cell.settleTonalidadButton.setTitle(coroEnLista.tonalidad, for: .normal)
                     cell.settleTonalidadButton.isHidden = false
                     cell.settleTonalidadButton.isEnabled = false
                 } else {
@@ -391,8 +402,6 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
                 }
             }
         }
-        
-        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -400,7 +409,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == UITableViewCellEditingStyle.delete {
+       /* if editingStyle == UITableViewCellEditingStyle.delete {
             if indexPath.section == 0 {
                 let coro = rapidosMediosArray[indexPath.row]
                 rapidosMediosArray.remove(at: indexPath.row)
@@ -419,7 +428,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             
             tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
             todosArray = lentosArray + rapidosMediosArray
-        }
+        }*/
     }
     
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
@@ -440,7 +449,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             if sourceIndexPath.section < proposedDestinationIndexPath.section {
                 row = self.tableView(tableView, numberOfRowsInSection: sourceIndexPath.section) - 1
             }
-            return NSIndexPath(forRow: row, inSection: sourceIndexPath.section)
+          //  return NSIndexPath(forRow: row, inSection: sourceIndexPath.section)
         }
         return proposedDestinationIndexPath
     }
@@ -452,7 +461,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showCoroDetailPager" {
+      /*  if segue.identifier == "showCoroDetailPager" {
             let tabBarController = segue.destination as? UITabBarController
             let destinationVC = tabBarController?.viewControllers?.first as? CoroDetailWPagerVC
             let secondVC = tabBarController?.viewControllers?.last as? MusicaPagerParentViewController
@@ -484,11 +493,11 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
                 destination.listId = lista._id
             }
         }
-
+*/
     }
     
     func reorderCorosEnLista(array: Array<CoroEnLista>, destination: Int, source: Int, section: Int) {
-        if source < destination {
+       /* if source < destination {
             // borrar todo de tabla en db
             for coro in array {
                 databaseManager.deleteCoroEnLista(lista._id, coroId: coro._id, flag: false)
@@ -557,7 +566,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         
         todosArray = lentosArray + rapidosMediosArray
         self.tableView.reloadData()
-        
+        */
     }
 }
 

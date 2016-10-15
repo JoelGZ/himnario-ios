@@ -11,7 +11,7 @@ import Firebase
 
 class Coro: NSObject {
     
-    var _id: Int
+    var id: Int
     var orden: Int
     var nombre: String
     var cuerpo: String
@@ -30,8 +30,8 @@ class Coro: NSObject {
     let ref: FIRDatabaseReference?
     let key: String
     
-    init(_id: Int, orden: Int, nombre: String, cuerpo: String, tonalidad: String, ton_alt: String, velletra: String, tiempo: Int, audio: String, partitura: String, autormusica: String, autorletra: String, cita: String, historia: String, sName: String){
-        self._id = _id
+    init(id: Int, orden: Int, nombre: String, cuerpo: String, tonalidad: String, ton_alt: String, velletra: String, tiempo: Int, audio: String, partitura: String, autormusica: String, autorletra: String, cita: String, historia: String, sName: String){
+        self.id = id
         self.orden = orden
         self.nombre = nombre
         self.cuerpo = cuerpo
@@ -56,7 +56,7 @@ class Coro: NSObject {
         key = snapshot.key
         let snapshotValue = snapshot.value as! [String: AnyObject]
         
-        _id = (dbRef.key as NSString).integerValue
+        id = (dbRef.key as NSString).integerValue
         orden = snapshotValue["orden"] as! Int
         nombre = snapshotValue["nombre"] as! String
         cuerpo = snapshotValue["cuerpo"] as! String
@@ -94,7 +94,7 @@ class Coro: NSObject {
         key = snapshot.key
         let snapshotValue = snapshot.value as! [String: AnyObject]
         
-        _id = coroId
+        id = coroId
         orden = snapshotValue["orden"] as! Int
         nombre = snapshotValue["nombre"] as! String
         cuerpo = snapshotValue["cuerpo"] as! String

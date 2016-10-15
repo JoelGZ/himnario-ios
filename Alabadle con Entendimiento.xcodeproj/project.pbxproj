@@ -26,6 +26,7 @@
 		6150576B1D9ABC020008CC96 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 615057691D9ABC020008CC96 /* LaunchScreen.storyboard */; };
 		615057761D9ABC020008CC96 /* Alabadle_con_EntendimientoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615057751D9ABC020008CC96 /* Alabadle_con_EntendimientoTests.swift */; };
 		615057811D9ABC020008CC96 /* Alabadle_con_EntendimientoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615057801D9ABC020008CC96 /* Alabadle_con_EntendimientoUITests.swift */; };
+		616E434A1DAE99DA00890220 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616E43491DAE99DA00890220 /* DatabaseManager.swift */; };
 		616F0C8C1DA5E58700830F84 /* CoroDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F0C8B1DA5E58700830F84 /* CoroDetailViewController.swift */; };
 		616F0C8E1DA5F90300830F84 /* MusicaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F0C8D1DA5F90300830F84 /* MusicaViewController.swift */; };
 		61A0E3141DA41C6000DCB7D2 /* CorosTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A0E3131DA41C6000DCB7D2 /* CorosTableViewController.swift */; };
@@ -82,6 +83,7 @@
 		6150577C1D9ABC020008CC96 /* Alabadle con EntendimientoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Alabadle con EntendimientoUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		615057801D9ABC020008CC96 /* Alabadle_con_EntendimientoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alabadle_con_EntendimientoUITests.swift; sourceTree = "<group>"; };
 		615057821D9ABC020008CC96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		616E43491DAE99DA00890220 /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		616F0C8B1DA5E58700830F84 /* CoroDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoroDetailViewController.swift; sourceTree = "<group>"; };
 		616F0C8D1DA5F90300830F84 /* MusicaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicaViewController.swift; sourceTree = "<group>"; };
 		61A0E3131DA41C6000DCB7D2 /* CorosTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CorosTableViewController.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				615057691D9ABC020008CC96 /* LaunchScreen.storyboard */,
 				6150576C1D9ABC020008CC96 /* Info.plist */,
 				6113BD2A1DA47BFD00FB7A64 /* GoogleService-Info.plist */,
+				616E43491DAE99DA00890220 /* DatabaseManager.swift */,
 			);
 			path = "Alabadle con Entendimiento";
 			sourceTree = "<group>";
@@ -511,6 +514,7 @@
 				61A17E761DA83C7100737049 /* User.swift in Sources */,
 				61A0E3181DA4201900DCB7D2 /* VelButton.swift in Sources */,
 				611EF56B1DADEC07009AD4DF /* CoroEnLista.swift in Sources */,
+				616E434A1DAE99DA00890220 /* DatabaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
