@@ -72,6 +72,7 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
     
     override func viewDidDisappear(_ animated: Bool) {
         self.unsubscribeFromKeyboardNotifications()
+        //REMOVE ALL OBSERVERS or do observesingle...
     }
     
     func loadData() {

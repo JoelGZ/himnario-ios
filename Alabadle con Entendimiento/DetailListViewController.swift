@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseDatabase
 
 class DetailListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UIAlertViewDelegate {
     
@@ -34,6 +35,10 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
+    let rootRef = FIRDatabase.database().reference()
+    var listaRef: FIRDatabaseReference?
+    var corosRef: FIRDatabaseReference?
+    var corosEnListaRef: FIRDatabaseReference?
     var databaseManager: DatabaseManager = DatabaseManager()
     
     var lentosArray = Array<CoroEnLista>()
@@ -47,6 +52,12 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         
         tableView.delegate = self
         tableView.dataSource = self
+        
+        let defaults = UserDefaults.standard
+        let userUID = defaults.string(forKey: "USER_UID")
+        listaRef = rootRef.child("listas/\(userUID)/\(lista.id)")
+        corosEnListaRef = listaRef?.child("corosEnLista")
+        corosRef = rootRef.child("coros")
         
         splitViewController!.presentsWithGesture = false
         activityIndicator.isHidden = true
@@ -154,15 +165,23 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         tonalidadLabel.text = lista.ton_global
     }
     
-    func loadCorosEnListaData() -> Int {
-   /*     let whereLentos = "\(celContract.KEY_VELOCIDAD)='L'"
-        let whereRapidosMedios = "\(celContract.KEY_VELOCIDAD)='RM'"
-        lentosArray = databaseManager.getAllRowsCoroEnLista(lista._id, whereClause: whereLentos)
-        rapidosMediosArray = databaseManager.getAllRowsCoroEnLista(lista._id, whereClause: whereRapidosMedios)
-        todosArray = lentosArray + rapidosMediosArray
-        return todosArray.count*/
+    func loadCorosEnListaData() {
         
-        return 1 //temporal
+        corosEnListaRef?.observe(FIRDataEventType.value, with: {(snapshot) in
+            var lentosArray = [CoroEnLista]()
+            var rapidosMediosArray = [CoroEnLista]()
+            
+            for coroChild in snapshot.children {
+                let coroEnLista = CoroEnLista(snapshot: (coroChild as! FIRDataSnapshot))
+                if coroEnLista.velocidad == "L" {
+                    lentosArray.append(coroEnLista)
+                } else {
+                    rapidosMediosArray.append(coroEnLista)
+                }
+            }
+            
+            self.todosArray = lentosArray + rapidosMediosArray
+        })
     }
     
     //MARK: Actions
@@ -207,22 +226,27 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     @IBAction func settleTonalidadAction(sender: UIButton) {
-    /*
+    
         let alert = UIAlertController(title: "Establezca la tonalidad", message: "Establezca la tonalidad en la que desea cantar este coro.", preferredStyle: .alert)
-        let coro = databaseManager.getCoroByID(sender.tag)
-        let tonPrincipalAction = UIAlertAction(title: coro.tonalidad.getReadableText(), style: .Default, handler: {(alert: UIAlertAction!) -> Void in self.updateTonalidadDeCoro(coro, tonalidad: coro.tonalidad)})
-        let tonAlternativaAction = UIAlertAction(title: coro.ton_alt.getReadableText(), style: .Default, handler: {(alert: UIAlertAction!) -> Void in self.updateTonalidadDeCoro(coro, tonalidad: coro.ton_alt)
-            sender.hidden = true})
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        
-        alert.addAction(tonPrincipalAction)
-        alert.addAction(tonAlternativaAction)
-        alert.addAction(cancelAction)
-        
-        alert.popoverPresentationController?.sourceView = self.view
-        alert.popoverPresentationController?.sourceRect = self.view.bounds
-        
-        self.present(alert, animated: true, completion: nil)*/
+        let singleCoroRef = corosRef?.child("\(sender.tag)")
+ 
+        singleCoroRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
+            let coro = Coro(snapshot: snapshot, coroId: sender.tag)
+            
+            let tonPrincipalAction = UIAlertAction(title: coro.tonalidad.getReadableText(), style: .default, handler: {(alert: UIAlertAction!) -> Void in self.updateTonalidadDeCoro(coro: coro, tonalidad: coro.tonalidad)})
+            let tonAlternativaAction = UIAlertAction(title: coro.ton_alt.getReadableText(), style: .default, handler: {(alert: UIAlertAction!) -> Void in self.updateTonalidadDeCoro(coro: coro, tonalidad: coro.ton_alt)
+                sender.isHidden = true})
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            alert.addAction(tonPrincipalAction)
+            alert.addAction(tonAlternativaAction)
+            alert.addAction(cancelAction)
+            
+            alert.popoverPresentationController?.sourceView = self.view
+            alert.popoverPresentationController?.sourceRect = self.view.bounds
+            
+            self.present(alert, animated: true, completion: nil)
+        })
     }
     
     //MARK: Deleting, sharing and updating functions

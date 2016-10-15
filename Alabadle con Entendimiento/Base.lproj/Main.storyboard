@@ -793,7 +793,9 @@
                             <outlet property="delegate" destination="o0x-pB-zzh" id="qnr-sA-v8G"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="MRS-E5-27x"/>
+                    <navigationItem key="navigationItem" title="Root View Controller" id="MRS-E5-27x">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="MJA-kx-P3Z"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="navBar" destination="MRS-E5-27x" id="EpV-N0-SlB"/>
                         <segue destination="h3e-HK-bXZ" kind="show" identifier="goToLogInScreen" id="woc-nO-kIB"/>

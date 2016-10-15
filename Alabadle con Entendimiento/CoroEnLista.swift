@@ -24,6 +24,16 @@ class CoroEnLista{
         self.tonalidad = tonalidad
     }
     
+    init(snapshot: FIRDataSnapshot){
+        let snapshotValue = snapshot.value as! [String: AnyObject]
+        
+        self.id = (snapshot.key as NSString).integerValue
+        self.orden = snapshotValue["orden"] as! Int
+        self.nombre = snapshotValue["nombre"] as! String
+        self.velocidad = snapshotValue["vel_let"] as! String
+        self.tonalidad = snapshotValue["ton"] as! String
+    }
+    
     func convertToCoro(completion:@escaping (_ coro: Coro) -> Void ) {
         let corosRef = FIRDatabase.database().reference().child("coros")
         corosRef.child("\(self.id)").observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
