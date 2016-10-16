@@ -75,20 +75,18 @@ class ListasTableViewController: UITableViewController {
     
     func loadListasData(){
         var childrenCounter = 0
-        print("listaRef: \(listasDeUsuarioRef)")
         listasDeUsuarioRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
-            print("Snip: \(snapshot)")
+            var tempArray = [Lista]()
+
             for listaID in snapshot.children {
-                print("Item \((listaID as! FIRDataSnapshot).key)")
                 let listaIDStr = "\((listaID as! FIRDataSnapshot).key)"
                 let listaRef = self.listasDeUsuarioRef.child(listaIDStr)
                 listaRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshotChild) in
                     childrenCounter += 1
                     let lista = Lista(snapshot: snapshotChild, dbRef: listaRef)
-                    self.resultArray.append(lista)
-                    print("childrenCounter: \(childrenCounter)")
-                    print("count: \(Int(snapshot.childrenCount))")
+                    tempArray.append(lista)
                     if childrenCounter == Int(snapshot.childrenCount) {
+                        self.resultArray = tempArray
                         self.tableView.reloadData()
                     }
                 })

@@ -34,7 +34,6 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             listaRef = rootRef.child("listas/\(userUID!)/\(lista.id)")
             loadCorosEnListaData()
            // setupNoListView()
-            tableView.reloadData()
         }
     }
     
@@ -97,7 +96,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         }
         
         loadCorosEnListaData()
-        //setupNoListView()
+        setupNoListView()
         tableView.reloadData()
         self.navigationController?.isNavigationBarHidden = false
         self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible
@@ -183,6 +182,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             }
             
             self.todosArray = self.lentosArray + self.rapidosMediosArray
+            self.tableView.reloadData()
         })
     }
     
