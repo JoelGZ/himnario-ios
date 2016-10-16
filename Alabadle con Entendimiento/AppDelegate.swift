@@ -91,7 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         if topAsDetailController.lista == nil || topAsDetailController.lista.id == 10000 {
             return true
         }
-        return false
+        return true
     }
 }
 

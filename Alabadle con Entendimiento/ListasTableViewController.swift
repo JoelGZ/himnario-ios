@@ -124,6 +124,10 @@ class ListasTableViewController: UITableViewController {
         let lista = self.resultArray[indexPath.row]
         self.delegate?.listaSelected(newLista: lista)
         
+        //FIX ERROR: when user signs out, and then signs in thru listastvc it later does not go into the list.
+        //Also when signs out and going back to lists it reveals detail vc instead of master vc first
+        //***********************
+        
         if let detailViewController = self.delegate as? DetailListViewController {
             detailViewController.lista = lista
             detailViewController.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem

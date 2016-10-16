@@ -31,7 +31,8 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         didSet{
             let defaults = UserDefaults.standard
             let userUID = defaults.string(forKey: "USER_UID")
-            listaRef = rootRef.child("listas/\(userUID!)/\(lista.id)")
+            //ELIMINAR "" yo las tuve que poner
+            listaRef = rootRef.child("listas/\"\(userUID!)\"/\(lista.id)")
             loadCorosEnListaData()
            // setupNoListView()
         }
@@ -172,7 +173,9 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     func loadCorosEnListaData() {
         print(corosEnListaRef)
         corosEnListaRef?.observe(FIRDataEventType.value, with: {(snapshot) in
+            print(snapshot)
             for coroChild in snapshot.children {
+                print(coroChild)
                 let coroEnLista = CoroEnLista(snapshot: (coroChild as! FIRDataSnapshot))
                 if coroEnLista.velocidad == "L" {
                     self.lentosArray.append(coroEnLista)
@@ -316,7 +319,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     
     
     //MARK: TableView properties
-    private func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     
