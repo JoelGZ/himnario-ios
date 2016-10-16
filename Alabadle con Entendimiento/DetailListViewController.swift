@@ -29,8 +29,11 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     
     var lista:Lista! {
         didSet{
+            let defaults = UserDefaults.standard
+            let userUID = defaults.string(forKey: "USER_UID")
+            listaRef = rootRef.child("listas/\(userUID!)/\(lista.id)")
             loadCorosEnListaData()
-            setupNoListView()
+           // setupNoListView()
             tableView.reloadData()
         }
     }
@@ -53,9 +56,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         tableView.delegate = self
         tableView.dataSource = self
         
-        let defaults = UserDefaults.standard
-        let userUID = defaults.string(forKey: "USER_UID")
-        listaRef = rootRef.child("listas/\(userUID)/\(lista.id)")
+        //hay error porque no hay lista con eses id
         corosEnListaRef = listaRef?.child("corosEnLista")
         corosRef = rootRef.child("coros")
         
@@ -73,6 +74,10 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         
         //Stop screen from dimming
         UIApplication.shared.isIdleTimerDisabled = true
+        
+        if lista == nil {
+            lista = Lista(id: 10000, nombreLista: "", ton_global: "", ton_rap: "", ton_lent: "")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -82,7 +87,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             self.navigationItem.rightBarButtonItems = [editButtonItem, addCorosButton, actionInListButton]
             self.tabBarController?.tabBar.isHidden = false
         } else {
-            tabBarController?.tabBar.isHidden = true
+            self.tabBarController?.tabBar.isHidden = true
             var items = [UIBarButtonItem]()
             items.append(deleteListButton)
             items.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil))
@@ -92,7 +97,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         }
         
         loadCorosEnListaData()
-        setupNoListView()
+        //setupNoListView()
         tableView.reloadData()
         self.navigationController?.isNavigationBarHidden = false
         self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible
@@ -166,31 +171,24 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func loadCorosEnListaData() {
-        
+        print(corosEnListaRef)
         corosEnListaRef?.observe(FIRDataEventType.value, with: {(snapshot) in
-            var lentosArray = [CoroEnLista]()
-            var rapidosMediosArray = [CoroEnLista]()
-            
             for coroChild in snapshot.children {
                 let coroEnLista = CoroEnLista(snapshot: (coroChild as! FIRDataSnapshot))
                 if coroEnLista.velocidad == "L" {
-                    lentosArray.append(coroEnLista)
+                    self.lentosArray.append(coroEnLista)
                 } else {
-                    rapidosMediosArray.append(coroEnLista)
+                    self.rapidosMediosArray.append(coroEnLista)
                 }
             }
             
-            self.todosArray = lentosArray + rapidosMediosArray
+            self.todosArray = self.lentosArray + self.rapidosMediosArray
         })
     }
     
     //MARK: Actions
     func addCorosToList() {
         self.performSegue(withIdentifier: "addCorosToList", sender: nil)
-    }
-    
-    func newList() {
-        splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible
     }
     
     func startEditingList() {
@@ -331,42 +329,37 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        /*var title = ""
-        let lentosArray = databaseManager.getAllRowsCoroEnLista(lista._id, whereClause: "\(celContract.COLUMN_VELOCIDAD)='L'")
-        let rapidosArray = databaseManager.getAllRowsCoroEnLista(lista._id, whereClause: "\(celContract.COLUMN_VELOCIDAD)='RM'")
+        var title = ""
         if section == 0 {
             title = "RAPIDOS Y MEDIOS"
-            if ((lista.ton_rap != lista.ton_lent) && !(((lentosArray.count == 0) && (rapidosArray.count >= 1)) || ((rapidosArray.count == 0) && (lentosArray.count >= 1)))) {
+            if ((lista.ton_rap != lista.ton_lent) && !(((lentosArray.count == 0) && (rapidosMediosArray.count >= 1)) || ((rapidosMediosArray.count == 0) && (lentosArray.count >= 1)))) {
                 title += " - \(lista.ton_rap)"
             }
         } else {
             title = "LENTOS"
-            if ((lista.ton_rap != lista.ton_lent) && !(((lentosArray.count == 0) && (rapidosArray.count >= 1)) || ((rapidosArray.count == 0) && (lentosArray.count >= 1)))) {
+            if ((lista.ton_rap != lista.ton_lent) && !(((lentosArray.count == 0) && (rapidosMediosArray.count >= 1)) || ((rapidosMediosArray.count == 0) && (lentosArray.count >= 1)))) {
                 title += " - \(lista.ton_lent)"
             }
         }
-        return title*/
-        return "" // temporal
+        return title
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-       /* let headerView = view as! UITableViewHeaderFooterView
+        let headerView = view as! UITableViewHeaderFooterView
         var title = ""
-        let lentosArray = databaseManager.getAllRowsCoroEnLista(lista._id, whereClause: "\(celContract.COLUMN_VELOCIDAD)='L'")
-        let rapidosArray = databaseManager.getAllRowsCoroEnLista(lista._id, whereClause: "\(celContract.COLUMN_VELOCIDAD)='RM'")
         if section == 0 {
             title = "RAPIDOS Y MEDIOS"
-            if ((lista.ton_rap != lista.ton_lent) && !(((lentosArray.count == 0) && (rapidosArray.count >= 1)) || ((rapidosArray.count == 0) && (lentosArray.count >= 1)))) {
+            if ((lista.ton_rap != lista.ton_lent) && !(((lentosArray.count == 0) && (rapidosMediosArray.count >= 1)) || ((rapidosMediosArray.count == 0) && (lentosArray.count >= 1)))) {
                 title += " - \(lista.ton_rap)"
             }
         } else {
             title = "LENTOS"
-            if ((lista.ton_rap != lista.ton_lent) && !(((lentosArray.count == 0) && (rapidosArray.count >= 1)) || ((rapidosArray.count == 0) && (lentosArray.count >= 1)))) {
+            if ((lista.ton_rap != lista.ton_lent) && !(((lentosArray.count == 0) && (rapidosMediosArray.count >= 1)) || ((rapidosMediosArray.count == 0) && (lentosArray.count >= 1)))) {
                 title += " - \(lista.ton_lent)"
             }
         }
         
-        headerView.textLabel!.text = title*/
+        headerView.textLabel!.text = title
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -431,9 +424,9 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
-    
+    /*
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-       /* if editingStyle == UITableViewCellEditingStyle.delete {
+        /*if editingStyle == UITableViewCellEditingStyle.delete {
             if indexPath.section == 0 {
                 let coro = rapidosMediosArray[indexPath.row]
                 rapidosMediosArray.remove(at: indexPath.row)
@@ -453,7 +446,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
             todosArray = lentosArray + rapidosMediosArray
         }*/
-    }
+    }*/
     
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true

@@ -26,7 +26,7 @@ class DatabaseManager {
     var corosRef: FIRDatabaseReference!
     var listasRef: FIRDatabaseReference!
     var usersRef: FIRDatabaseReference!
-    let user: User
+   // let user: User
     
     init() {
         corosRef = rootRef.child("coros")
@@ -37,7 +37,8 @@ class DatabaseManager {
         let userEmail = defaults.string(forKey: "USER_EMAIL")
         let userUID = defaults.string(forKey: "USER_UID")
         
-        user = User(uid: userUID!, email: userEmail!)
+      // user = User(uid: userUID!, email: userEmail!)
+
     }
     
     

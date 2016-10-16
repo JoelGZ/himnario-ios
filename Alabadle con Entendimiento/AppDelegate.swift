@@ -10,9 +10,11 @@ import UIKit
 import Firebase
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
 
     var window: UIWindow?
+    var lista: Lista?
+    
     override init() {
         FIRApp.configure()
         FIRDatabase.database().persistenceEnabled = true
@@ -27,6 +29,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
+        let tabBarController = self.window!.rootViewController as! UITabBarController
+        let splitViewController = tabBarController.viewControllers![1] as! UISplitViewController
+        let leftNavController = splitViewController.viewControllers.first as! UINavigationController
+        let masterViewController = leftNavController.topViewController as! ListasTableViewController
+        let rightNavController = splitViewController.viewControllers.last as! UINavigationController
+        let detailViewController = rightNavController.topViewController as! DetailListViewController
+        
+      /*  let databaseManager = DatabaseManager()
+       // let listasArray = databaseManager.getAllListas()
+        let listasArray = [Lista]()
+        if listasArray.isEmpty {
+            lista = masterViewController.resultArray.first
+        } else {
+            lista = listasArray.last as! Lista?
+        }
+        detailViewController.lista = lista*/
+        
+        let pageController = UIPageControl.appearance()
+        pageController.pageIndicatorTintColor = UIColor.lightGray
+        pageController.currentPageIndicatorTintColor = UIColor.black
+        pageController.backgroundColor = UIColor.white
+        
+        masterViewController.delegate = detailViewController
+        
+        let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
+        navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
+        splitViewController.delegate = self
         
         return true
     }
@@ -53,6 +82,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    // MARK: - Split view
+    
+    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController:UIViewController, onto primaryViewController:UIViewController) -> Bool {
+        guard let secondaryAsNavController = secondaryViewController as? UINavigationController else { return false }
+        guard let topAsDetailController = secondaryAsNavController.topViewController as? DetailListViewController else { return false }
+        
+        if topAsDetailController.lista == nil || topAsDetailController.lista.id == 10000 {
+            return true
+        }
+        return false
+    }
 }
 

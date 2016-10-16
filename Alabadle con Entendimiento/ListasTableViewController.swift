@@ -14,11 +14,11 @@ protocol ListaSelectionDelegate: class {
     func listaSelected(newLista: Lista)
 }
 
-class ListasTableViewController: UITableViewController,UISplitViewControllerDelegate {
+class ListasTableViewController: UITableViewController {
     
     @IBOutlet weak var navBar: UINavigationItem!
     var resultArray: Array<Lista> = []
-   // var databaseManager: DatabaseManager?
+    // var databaseManager: DatabaseManager?
     var resultNumber: Int?
     var noListView: UIView?
     var label: UILabel?
@@ -26,7 +26,7 @@ class ListasTableViewController: UITableViewController,UISplitViewControllerDele
     var detailViewController: DetailListViewController?
     
     let rootRef = FIRDatabase.database().reference()
-    var listaRef: FIRDatabaseReference!
+    var listasDeUsuarioRef: FIRDatabaseReference!
     
     weak var delegate: ListaSelectionDelegate?
     
@@ -34,22 +34,19 @@ class ListasTableViewController: UITableViewController,UISplitViewControllerDele
         super.viewDidLoad()
         
         let defaults = UserDefaults.standard
-        listaRef = rootRef.child("listas/\(defaults.string(forKey: "USER_UID"))")
+        //ELIMINATE the "" over uid this was necessarry bcause i put the uid manually
+        listasDeUsuarioRef = rootRef.child("listas/\"\(defaults.string(forKey: "USER_UID")!)\"")
                // TODO: localize
         navBar.title = "Mis Listas"
         flag = true
         
         navigationItem.leftBarButtonItem = editButtonItem
         
-        loadFakeData()
-        splitViewController!.delegate = self
-        
-       /* if let split = self.splitViewController {
+        if let split = self.splitViewController {
             let controllers = split.viewControllers
             self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailListViewController
-        }*/
+        }
         
-        self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.primaryOverlay
         
     }
     
@@ -59,7 +56,6 @@ class ListasTableViewController: UITableViewController,UISplitViewControllerDele
         FIRAuth.auth()?.addStateDidChangeListener { auth, user in
             if user != nil {
                 self.loadListasData()
-                self.tableView.reloadData()
             } else {
                 let alert = UIAlertController(title: "Inicie sesión", message: "Para poder visualizar sus listas, por favor inicie sesión.", preferredStyle: .alert)
                 let inicarSesionAction = UIAlertAction(title: "Iniciar sesión", style: .default, handler: {_ in
@@ -71,23 +67,32 @@ class ListasTableViewController: UITableViewController,UISplitViewControllerDele
                 self.present(alert, animated: true, completion: nil)
             }
         }
+        
+        
         self.tabBarController?.tabBar.isHidden = false
         
-        
-    }
-    
-    func loadFakeData() {
-        resultArray.append(Lista(id: 10000, nombreLista: "", ton_global: "", ton_rap: "", ton_lent: ""))
     }
     
     func loadListasData(){
-        listaRef.observe(FIRDataEventType.value, with: {(snapshot) in
-            var tempListArray = [Lista]()
-            for listaDbItem in snapshot.children {
-                let lista = Lista(snapshot: listaDbItem as! FIRDataSnapshot, dbRef: self.listaRef)
-                tempListArray.append(lista)
+        var childrenCounter = 0
+        print("listaRef: \(listasDeUsuarioRef)")
+        listasDeUsuarioRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
+            print("Snip: \(snapshot)")
+            for listaID in snapshot.children {
+                print("Item \((listaID as! FIRDataSnapshot).key)")
+                let listaIDStr = "\((listaID as! FIRDataSnapshot).key)"
+                let listaRef = self.listasDeUsuarioRef.child(listaIDStr)
+                listaRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshotChild) in
+                    childrenCounter += 1
+                    let lista = Lista(snapshot: snapshotChild, dbRef: listaRef)
+                    self.resultArray.append(lista)
+                    print("childrenCounter: \(childrenCounter)")
+                    print("count: \(Int(snapshot.childrenCount))")
+                    if childrenCounter == Int(snapshot.childrenCount) {
+                        self.tableView.reloadData()
+                    }
+                })
             }
-            self.resultArray = tempListArray
         })
     }
     
@@ -156,14 +161,6 @@ class ListasTableViewController: UITableViewController,UISplitViewControllerDele
             }
         }
 
-    }
-    
-    //MARK: UISplitViewControllerDelegate
-    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
-        if resultArray.first?.id == 10000 {
-            return true
-        }
-        return true
     }
 }
 

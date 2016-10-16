@@ -23,6 +23,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.navigationBar.isHidden = true
      
         FIRAuth.auth()?.addStateDidChangeListener() {auth, user in
             if user != nil {
@@ -35,6 +38,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
                     userItemRef.setValue(userToAdd.toAnyObject())
                 }
+                
+                guard let userData = user else { return }
+                let user = User(authData: userData)
+                let defaults = UserDefaults.standard
+                defaults.set(user.uid, forKey: "USER_UID")
+                defaults.set(user.email, forKey: "USER_EMAIL")
             }
         }
 
