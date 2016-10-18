@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseDatabase
 
 class NewListViewController: UIViewController, UITextFieldDelegate {
     
@@ -18,7 +19,9 @@ class NewListViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var scrollView: UIScrollView!
     
     var keyboardIsUp:Bool = false
-    
+    var user: User!
+    let rootRef = FIRDatabase.database().reference()
+    var listasDeUsuarioRef: FIRDatabaseReference!
     var databaseManager: DatabaseManager = DatabaseManager()
     
     override func viewDidLoad() {
@@ -27,6 +30,10 @@ class NewListViewController: UIViewController, UITextFieldDelegate {
         self.subscribeToKeyboardNotificationShow()
         self.subscribeToKeyboardNotificationHide()
         
+        let defaults = UserDefaults.standard
+        user = User(uid: defaults.string(forKey: "USER_UID")!, email: defaults.string(forKey: "USER_EMAIL")!)
+        
+        listasDeUsuarioRef = rootRef.child("listas/\(user.uid)")
         
         // TODO: localize strings
         instructionsLabel.text = "Elija la fecha para nombrar la lista o personalice el nombre de la lista."
@@ -38,6 +45,7 @@ class NewListViewController: UIViewController, UITextFieldDelegate {
         if UIDevice.current.orientation.isPortrait {
             scrollView.contentSize.height = view.frame.height
         }
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -64,15 +72,20 @@ class NewListViewController: UIViewController, UITextFieldDelegate {
             }
             
             //Create row list
-            let archivoNameString = "Lista_\(nameOfList!)"
-          //  let newRowId = databaseManager.createNuevaLista(nameOfList!, nombreArchivo: archivoNameString)
-            print("printing newrowid: \(newRowId)")
-            print(nameOfList)
-            print(archivoNameString)
+            let calendarFormatter = DateFormatter()
+            calendarFormatter.dateFormat = "yyyyMdHms"
+            let newListID = Int(calendarFormatter.string(from: datePicker.date))
+                    
+            let newListDic = ["nombre": nameOfList,
+                              "ton_global": "$",
+                              "ton_lent": "$",
+                              "ton_rap": "$"]
+            let listaRef = listasDeUsuarioRef.child("\(newListID)")
+            listaRef.setValue(newListDic)
             
             //destination VC setup
-            if let destination = segue.destinationViewController as? SelectCorosForListViewController {
-                destination.listId = newRowId
+            if let destination = segue.destination as? SelectCorosForListViewController {
+                destination.listId = newListID
             }
         }
 

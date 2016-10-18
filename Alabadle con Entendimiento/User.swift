@@ -40,7 +40,7 @@ struct User {
         return [
             "email": email,
             "uid": uid,
-            "os": device
+            "os-device": device
         ]
     }
 }
