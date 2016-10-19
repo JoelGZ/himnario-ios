@@ -21,7 +21,6 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
     // MARK: Properties
     var corosArray: Array<Coro>?
     var filteredCorosArray: Array<Coro>?
-    var databaseManager: DatabaseManager = DatabaseManager()
     let searchController = UISearchController(searchResultsController: nil)
     var velocidadDic: [String: Bool] = ["R": false, "M": false , "L": false]
     var keyboardIsUp:Bool = false

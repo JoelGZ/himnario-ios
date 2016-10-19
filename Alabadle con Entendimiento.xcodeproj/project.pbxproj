@@ -26,7 +26,6 @@
 		6150576B1D9ABC020008CC96 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 615057691D9ABC020008CC96 /* LaunchScreen.storyboard */; };
 		615057761D9ABC020008CC96 /* Alabadle_con_EntendimientoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615057751D9ABC020008CC96 /* Alabadle_con_EntendimientoTests.swift */; };
 		615057811D9ABC020008CC96 /* Alabadle_con_EntendimientoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615057801D9ABC020008CC96 /* Alabadle_con_EntendimientoUITests.swift */; };
-		616E434A1DAE99DA00890220 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616E43491DAE99DA00890220 /* DatabaseManager.swift */; };
 		616F0C8C1DA5E58700830F84 /* CoroDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F0C8B1DA5E58700830F84 /* CoroDetailViewController.swift */; };
 		616F0C8E1DA5F90300830F84 /* MusicaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F0C8D1DA5F90300830F84 /* MusicaViewController.swift */; };
 		61A0E3141DA41C6000DCB7D2 /* CorosTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A0E3131DA41C6000DCB7D2 /* CorosTableViewController.swift */; };
@@ -36,8 +35,6 @@
 		61A0E31C1DA422DB00DCB7D2 /* GetReadableText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A0E31B1DA422DB00DCB7D2 /* GetReadableText.swift */; };
 		61A17E761DA83C7100737049 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A17E751DA83C7100737049 /* User.swift */; };
 		61A17E781DA8900100737049 /* AjustesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A17E771DA8900100737049 /* AjustesViewController.swift */; };
-		61BC600B1DB30427009BB2C4 /* DetailListViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61BC600A1DB30426009BB2C4 /* DetailListViewController2.swift */; };
-		61BC600D1DB30460009BB2C4 /* ListasTableViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61BC600C1DB30460009BB2C4 /* ListasTableViewController2.swift */; };
 		61C873781DB6CF0E00E2DD79 /* SelectCorosForListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C873771DB6CF0E00E2DD79 /* SelectCorosForListViewController.swift */; };
 		61C8737A1DB72C4000E2DD79 /* SelectCorosForListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C873791DB72C4000E2DD79 /* SelectCorosForListTableViewCell.swift */; };
 		61DC1F8F1DB5DE5B002C3238 /* NewListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DC1F8E1DB5DE5B002C3238 /* NewListViewController.swift */; };
@@ -88,7 +85,6 @@
 		6150577C1D9ABC020008CC96 /* Alabadle con EntendimientoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Alabadle con EntendimientoUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		615057801D9ABC020008CC96 /* Alabadle_con_EntendimientoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alabadle_con_EntendimientoUITests.swift; sourceTree = "<group>"; };
 		615057821D9ABC020008CC96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		616E43491DAE99DA00890220 /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		616F0C8B1DA5E58700830F84 /* CoroDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoroDetailViewController.swift; sourceTree = "<group>"; };
 		616F0C8D1DA5F90300830F84 /* MusicaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicaViewController.swift; sourceTree = "<group>"; };
 		61A0E3131DA41C6000DCB7D2 /* CorosTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CorosTableViewController.swift; sourceTree = "<group>"; };
@@ -98,8 +94,6 @@
 		61A0E31B1DA422DB00DCB7D2 /* GetReadableText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetReadableText.swift; sourceTree = "<group>"; };
 		61A17E751DA83C7100737049 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		61A17E771DA8900100737049 /* AjustesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AjustesViewController.swift; sourceTree = "<group>"; };
-		61BC600A1DB30426009BB2C4 /* DetailListViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailListViewController2.swift; sourceTree = "<group>"; };
-		61BC600C1DB30460009BB2C4 /* ListasTableViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListasTableViewController2.swift; sourceTree = "<group>"; };
 		61C873771DB6CF0E00E2DD79 /* SelectCorosForListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectCorosForListViewController.swift; sourceTree = "<group>"; };
 		61C873791DB72C4000E2DD79 /* SelectCorosForListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectCorosForListTableViewCell.swift; sourceTree = "<group>"; };
 		61DC1F8E1DB5DE5B002C3238 /* NewListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewListViewController.swift; sourceTree = "<group>"; };
@@ -182,6 +176,9 @@
 				611EF5621DADE251009AD4DF /* ListasTableViewController.swift */,
 				610D844D1DA7654600F525A2 /* LoginViewController.swift */,
 				616F0C8D1DA5F90300830F84 /* MusicaViewController.swift */,
+				61DC1F8E1DB5DE5B002C3238 /* NewListViewController.swift */,
+				61C873791DB72C4000E2DD79 /* SelectCorosForListTableViewCell.swift */,
+				61C873771DB6CF0E00E2DD79 /* SelectCorosForListViewController.swift */,
 				61A0E3171DA4201900DCB7D2 /* VelButton.swift */,
 				61A17E751DA83C7100737049 /* User.swift */,
 				615057671D9ABC020008CC96 /* Assets.xcassets */,
@@ -189,12 +186,6 @@
 				615057691D9ABC020008CC96 /* LaunchScreen.storyboard */,
 				6150576C1D9ABC020008CC96 /* Info.plist */,
 				6113BD2A1DA47BFD00FB7A64 /* GoogleService-Info.plist */,
-				616E43491DAE99DA00890220 /* DatabaseManager.swift */,
-				61BC600A1DB30426009BB2C4 /* DetailListViewController2.swift */,
-				61BC600C1DB30460009BB2C4 /* ListasTableViewController2.swift */,
-				61DC1F8E1DB5DE5B002C3238 /* NewListViewController.swift */,
-				61C873771DB6CF0E00E2DD79 /* SelectCorosForListViewController.swift */,
-				61C873791DB72C4000E2DD79 /* SelectCorosForListTableViewCell.swift */,
 			);
 			path = "Alabadle con Entendimiento";
 			sourceTree = "<group>";
@@ -522,9 +513,7 @@
 				611EF5691DADEA36009AD4DF /* ListasTableViewCell.swift in Sources */,
 				611EF5651DADE40C009AD4DF /* Lista.swift in Sources */,
 				61A0E3141DA41C6000DCB7D2 /* CorosTableViewController.swift in Sources */,
-				61BC600D1DB30460009BB2C4 /* ListasTableViewController2.swift in Sources */,
 				611EF5631DADE252009AD4DF /* ListasTableViewController.swift in Sources */,
-				61BC600B1DB30427009BB2C4 /* DetailListViewController2.swift in Sources */,
 				616F0C8E1DA5F90300830F84 /* MusicaViewController.swift in Sources */,
 				61A0E3161DA41FF800DCB7D2 /* Coro.swift in Sources */,
 				61A0E31C1DA422DB00DCB7D2 /* GetReadableText.swift in Sources */,
@@ -533,7 +522,6 @@
 				61A17E761DA83C7100737049 /* User.swift in Sources */,
 				61A0E3181DA4201900DCB7D2 /* VelButton.swift in Sources */,
 				611EF56B1DADEC07009AD4DF /* CoroEnLista.swift in Sources */,
-				616E434A1DAE99DA00890220 /* DatabaseManager.swift in Sources */,
 				61C873781DB6CF0E00E2DD79 /* SelectCorosForListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
