@@ -143,7 +143,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1688.8" y="-320.68965517241384"/>
+            <point key="canvasLocation" x="1689" y="-681"/>
         </scene>
         <!--Musica-->
         <scene sceneID="ucl-JS-N0B">
@@ -482,7 +482,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Ir-RH-Zm3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2530" y="-321"/>
+            <point key="canvasLocation" x="2529" y="-681"/>
         </scene>
         <!--Ajustes-->
         <scene sceneID="Hhf-8e-T7m">
@@ -807,7 +807,7 @@
                     <navigationItem key="navigationItem" title="Root View Controller" id="MRS-E5-27x">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="MJA-kx-P3Z">
                             <connections>
-                                <segue destination="y29-h9-AKE" kind="show" identifier="addList" id="WCe-ph-oa3"/>
+                                <segue destination="y29-h9-AKE" kind="show" id="4vl-RQ-8ZE"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -874,15 +874,6 @@
                                     <constraint firstItem="OXq-3G-ICd" firstAttribute="leading" secondItem="lls-lb-vAI" secondAttribute="leading" constant="20" id="z0g-FB-Nod"/>
                                 </constraints>
                             </scrollView>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6zh-e1-mzh">
-                                <frame key="frameInset" minY="20" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <items>
-                                    <navigationItem title="Title" id="tcz-Ny-GEN">
-                                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="8lV-m6-x4R"/>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -893,15 +884,21 @@
                             <constraint firstItem="lls-lb-vAI" firstAttribute="leading" secondItem="p3F-u4-pRY" secondAttribute="leading" id="vyh-ld-Z4s"/>
                         </constraints>
                     </view>
-                    <toolbarItems>
-                        <barButtonItem title="Item" id="5OG-HV-oyJ"/>
-                    </toolbarItems>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="E8S-by-DLd">
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="lyH-Zu-HGN">
+                            <connections>
+                                <segue destination="wIe-Ji-qdp" kind="show" identifier="searchCorosForList" id="R20-k8-HeI"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="customizeButton" destination="aoR-gd-E75" id="Fkj-zO-zj6"/>
                         <outlet property="customizedNameTextField" destination="Bxo-g3-pRR" id="STk-Ey-zgA"/>
                         <outlet property="datePicker" destination="kBu-M4-zfr" id="TRC-LY-IuS"/>
                         <outlet property="instructionsLabel" destination="OXq-3G-ICd" id="9rA-SC-Ut7"/>
+                        <outlet property="navBar" destination="E8S-by-DLd" id="Npo-HZ-IuQ"/>
                         <outlet property="scrollView" destination="lls-lb-vAI" id="Gl2-5r-wWU"/>
                     </connections>
                 </viewController>
@@ -1079,6 +1076,7 @@
         <!--Busqueda-->
         <scene sceneID="kBk-4k-7fU">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mt9-8f-Mgj" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="eid-mz-8Uw" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Busqueda" image="first" id="acW-dT-cKf"/>
                     <toolbarItems/>
@@ -1091,9 +1089,8 @@
                         <segue destination="9pv-A4-QxB" kind="relationship" relationship="rootViewController" id="b8I-9f-foO"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Mt9-8f-Mgj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="749.60000000000002" y="-320.68965517241384"/>
+            <point key="canvasLocation" x="750" y="-681"/>
         </scene>
         <!--Ajustes-->
         <scene sceneID="xCx-E7-zMR">
@@ -1131,6 +1128,163 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CNl-FV-ASw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1689" y="1140"/>
+        </scene>
+        <!--Select Coros for List-->
+        <scene sceneID="xGj-u7-xPJ">
+            <objects>
+                <viewController title="Select Coros for List" id="wIe-Ji-qdp" customClass="SelectCorosForListViewController" customModule="Alabadle_con_Entendimiento" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="401-jx-0uT"/>
+                        <viewControllerLayoutGuide type="bottom" id="j6I-DJ-CTE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="v8B-XR-CDX">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="SD7-Tp-iJB">
+                                <segments>
+                                    <segment title="Todos"/>
+                                    <segment title="Do"/>
+                                    <segment title="Mib"/>
+                                    <segment title="Fa"/>
+                                    <segment title="Sol"/>
+                                    <segment title="Sib"/>
+                                </segments>
+                                <connections>
+                                    <action selector="tonalidadFilterActionWithSender:" destination="wIe-Ji-qdp" eventType="touchUpInside" id="9EH-38-6dG"/>
+                                </connections>
+                            </segmentedControl>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LGu-vU-M0O" customClass="VelButton" customModule="Alabadle_con_Entendimiento" customModuleProvider="target">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="HbK-z8-9JY"/>
+                                </constraints>
+                                <state key="normal" title="Rapidos"/>
+                                <connections>
+                                    <action selector="rapidosCheckedWithSender:" destination="wIe-Ji-qdp" eventType="touchUpInside" id="uMV-3x-d6l"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4CE-r6-zCa" customClass="VelButton" customModule="Alabadle_con_Entendimiento" customModuleProvider="target">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="OG4-Ek-ZEq"/>
+                                </constraints>
+                                <state key="normal" title="Medios"/>
+                                <connections>
+                                    <action selector="mediosCheckedWithSender:" destination="wIe-Ji-qdp" eventType="touchUpInside" id="dXO-Cp-jNa"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LMf-BX-qei" customClass="VelButton" customModule="Alabadle_con_Entendimiento" customModuleProvider="target">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="vEk-Hj-ON2"/>
+                                </constraints>
+                                <state key="normal" title="Lentos"/>
+                                <connections>
+                                    <action selector="lentosCheckedWithSender:" destination="wIe-Ji-qdp" eventType="touchUpInside" id="ffx-ex-vN9"/>
+                                </connections>
+                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="62" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UWk-BK-H8F">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="SelectCorosForListTableViewCell" rowHeight="65" id="AsX-BJ-Qxi" customClass="SelectCorosForListTableViewCell" customModule="Alabadle_con_Entendimiento" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="65"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AsX-BJ-Qxi" id="me2-Ww-U5h">
+                                            <frame key="frameInset" width="342" height="64"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nombre del Coro" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8CD-YK-mZf">
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="|" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Quf-Vv-4YN">
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="8" id="GVH-eX-82n"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tonalidad" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="48f-Uk-VIf">
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Velocidad" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rfE-0X-F2g">
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="mxW-Ly-XGW"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="8CD-YK-mZf" secondAttribute="trailing" constant="-8" id="5LV-xe-FXl"/>
+                                                <constraint firstItem="rfE-0X-F2g" firstAttribute="leading" secondItem="8CD-YK-mZf" secondAttribute="leading" id="CGf-DB-cpa"/>
+                                                <constraint firstItem="Quf-Vv-4YN" firstAttribute="leading" secondItem="rfE-0X-F2g" secondAttribute="trailing" constant="8" id="HcV-ci-ckY"/>
+                                                <constraint firstAttribute="topMargin" secondItem="8CD-YK-mZf" secondAttribute="top" id="RQA-EC-GJq"/>
+                                                <constraint firstItem="Quf-Vv-4YN" firstAttribute="baseline" secondItem="48f-Uk-VIf" secondAttribute="baseline" id="Rnc-gK-djU"/>
+                                                <constraint firstItem="rfE-0X-F2g" firstAttribute="baseline" secondItem="Quf-Vv-4YN" secondAttribute="baseline" id="S55-3d-nJO"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="rfE-0X-F2g" secondAttribute="bottom" id="Us8-Ca-Kmx"/>
+                                                <constraint firstItem="8CD-YK-mZf" firstAttribute="leading" secondItem="me2-Ww-U5h" secondAttribute="leadingMargin" constant="9" id="n7Q-Vl-r7e"/>
+                                                <constraint firstItem="48f-Uk-VIf" firstAttribute="leading" secondItem="Quf-Vv-4YN" secondAttribute="trailing" constant="8" id="qG6-P4-ttx"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="nombreCoroLabel" destination="8CD-YK-mZf" id="JnO-kG-sNW"/>
+                                            <outlet property="tonalidadLabel" destination="48f-Uk-VIf" id="UkS-9K-7Wt"/>
+                                            <outlet property="velocidadLabel" destination="rfE-0X-F2g" id="rJE-Cq-fXx"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="wIe-Ji-qdp" id="TQo-12-fnA"/>
+                                    <outlet property="delegate" destination="wIe-Ji-qdp" id="OEP-uK-n5q"/>
+                                </connections>
+                            </tableView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zdg-ui-mct">
+                                <items>
+                                    <barButtonItem title="Finalizar" id="oHg-ne-rEW">
+                                        <connections>
+                                            <segue destination="6NP-wi-1JG" kind="unwind" unwindAction="doneChoosingSongsWithUnwindSegue:" id="tHu-sn-F2h"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="4CE-r6-zCa" firstAttribute="top" secondItem="SD7-Tp-iJB" secondAttribute="bottom" constant="8" id="28W-Ef-agy"/>
+                            <constraint firstItem="4CE-r6-zCa" firstAttribute="centerX" secondItem="v8B-XR-CDX" secondAttribute="centerX" id="3vk-iT-RyU"/>
+                            <constraint firstItem="zdg-ui-mct" firstAttribute="leading" secondItem="v8B-XR-CDX" secondAttribute="leading" id="Ai4-Rb-1PJ"/>
+                            <constraint firstItem="LMf-BX-qei" firstAttribute="top" secondItem="SD7-Tp-iJB" secondAttribute="bottom" constant="8" id="Ev3-jt-cgq"/>
+                            <constraint firstItem="j6I-DJ-CTE" firstAttribute="top" secondItem="UWk-BK-H8F" secondAttribute="bottom" id="FYv-me-M3q"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="LMf-BX-qei" secondAttribute="trailing" constant="12" id="Ket-Xk-mGu"/>
+                            <constraint firstAttribute="bottom" secondItem="zdg-ui-mct" secondAttribute="bottom" id="TDd-oc-Wkf"/>
+                            <constraint firstItem="SD7-Tp-iJB" firstAttribute="leading" secondItem="v8B-XR-CDX" secondAttribute="leadingMargin" constant="-8" id="TfE-YD-r6M"/>
+                            <constraint firstAttribute="trailing" secondItem="zdg-ui-mct" secondAttribute="trailing" id="UBQ-2K-fzB"/>
+                            <constraint firstItem="LGu-vU-M0O" firstAttribute="leading" secondItem="v8B-XR-CDX" secondAttribute="leadingMargin" constant="12" id="cbb-yD-s1C"/>
+                            <constraint firstItem="LGu-vU-M0O" firstAttribute="top" secondItem="SD7-Tp-iJB" secondAttribute="bottom" constant="8" id="pZ2-tF-fQ2"/>
+                            <constraint firstAttribute="trailing" secondItem="UWk-BK-H8F" secondAttribute="trailing" id="seY-8O-i7O"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="SD7-Tp-iJB" secondAttribute="trailing" constant="-8" id="tc2-TS-03c"/>
+                            <constraint firstItem="UWk-BK-H8F" firstAttribute="top" secondItem="4CE-r6-zCa" secondAttribute="bottom" constant="8" id="xc6-yn-7kF"/>
+                            <constraint firstItem="UWk-BK-H8F" firstAttribute="leading" secondItem="v8B-XR-CDX" secondAttribute="leading" id="y2U-gV-rpE"/>
+                            <constraint firstItem="SD7-Tp-iJB" firstAttribute="top" secondItem="401-jx-0uT" secondAttribute="bottom" constant="8" id="zX5-BS-Jy2"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Z3J-H0-6du"/>
+                    <connections>
+                        <outlet property="lentosButton" destination="LMf-BX-qei" id="0Gu-VX-wEL"/>
+                        <outlet property="mediosButton" destination="4CE-r6-zCa" id="RlV-WD-e8h"/>
+                        <outlet property="rapidosButton" destination="LGu-vU-M0O" id="STU-ie-suv"/>
+                        <outlet property="segmentedControl" destination="SD7-Tp-iJB" id="Uxb-tU-mWv"/>
+                        <outlet property="tableView" destination="UWk-BK-H8F" id="UP0-nE-CzO"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZB3-z2-dpo" sceneMemberID="firstResponder"/>
+                <exit id="6NP-wi-1JG" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="4181.6000000000004" y="393.55322338830587"/>
         </scene>
     </scenes>
     <resources>

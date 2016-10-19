@@ -56,7 +56,8 @@ class NewListViewController: UIViewController, UITextFieldDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "searchCorosForList" {
             
-            var nameOfList:String?
+            var nameOfList: String!
+            let dollarSign: NSString = "$"
             let customizedName = customizedNameTextField.text
             
             if (customizedName!.isEmpty || customizedName == "") {
@@ -74,9 +75,9 @@ class NewListViewController: UIViewController, UITextFieldDelegate {
             //Create row list
             let calendarFormatter = DateFormatter()
             calendarFormatter.dateFormat = "yyyyMdHms"
-            let newListID = Int(calendarFormatter.string(from: datePicker.date))
+            let newListID = Int(calendarFormatter.string(from: datePicker.date))!
                     
-            let newListDic = ["nombre": nameOfList,
+            let newListDic: Dictionary<String,Any> = ["nombre": nameOfList,
                               "ton_global": "$",
                               "ton_lent": "$",
                               "ton_rap": "$"]
@@ -90,7 +91,8 @@ class NewListViewController: UIViewController, UITextFieldDelegate {
         }
 
     }
-      // keyboard is dismissed with return key
+
+    // keyboard is dismissed with return key
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false

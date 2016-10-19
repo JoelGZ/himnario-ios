@@ -39,6 +39,7 @@
 		61BC600B1DB30427009BB2C4 /* DetailListViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61BC600A1DB30426009BB2C4 /* DetailListViewController2.swift */; };
 		61BC600D1DB30460009BB2C4 /* ListasTableViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61BC600C1DB30460009BB2C4 /* ListasTableViewController2.swift */; };
 		61C873781DB6CF0E00E2DD79 /* SelectCorosForListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C873771DB6CF0E00E2DD79 /* SelectCorosForListViewController.swift */; };
+		61C8737A1DB72C4000E2DD79 /* SelectCorosForListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C873791DB72C4000E2DD79 /* SelectCorosForListTableViewCell.swift */; };
 		61DC1F8F1DB5DE5B002C3238 /* NewListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DC1F8E1DB5DE5B002C3238 /* NewListViewController.swift */; };
 		802807FB11025BA10FBFFCA3 /* Pods_Alabadle_con_EntendimientoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71645278A2ED188177FF104C /* Pods_Alabadle_con_EntendimientoTests.framework */; };
 /* End PBXBuildFile section */
@@ -100,6 +101,7 @@
 		61BC600A1DB30426009BB2C4 /* DetailListViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailListViewController2.swift; sourceTree = "<group>"; };
 		61BC600C1DB30460009BB2C4 /* ListasTableViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListasTableViewController2.swift; sourceTree = "<group>"; };
 		61C873771DB6CF0E00E2DD79 /* SelectCorosForListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectCorosForListViewController.swift; sourceTree = "<group>"; };
+		61C873791DB72C4000E2DD79 /* SelectCorosForListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectCorosForListTableViewCell.swift; sourceTree = "<group>"; };
 		61DC1F8E1DB5DE5B002C3238 /* NewListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewListViewController.swift; sourceTree = "<group>"; };
 		71645278A2ED188177FF104C /* Pods_Alabadle_con_EntendimientoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Alabadle_con_EntendimientoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		83FA11621E375AEB9D755686 /* Pods-Alabadle con EntendimientoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alabadle con EntendimientoUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Alabadle con EntendimientoUITests/Pods-Alabadle con EntendimientoUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -192,6 +194,7 @@
 				61BC600C1DB30460009BB2C4 /* ListasTableViewController2.swift */,
 				61DC1F8E1DB5DE5B002C3238 /* NewListViewController.swift */,
 				61C873771DB6CF0E00E2DD79 /* SelectCorosForListViewController.swift */,
+				61C873791DB72C4000E2DD79 /* SelectCorosForListTableViewCell.swift */,
 			);
 			path = "Alabadle con Entendimiento";
 			sourceTree = "<group>";
@@ -510,6 +513,7 @@
 				611EF5731DADF2E5009AD4DF /* CorosEnListaContract.swift in Sources */,
 				611EF5671DADE9C3009AD4DF /* DetailListViewController.swift in Sources */,
 				61DC1F8F1DB5DE5B002C3238 /* NewListViewController.swift in Sources */,
+				61C8737A1DB72C4000E2DD79 /* SelectCorosForListTableViewCell.swift in Sources */,
 				610D844E1DA7654600F525A2 /* LoginViewController.swift in Sources */,
 				611EF5711DADF2D5009AD4DF /* ListasContract.swift in Sources */,
 				61A0E31A1DA4220600DCB7D2 /* CorosTableViewCell.swift in Sources */,

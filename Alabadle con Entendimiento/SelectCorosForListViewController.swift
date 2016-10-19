@@ -49,13 +49,13 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
         let app = UIApplication.shared
         if searchController.isActive && !app.isStatusBarHidden && searchController.searchBar.frame.origin.y == 0 {
             if let container = self.searchController.searchBar.superview {
-                container.frame = CGRectMake(container.frame.origin.x, container.frame.origin.y, container.frame.size.width, container.frame.size.height + app.statusBarFrame.height)
+           //     container.frame = CGRectMake(container.frame.origin.x, container.frame.origin.y, container.frame.size.width, container.frame.size.height + app.statusBarFrame.height)
             }
         }
     }
     
     func loadData() {
-        corosArray = databaseManager.getRowsCoros("")
+   //     corosArray = databaseManager.getRowsCoros("")
     }
     
     // MARK: Velocidad Button actions
@@ -63,33 +63,30 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
     @IBAction func rapidosChecked(sender: AnyObject) {
         if rapidosButton.isChecked {
             velocidadDic["R"] = false
-            updateSearchResultsForSearchController(searchController: searchController)
         } else {
             velocidadDic["R"] = true
-            updateSearchResultsForSearchController(searchController: searchController)
         }
+        updateSearchResults(for: searchController)
         searchController.isActive = true
     }
     
     @IBAction func mediosChecked(sender: AnyObject) {
         if mediosButton.isChecked {
             velocidadDic["M"] = false
-            updateSearchResultsForSearchController(searchController: searchController)
         } else {
             velocidadDic["M"] = true
-            updateSearchResultsForSearchController(searchController: searchController)
         }
+        updateSearchResults(for: searchController)
         searchController.isActive = true
     }
     
     @IBAction func lentosChecked(sender: AnyObject) {
         if lentosButton.isChecked {
             velocidadDic["L"] = false
-            updateSearchResultsForSearchController(searchController: searchController)
         } else {
             velocidadDic["L"] = true
-            updateSearchResultsForSearchController(searchController: searchController)
         }
+        updateSearchResults(for: searchController)
         searchController.isActive = true
     }
     
@@ -101,7 +98,7 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
         } else {
             scope = sender.titleForSegment(at: index)!
         }
-        updateSearchResultsForSearchController(searchController: searchController)
+        updateSearchResults(for: searchController)
         searchController.isActive = true
     }
     
@@ -184,12 +181,13 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
         tableView.reloadData()
     }
     
-    @IBAction func doneChoosingSongs(sender: AnyObject) {
+    @IBAction func doneChoosingSongs(unwindSegue: UIStoryboardSegue) {
         navigationController?.popToRootViewController(animated: false)
+        //hice algo con un unwindsegue exit en storyboard
     }
     
     func corosActions(index: Int) {
-        var coro: Coro?
+    /*    var coro: Coro?
         if searchController.isActive {
             coro = filteredCorosArray![index]
         } else {
@@ -203,7 +201,7 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
         } else {
             databaseManager.agregarCoroALista(listId, coroId: coro!._id)
         }
-        tableView.reloadData()
+        tableView.reloadData()*/
     }
     
     // MARK: table view data source
@@ -236,7 +234,7 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "SelectCorosForListTableViewCell"
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! SelectCorosForListTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! SelectCorosForListTableViewCell
         
         var coro: Coro?
         if searchController.isActive {
@@ -246,12 +244,12 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
         }
         
         
-        // Checkmark or Disclosure
+      /*  // Checkmark or Disclosure
         if databaseManager.isCoroEnLista(listId, coroId: coro!._id) {
-            cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+            cell.accessoryType = UITableViewCellAccessoryType.checkmark
         } else {
-            cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-        }
+            cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+        }*/
         
         
         //Fill table with data
@@ -272,7 +270,7 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "doneChoosingCoros" {
+       /* if segue.identifier == "doneChoosingCoros" {
             //MAY NOT NEED
             let destinationVC = segue.destination as? DetailListViewController
             let lista = databaseManager.getLista(listId)
@@ -299,33 +297,38 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
             // hide current tab bar to show other tab bar
             self.tabBarController?.tabBar.isHidden = true
         }
-
+*/
     }
     
     //Keyboard
     
     // keyboard is dismissed with return key
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
     }
     
     func subscribeToKeyboardNotificationShow() {
-        NotificationCenter.default.addObserver(self, selector: nil, name: UIKeyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
     }
     
     func subscribeToKeyboardNotificationHide() {
-        NotificationCenter.default.addObserver(self, selector: nil, name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     func unsubscribeFromKeyboardNotifications() {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
+    
+    func keyboardWillShow(notification: NSNotification) {}
+    
+    func keyboardWillHide(notification: NSNotification) {}
+
 }
 
 extension SelectCorosForListViewController: UISearchResultsUpdating {
-    func updateSearchResultsForSearchController(searchController: UISearchController) {
+    func updateSearchResults(for searchController: UISearchController) {
         filterContentForSearchText(searchText: searchController.searchBar.text!, scope: scope)
     }
 }
