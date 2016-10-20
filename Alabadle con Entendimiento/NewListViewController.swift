@@ -87,6 +87,7 @@ class NewListViewController: UIViewController, UITextFieldDelegate {
             //destination VC setup
             if let destination = segue.destination as? SelectCorosForListViewController {
                 destination.listId = newListID
+                destination.listaRef = listaRef
             }
         }
 

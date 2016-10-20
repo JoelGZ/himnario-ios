@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseDatabase
 
 class SelectCorosForListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UISearchControllerDelegate {
     
@@ -20,6 +21,7 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
     
     // MARK: Properties
     var corosArray: Array<Coro>?
+    var safeCoros = [Int]()
     var filteredCorosArray: Array<Coro>?
     let searchController = UISearchController(searchResultsController: nil)
     var velocidadDic: [String: Bool] = ["R": false, "M": false , "L": false]
@@ -28,15 +30,31 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
     var scope: String = "Todos"
     var coroIndex: Int?
     
+    let rootRef = FIRDatabase.database().reference()
+    var corosRef: FIRDatabaseReference!
+    var safeCorosRef: FIRDatabaseReference!
+    var listaRef: FIRDatabaseReference!
+    var isSafeToDisplayFlag = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadData()
+        
+        corosRef = rootRef.child("coros")
+        let defaults = UserDefaults.standard
+        isSafeToDisplayFlag = defaults.bool(forKey: "SAFE")
+        print("Pring: \(isSafeToDisplayFlag)")
+        if (isSafeToDisplayFlag) {
+            loadData()
+        } else {
+            loadSafeData()
+        }
         
         // Keyboard subscriptions
         self.subscribeToKeyboardNotificationShow()
         self.subscribeToKeyboardNotificationHide()
         
         setupSearchController()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,8 +72,44 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
     }
     
     func loadData() {
-   //     corosArray = databaseManager.getRowsCoros("")
+        corosRef.observe(FIRDataEventType.value, with: {(snapshot) in
+            var tempCoroArray = [Coro]()
+            
+            for coroSnap in snapshot.children {
+                let coro = Coro(snapshot: coroSnap as! FIRDataSnapshot, dbRef: self.corosRef)
+                tempCoroArray.append(coro)
+            }
+            
+            self.corosArray = tempCoroArray
+            self.tableView.reloadData()
+        })
     }
+    
+    func loadSafeData() {
+        var tempCoroArray2 = [Coro]()
+        safeCorosRef = rootRef.child("safeCoros")
+        safeCorosRef.observe(FIRDataEventType.value, with: {(snapshot) in
+            for coroSnap in snapshot.children {
+                let coroId = (coroSnap as! FIRDataSnapshot).value
+                self.safeCoros.append(coroId as! Int)
+            }
+            
+            for coroId in self.safeCoros {
+                let coroRef = self.corosRef.child(String(coroId))
+                
+                coroRef.observe(FIRDataEventType.value, with: {(sp) in
+                    // print(sp.value)
+                    let coro = Coro(snapshot: sp, coroId: coroId)
+                    tempCoroArray2.append(coro)
+                    if tempCoroArray2.count == self.safeCoros.count {
+                        self.corosArray = tempCoroArray2
+                        self.tableView.reloadData()
+                    }
+                })
+            }
+        })
+    }
+
     
     // MARK: Velocidad Button actions
     // the if condition is apparently backwards but it is done this way because this is executed before isChecked is changed in the Checkbox object
@@ -228,7 +282,45 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        corosActions(index: indexPath.row)
+        var coro: Coro
+        if searchController.isActive {
+            coro = filteredCorosArray![indexPath.row]
+        } else {
+            coro = corosArray![indexPath.row]
+        }
+        
+        let corosEnListaRef = listaRef.child("corosEnLista")
+        corosEnListaRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
+            let coroRef = corosEnListaRef.child("\(coro.id)")
+            if snapshot.hasChild("\(coro.id)") {
+                //delete coro
+                coroRef.removeValue()
+            } else {
+                //add coro
+                //coroRef.setValue()
+            }
+            tableView.reloadData()
+        })
+        databaseManager.isCoroEnLista(listId, coroId: coro!._id)
+        
+        if databaseManager.isCoroEnLista(listId, coroId: coro!._id) {
+            databaseManager.deleteCoroEnLista(listId, coroId: coro!._id, flag: true)
+        } else {
+            databaseManager.agregarCoroALista(listId, coroId: coro!._id)
+        }
+        tableView.reloadData()
+    }
+    
+    func setupCoroForList(coro: Coro) -> Any {
+        
+        
+        
+        return [
+            "nombre": coro.nombre,
+            "orden": 000,
+            "ton": coro.tonalidad,
+            "vel_let": coro.velletra
+        ]
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
