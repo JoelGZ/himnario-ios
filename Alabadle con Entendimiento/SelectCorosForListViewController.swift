@@ -34,12 +34,15 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
     var corosRef: FIRDatabaseReference!
     var safeCorosRef: FIRDatabaseReference!
     var listaRef: FIRDatabaseReference!
+    var corosEnListaRef: FIRDatabaseReference!
     var isSafeToDisplayFlag = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         corosRef = rootRef.child("coros")
+        corosEnListaRef = listaRef.child("corosEnLista")
+        
         let defaults = UserDefaults.standard
         isSafeToDisplayFlag = defaults.bool(forKey: "SAFE")
         print("Pring: \(isSafeToDisplayFlag)")
@@ -63,6 +66,8 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        //TODO: See what's going on
+        
         let app = UIApplication.shared
         if searchController.isActive && !app.isStatusBarHidden && searchController.searchBar.frame.origin.y == 0 {
             if let container = self.searchController.searchBar.superview {
@@ -83,6 +88,8 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
             self.corosArray = tempCoroArray
             self.tableView.reloadData()
         })
+        
+        loadFakeData()
     }
     
     func loadSafeData() {
@@ -108,6 +115,13 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
                 })
             }
         })
+        
+        loadFakeData()
+    }
+    
+    func loadFakeData() {
+        let coro = Coro(id: 1, orden: 1, nombre: "", cuerpo: "", tonalidad: "", ton_alt: "", velletra: "", tiempo: 1, audio: "", partitura: "", autormusica: "", autorletra: "", cita: "", historia: "", sName: "")
+        corosArray = [coro]
     }
 
     
@@ -234,28 +248,15 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
         tableView.reloadData()
     }
     
-    @IBAction func doneChoosingSongs(unwindSegue: UIStoryboardSegue) {
+    
+    @IBAction func doneChoosingCoros(_ sender: AnyObject) {
         navigationController?.popToRootViewController(animated: false)
-        //hice algo con un unwindsegue exit en storyboard
     }
     
-    func corosActions(index: Int) {
-    /*    var coro: Coro?
-        if searchController.isActive {
-            coro = filteredCorosArray![index]
-        } else {
-            coro = corosArray![index]
-        }
-        
-        databaseManager.isCoroEnLista(listId, coroId: coro!._id)
-        
-        if databaseManager.isCoroEnLista(listId, coroId: coro!._id) {
-            databaseManager.deleteCoroEnLista(listId, coroId: coro!._id, flag: true)
-        } else {
-            databaseManager.agregarCoroALista(listId, coroId: coro!._id)
-        }
-        tableView.reloadData()*/
-    }
+   /* @IBAction func doneChoosingSongs(unwindSegue: UIStoryboardSegue) {
+        navigationController?.popToRootViewController(animated: false)
+        //hice algo con un unwindsegue exit en storyboard
+    }*/
     
     // MARK: table view data source
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -289,78 +290,119 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
             coro = corosArray![indexPath.row]
         }
         
-        let corosEnListaRef = listaRef.child("corosEnLista")
         corosEnListaRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
-            let coroRef = corosEnListaRef.child("\(coro.id)")
-            if snapshot.hasChild("\(coro.id)") {
-                //delete coro
-                coroRef.removeValue()
+            if coro.velletra == "L" || self.isMedioEspecial(medioId: coro.id) {
+                let lentosRef = self.corosEnListaRef.child("lentos")
+                if snapshot.hasChild("lentos") {    //si hay coros lentos
+                    lentosRef.observeSingleEvent(of: FIRDataEventType.value, with: {(lentSnap) in
+                        let coroRef = lentosRef.child("\(coro.id)")
+                        if lentSnap.hasChild("\(coro.id)") { //si el coro existe -> eliminar, si no, agregar
+                            coroRef.removeValue()
+                            tableView.reloadData()
+                        } else {
+                            coroRef.setValue(self.setupCoroForList(coro: coro, corosInVelCount: Int(lentSnap.childrenCount)))
+                            tableView.reloadData()
+                        }
+                    })
+                } else {        //agregar primer coro a lentos
+                    let coroRef = lentosRef.child("\(coro.id)")
+                    coroRef.setValue(self.setupCoroForList(coro: coro, corosInVelCount: 1))
+                    tableView.reloadData()
+                }
             } else {
-                //add coro
-                //coroRef.setValue()
+                //rapidos y medios
+                let rapidosMediosRef = self.corosEnListaRef.child("rapidos-medios")
+                if snapshot.hasChild("rapidos-medios") {
+                    rapidosMediosRef.observeSingleEvent(of: FIRDataEventType.value, with: {(rapSnap) in
+                        let coroRef = rapidosMediosRef.child("\(coro.id)")
+                        if rapSnap.hasChild("\(coro.id)") {
+                            coroRef.removeValue()
+                            tableView.reloadData()
+                        } else {
+                            coroRef.setValue(self.setupCoroForList(coro: coro, corosInVelCount: Int(rapSnap.childrenCount)))
+                            tableView.reloadData()
+                        }
+                    })
+                } else {            //agregar primer coro a rapidos-medios
+                    let coroRef = rapidosMediosRef.child("\(coro.id)")
+                    coroRef.setValue(self.setupCoroForList(coro: coro, corosInVelCount: 1))
+                    tableView.reloadData()
+                }
             }
-            tableView.reloadData()
         })
-      /*  databaseManager.isCoroEnLista(listId, coroId: coro!._id)
-        
-        if databaseManager.isCoroEnLista(listId, coroId: coro!._id) {
-            databaseManager.deleteCoroEnLista(listId, coroId: coro!._id, flag: true)
-        } else {
-            databaseManager.agregarCoroALista(listId, coroId: coro!._id)
-        }
-        tableView.reloadData()*/
     }
     
-    func setupCoroForList(coro: Coro) -> Any {
-        
-        
-        
+    func setupCoroForList(coro: Coro, corosInVelCount: Int) -> Any {
+        let orden = corosInVelCount + 1
+
         return [
             "nombre": coro.nombre,
-            "orden": 000,
-            "ton": coro.tonalidad,
-            "vel_let": coro.velletra
+            "orden": orden,
+            "ton": coro.tonalidad
         ]
+    }
+    
+    // Verificar si el coro medio se pone con los lentos o no
+    func isMedioEspecial(medioId: Int) -> Bool {
+        let mediosEspeciales = [1001,82,261,1019,1012,84,174,1006,1008,5,338]
+        
+        for coroId in mediosEspeciales {
+            if coroId == medioId {
+                return true
+            }
+        }
+        
+        return false
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "SelectCorosForListTableViewCell"
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! SelectCorosForListTableViewCell
         
-        var coro: Coro?
+        var coro: Coro
         if searchController.isActive {
             coro = filteredCorosArray![indexPath.row]
         } else {
             coro = corosArray![indexPath.row]
         }
         
-        
-      /*  // Checkmark or Disclosure
-        if databaseManager.isCoroEnLista(listId, coroId: coro!._id) {
-            cell.accessoryType = UITableViewCellAccessoryType.checkmark
+        // Checkmark or Disclosure -> is it already in the list?
+        var velRef: FIRDatabaseReference
+        if coro.velletra == "L" || isMedioEspecial(medioId: coro.id) {
+            velRef = corosEnListaRef.child("lentos")
         } else {
-            cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
-        }*/
+            velRef = corosEnListaRef.child("rapidos-meidos")
+        }
         
+        velRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
+            if snapshot.hasChild("\(coro.id)") {
+                cell.accessoryType = UITableViewCellAccessoryType.checkmark
+            } else {
+                cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+            }
+        })
         
         //Fill table with data
-        cell.nombreCoroLabel.text = coro!.nombre
+        cell.nombreCoroLabel.text = coro.nombre
         if searchController.isActive && scope != "Todos" {
-            if coro!.ton_alt != "" {
-                cell.tonalidadLabel.text = "\(coro!.tonalidad),\(coro!.ton_alt)"
+            if coro.ton_alt != "" {
+                cell.tonalidadLabel.text = "\(coro.tonalidad),\(coro.ton_alt)"
             } else {
-                cell.tonalidadLabel.text = coro!.tonalidad
+                cell.tonalidadLabel.text = coro.tonalidad
             }
         } else {
-            cell.tonalidadLabel.text = coro!.tonalidad
+            cell.tonalidadLabel.text = coro.tonalidad
         }
-        cell.velocidadLabel.text = coro!.velletra.getReadableText()
+        cell.velocidadLabel.text = coro.velletra.getReadableText()
         
         return cell
 
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        //TODO: prepare doneChoosingCoros segue
+        
        /* if segue.identifier == "doneChoosingCoros" {
             //MAY NOT NEED
             let destinationVC = segue.destination as? DetailListViewController

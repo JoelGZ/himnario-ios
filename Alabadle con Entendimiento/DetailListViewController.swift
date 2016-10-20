@@ -31,9 +31,13 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         didSet{
             let defaults = UserDefaults.standard
             let userUID = defaults.string(forKey: "USER_UID")!
-            //ELIMINAR "" yo las tuve que poner
-            listaRef = rootRef.child("listas/\"\(userUID)\"/\(lista.id)")
-            loadCorosEnListaData()
+            listaRef = rootRef.child("listas/\(userUID)/\(lista.id)")
+            loadDataWhenReady(completion: {(isReady:Bool) in
+                if isReady {
+                    self.todosArray = self.lentosArray + self.rapidosMediosArray
+                    self.tableView.reloadData()
+                }
+            })
            // setupNoListView()
         }
     }
@@ -57,7 +61,6 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         tableView.delegate = self
         tableView.dataSource = self
         
-        //hay error porque no hay lista con eses id
         corosEnListaRef = listaRef?.child("corosEnLista")
         lentosRef = corosEnListaRef?.child("lentos")
         rapidosMediosRef = corosEnListaRef?.child("rapidos-medios")
@@ -99,7 +102,12 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             self.navigationItem.rightBarButtonItems = [editButtonItem, addCorosButton]
         }
         
-        loadCorosEnListaData()
+        loadDataWhenReady(completion: {(isReady:Bool) in
+            if isReady {
+                self.todosArray = self.lentosArray + self.rapidosMediosArray
+                self.tableView.reloadData()
+            }
+        })
         setupNoListView()
         tableView.reloadData()
         self.navigationController?.isNavigationBarHidden = false
@@ -176,7 +184,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     func loadCorosEnListaData() {
         print(corosEnListaRef)
         
-        reloadDataWhenReady(completion: {(isReady:Bool) in
+        loadDataWhenReady(completion: {(isReady:Bool) in
             if isReady {
                 self.todosArray = self.lentosArray + self.rapidosMediosArray
                 self.tableView.reloadData()
@@ -199,7 +207,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         })*/
     }
     
-    func reloadDataWhenReady(completion:@escaping (_ isReady: Bool) -> Void ) {
+    func loadDataWhenReady(completion:@escaping (_ isReady: Bool) -> Void ) {
         //if both arrays have been set (readyNumber == 2)then indicate it is ready to continue
         var readyNumber = 0
         print(rapidosMediosRef)
@@ -289,6 +297,8 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     
     //MARK: Deleting, sharing and updating functions
     func deleteList() {
+        //TODO: delete list
+        
         /*
         //Deleting files related to list
         let documentsURL = NSURL(
@@ -328,11 +338,18 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func updateTonalidadDeCoro(coro: Coro, tonalidad: String) {
-        /*let flag = databaseManager.updateTonalidadDeCoroEnLista(lista._id, coroId: coro._id, tonalidad: tonalidad)
+        //TODO: update tonalidad de coro
+        
+      /*  let flag = databaseManager.updateTonalidadDeCoroEnLista(lista._id, coroId: coro._id, tonalidad: tonalidad)
         
         DispatchQueue.main.async(execute: {
             if flag {
-                self.loadCorosEnListaData()
+                self.loadDataWhenReady(completion: {(isReady:Bool) in
+                    if isReady {
+                        self.todosArray = self.lentosArray + self.rapidosMediosArray
+                        self.tableView.reloadData()
+                    }
+                })
                 self.tableView.reloadData()
                 self.setupLabels()
             }
@@ -340,6 +357,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func shareList(sender: AnyObject){
+        //TODO: shareList
         /*
         var sharingItems = [AnyObject]()
         let sharingText = self.lista.toString()
@@ -466,6 +484,8 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     /*
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+     //TODO: move coros
+     
         /*if editingStyle == UITableViewCellEditingStyle.delete {
             if indexPath.section == 0 {
                 let coro = rapidosMediosArray[indexPath.row]
@@ -506,6 +526,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             if sourceIndexPath.section < proposedDestinationIndexPath.section {
                 row = self.tableView(tableView, numberOfRowsInSection: sourceIndexPath.section) - 1
             }
+            //TODO: fix this
           //  return NSIndexPath(forRow: row, inSection: sourceIndexPath.section)
         }
         return proposedDestinationIndexPath
@@ -518,6 +539,8 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        //TODO: prepare showCoroDetailPager segue
+        
       /*  if segue.identifier == "showCoroDetailPager" {
             let tabBarController = segue.destination as? UITabBarController
             let destinationVC = tabBarController?.viewControllers?.first as? CoroDetailWPagerVC
@@ -554,6 +577,8 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func reorderCorosEnLista(array: Array<CoroEnLista>, destination: Int, source: Int, section: Int) {
+        //TODO: reorder coros
+        
        /* if source < destination {
             // borrar todo de tabla en db
             for coro in array {

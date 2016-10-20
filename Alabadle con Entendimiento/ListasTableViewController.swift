@@ -18,7 +18,6 @@ class ListasTableViewController: UITableViewController {
     
     @IBOutlet weak var navBar: UINavigationItem!
     var resultArray: Array<Lista> = []
-    // var databaseManager: DatabaseManager?
     var resultNumber: Int?
     var noListView: UIView?
     var label: UILabel?
@@ -34,9 +33,8 @@ class ListasTableViewController: UITableViewController {
         super.viewDidLoad()
         
         let defaults = UserDefaults.standard
-        //eliminate ""
-        listasDeUsuarioRef = rootRef.child("listas/\"\(defaults.string(forKey: "USER_UID")!)\"")
-               // TODO: localize
+        listasDeUsuarioRef = rootRef.child("listas/\(defaults.string(forKey: "USER_UID")!)")
+        // TODO: localize
         navBar.title = "Mis Listas"
         flag = true
         
@@ -60,7 +58,8 @@ class ListasTableViewController: UITableViewController {
                 let alert = UIAlertController(title: "Inicie sesión", message: "Para poder visualizar sus listas, por favor inicie sesión.", preferredStyle: .alert)
                 let inicarSesionAction = UIAlertAction(title: "Iniciar sesión", style: .default, handler: {_ in
                     self.navigationController?.navigationBar.isHidden = true
-                    self.performSegue(withIdentifier: "goToLogInScreen", sender: nil) // do not permit to go back
+                    //TODO: do not permit to go back
+                    self.performSegue(withIdentifier: "goToLogInScreen", sender: nil)
                 })
                 alert.addAction(inicarSesionAction)
                 
