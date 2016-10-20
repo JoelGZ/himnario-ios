@@ -34,7 +34,8 @@ class ListasTableViewController: UITableViewController {
         super.viewDidLoad()
         
         let defaults = UserDefaults.standard
-        listasDeUsuarioRef = rootRef.child("listas/\(defaults.string(forKey: "USER_UID")!)")
+        //eliminate ""
+        listasDeUsuarioRef = rootRef.child("listas/\"\(defaults.string(forKey: "USER_UID")!)\"")
                // TODO: localize
         navBar.title = "Mis Listas"
         flag = true

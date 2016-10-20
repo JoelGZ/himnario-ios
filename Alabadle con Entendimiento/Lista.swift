@@ -11,8 +11,6 @@ import FirebaseDatabase
 
 class Lista {
     
-    let databaseManager: DatabaseManager = DatabaseManager()
-    
     //MARK: Properties
     var id: Int
     var nombreLista: String

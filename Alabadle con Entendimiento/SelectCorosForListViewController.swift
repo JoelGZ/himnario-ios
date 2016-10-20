@@ -301,14 +301,14 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
             }
             tableView.reloadData()
         })
-        databaseManager.isCoroEnLista(listId, coroId: coro!._id)
+      /*  databaseManager.isCoroEnLista(listId, coroId: coro!._id)
         
         if databaseManager.isCoroEnLista(listId, coroId: coro!._id) {
             databaseManager.deleteCoroEnLista(listId, coroId: coro!._id, flag: true)
         } else {
             databaseManager.agregarCoroALista(listId, coroId: coro!._id)
         }
-        tableView.reloadData()
+        tableView.reloadData()*/
     }
     
     func setupCoroForList(coro: Coro) -> Any {

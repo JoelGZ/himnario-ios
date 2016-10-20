@@ -22,7 +22,6 @@ class NewListViewController: UIViewController, UITextFieldDelegate {
     var user: User!
     let rootRef = FIRDatabase.database().reference()
     var listasDeUsuarioRef: FIRDatabaseReference!
-    var databaseManager: DatabaseManager = DatabaseManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()

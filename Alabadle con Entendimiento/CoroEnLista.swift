@@ -30,7 +30,7 @@ class CoroEnLista{
         self.id = (snapshot.key as NSString).integerValue
         self.orden = snapshotValue["orden"] as! Int
         self.nombre = snapshotValue["nombre"] as! String
-        self.velocidad = snapshotValue["vel_let"] as! String
+        self.velocidad = snapshot.key == "lentos" ? "L": "RM"
         self.tonalidad = snapshotValue["ton"] as! String
     }
     

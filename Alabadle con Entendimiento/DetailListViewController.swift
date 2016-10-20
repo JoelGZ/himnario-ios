@@ -30,9 +30,9 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     var lista:Lista! {
         didSet{
             let defaults = UserDefaults.standard
-            let userUID = defaults.string(forKey: "USER_UID")
+            let userUID = defaults.string(forKey: "USER_UID")!
             //ELIMINAR "" yo las tuve que poner
-            listaRef = rootRef.child("listas/\"\(userUID!)\"/\(lista.id)")
+            listaRef = rootRef.child("listas/\"\(userUID)\"/\(lista.id)")
             loadCorosEnListaData()
            // setupNoListView()
         }
@@ -42,7 +42,8 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     var listaRef: FIRDatabaseReference?
     var corosRef: FIRDatabaseReference?
     var corosEnListaRef: FIRDatabaseReference?
-    var databaseManager: DatabaseManager = DatabaseManager()
+    var lentosRef: FIRDatabaseReference?
+    var rapidosMediosRef: FIRDatabaseReference?
     
     var lentosArray = Array<CoroEnLista>()
     var rapidosMediosArray = Array<CoroEnLista>()
@@ -58,6 +59,8 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         
         //hay error porque no hay lista con eses id
         corosEnListaRef = listaRef?.child("corosEnLista")
+        lentosRef = corosEnListaRef?.child("lentos")
+        rapidosMediosRef = corosEnListaRef?.child("rapidos-medios")
         corosRef = rootRef.child("coros")
         
         splitViewController!.presentsWithGesture = false
@@ -172,7 +175,14 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     
     func loadCorosEnListaData() {
         print(corosEnListaRef)
-        corosEnListaRef?.observe(FIRDataEventType.value, with: {(snapshot) in
+        
+        reloadDataWhenReady(completion: {(isReady:Bool) in
+            if isReady {
+                self.todosArray = self.lentosArray + self.rapidosMediosArray
+                self.tableView.reloadData()
+            }
+        })
+       /* corosEnListaRef?.observe(FIRDataEventType.value, with: {(snapshot) in
             print(snapshot)
             for coroChild in snapshot.children {
                 print(coroChild)
@@ -186,6 +196,33 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             
             self.todosArray = self.lentosArray + self.rapidosMediosArray
             self.tableView.reloadData()
+        })*/
+    }
+    
+    func reloadDataWhenReady(completion:@escaping (_ isReady: Bool) -> Void ) {
+        //if both arrays have been set (readyNumber == 2)then indicate it is ready to continue
+        var readyNumber = 0
+        print(rapidosMediosRef)
+        rapidosMediosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(rapSnap) in
+            for coroRMChild in rapSnap.children {
+                let coroRMEnLista = CoroEnLista(snapshot: (coroRMChild as! FIRDataSnapshot))
+                self.rapidosMediosArray.append(coroRMEnLista)
+            }
+            readyNumber += 1
+            if readyNumber == 2 {
+                completion(true)
+            }
+        })
+        print(lentosRef)
+        lentosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(lentSnap) in
+            for coroLentoChild in lentSnap.children {
+                let coroLentoEnLista = CoroEnLista(snapshot: (coroLentoChild as! FIRDataSnapshot))
+                self.lentosArray.append(coroLentoEnLista)
+            }
+            readyNumber += 1
+            if readyNumber == 2 {
+                completion(true)
+            }
         })
     }
     
