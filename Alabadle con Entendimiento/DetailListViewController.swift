@@ -290,43 +290,9 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     //MARK: Deleting, sharing and updating functions
     func deleteList() {
         //TODO: delete list
-        
-        /*
-        //Deleting files related to list
-        let documentsURL = NSURL(
-            fileURLWithPath: NSSearchPathForDirectoriesInDomains(
-                .documentDirectory, .userDomainMask, true).first!,
-            isDirectory: true
-        )
-        let txtFile = documentsURL.appendingPathComponent("\(lista.archivo).txt")
-        let aelFile = documentsURL.appendingPathComponent("\(lista.archivo).ael")
-        
-        let fileManager = FileManager.defaultManager()
-        //I think this if will not be necesarry for txt
-        if (fileManager.fileExistsAtPath(txtFile.path!)) {
-            do {
-                try fileManager.removeItemAtPath(txtFile.path!)
-            } catch {
-                print("ERROR: \(error)")
-            }
-            
-            print("FILE AVAILABLE")
-        } else {
-            print("FILE NOT AVAILABLE")
-        }
-        if (fileManager.fileExistsAtPath(aelFile.path!)) {
-            do {
-                try fileManager.removeItemAtPath(aelFile.path!)
-            } catch {
-                print("ERROR: \(error)")
-            }
-            print("FILE AEL AVAILABLE")
-        } else {
-            print("FILE NOT AVAILABLE")
-        }
  
-        databaseManager.deleteLista(lista._id)
-        self.navigationController?.navigationController!.popToRootViewController(animated: true)*/
+        listaRef?.removeValue()
+        self.navigationController?.navigationController!.popToRootViewController(animated: true)
     }
     
     func updateTonalidadDeCoro(coro: Coro, tonalidad: String) {
