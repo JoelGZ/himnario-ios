@@ -31,6 +31,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         didSet{
             let defaults = UserDefaults.standard
             let userUID = defaults.string(forKey: "USER_UID")!
+            print("listaid: \(lista.id)")
             listaRef = rootRef.child("listas/\(userUID)/\(lista.id)")
             corosEnListaRef = listaRef?.child("corosEnLista")
             lentosRef = corosEnListaRef?.child("lentos")
@@ -103,12 +104,12 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             self.navigationItem.rightBarButtonItems = [editButtonItem, addCorosButton]
         }
         
-        loadDataWhenReady(completion: {(isReady:Bool) in
+       /* loadDataWhenReady(completion: {(isReady:Bool) in
             if isReady {
                 self.todosArray = self.lentosArray + self.rapidosMediosArray
                 self.tableView.reloadData()
             }
-        })
+        })*/
         setupNoListView()
         tableView.reloadData()
         self.navigationController?.isNavigationBarHidden = false
@@ -224,8 +225,8 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
                 completion(true)
             }
         })
-        print(lentosRef)
-        lentosRef?.observe(FIRDataEventType.value, with: {(lentSnap) in
+        
+        lentosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(lentSnap) in
             var tempArray2 = [CoroEnLista]()
             for coroLentoChild in lentSnap.children {
                 let coroLentoEnLista = CoroEnLista(snapshot: (coroLentoChild as! FIRDataSnapshot))
@@ -238,17 +239,6 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
                 completion(true)
             }
         })
-
-        /*lentosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(lentSnap) in
-            for coroLentoChild in lentSnap.children {
-                let coroLentoEnLista = CoroEnLista(snapshot: (coroLentoChild as! FIRDataSnapshot))
-                self.lentosArray.append(coroLentoEnLista)
-            }
-            readyNumber += 1
-            if readyNumber == 2 {
-                completion(true)
-            }
-        })*/
     }
     
     //MARK: Actions

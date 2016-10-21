@@ -122,6 +122,7 @@ class ListasTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let lista = self.resultArray[indexPath.row]
+        print("lista nombre \(lista.nombreLista)")
         self.delegate?.listaSelected(newLista: lista)
         
         //TODO: FIX ERROR: when user signs out, and then signs in thru listastvc it later does not go into the list.
@@ -152,6 +153,8 @@ class ListasTableViewController: UITableViewController {
             let listaRef = listasDeUsuarioRef.child("\(lista.id)")
             listaRef.removeValue()
             resultArray.remove(at: indexPath.row)
+            
+            //TODO: fix bug when deleting coros
             if resultArray.count != 0 {
                 self.delegate?.listaSelected(newLista: resultArray[indexPath.row - 1])
             } else {

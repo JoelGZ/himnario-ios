@@ -45,7 +45,7 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
         
         let defaults = UserDefaults.standard
         isSafeToDisplayFlag = defaults.bool(forKey: "SAFE")
-        print("Pring: \(isSafeToDisplayFlag)")
+        
         if (isSafeToDisplayFlag) {
             loadData()
         } else {
