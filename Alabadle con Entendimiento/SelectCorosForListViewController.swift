@@ -40,6 +40,8 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        //listaRef is set by parent VC
         corosRef = rootRef.child("coros")
         corosEnListaRef = listaRef.child("corosEnLista")
         

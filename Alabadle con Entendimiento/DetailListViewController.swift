@@ -104,12 +104,12 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             self.navigationItem.rightBarButtonItems = [editButtonItem, addCorosButton]
         }
         
-       /* loadDataWhenReady(completion: {(isReady:Bool) in
+        loadDataWhenReady(completion: {(isReady:Bool) in
             if isReady {
                 self.todosArray = self.lentosArray + self.rapidosMediosArray
                 self.tableView.reloadData()
             }
-        })*/
+        })
         setupNoListView()
         tableView.reloadData()
         self.navigationController?.isNavigationBarHidden = false
@@ -192,21 +192,6 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
                 self.tableView.reloadData()
             }
         })
-       /* corosEnListaRef?.observe(FIRDataEventType.value, with: {(snapshot) in
-            print(snapshot)
-            for coroChild in snapshot.children {
-                print(coroChild)
-                let coroEnLista = CoroEnLista(snapshot: (coroChild as! FIRDataSnapshot))
-                if coroEnLista.velocidad == "L" {
-                    self.lentosArray.append(coroEnLista)
-                } else {
-                    self.rapidosMediosArray.append(coroEnLista)
-                }
-            }
-            
-            self.todosArray = self.lentosArray + self.rapidosMediosArray
-            self.tableView.reloadData()
-        })*/
     }
     
     func loadDataWhenReady(completion:@escaping (_ isReady: Bool) -> Void ) {
@@ -546,6 +531,12 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "addCorosToList" {
+            if let destination = segue.destination as? SelectCorosForListViewController {
+                destination.listaRef = listaRef
+            }
+        }
         //TODO: prepare showCoroDetailPager segue
         
       /*  if segue.identifier == "showCoroDetailPager" {

@@ -755,6 +755,7 @@
                         <outlet property="tituloLabel" destination="sq1-N9-EYu" id="RKz-tY-pPh"/>
                         <outlet property="tonalidadLabel" destination="ede-8V-Rpn" id="CnR-xW-8K4"/>
                         <outlet property="toolBar" destination="rsm-gp-tSS" id="Ukn-T0-9E5"/>
+                        <segue destination="wIe-Ji-qdp" kind="show" identifier="addCorosToList" id="jMR-D2-Own"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Oe2-eR-ZsM" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1294,5 +1295,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="yr7-T0-gD9"/>
+        <segue reference="jMR-D2-Own"/>
     </inferredMetricsTieBreakers>
 </document>
