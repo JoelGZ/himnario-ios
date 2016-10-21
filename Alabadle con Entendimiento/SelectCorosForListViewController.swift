@@ -371,7 +371,7 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
         if coro.velletra == "L" || isMedioEspecial(medioId: coro.id) {
             velRef = corosEnListaRef.child("lentos")
         } else {
-            velRef = corosEnListaRef.child("rapidos-meidos")
+            velRef = corosEnListaRef.child("rapidos-medios")
         }
         
         velRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in

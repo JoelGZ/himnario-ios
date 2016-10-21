@@ -65,8 +65,7 @@ class Coro: NSObject {
         if ton_alt == dollarSign {
             ton_alt = ""
         }
-        //TODO: CHANGE TO vel_let
-        velletra = snapshotValue["vel_letra"] as! String
+        velletra = snapshotValue["vel_let"] as! String
         tiempo = snapshotValue["tiempo"] as! Int
         audio = snapshotValue["audio"] as! String
         partitura = snapshotValue["partitura"] as! String
@@ -104,8 +103,7 @@ class Coro: NSObject {
         if ton_alt == dollarSign {
             ton_alt = ""
         }
-        //TODO: CHANGE TO vel_let
-        velletra = snapshotValue["vel_letra"] as! String
+        velletra = snapshotValue["vel_let"] as! String
         tiempo = snapshotValue["tiempo"] as! Int
         audio = snapshotValue["audio"] as! String
         partitura = snapshotValue["partitura"] as! String

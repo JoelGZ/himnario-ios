@@ -210,7 +210,6 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     func loadDataWhenReady(completion:@escaping (_ isReady: Bool) -> Void ) {
         //if both arrays have been set (readyNumber == 2)then indicate it is ready to continue
         var readyNumber = 0
-        print(rapidosMediosRef)
         rapidosMediosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(rapSnap) in
             for coroRMChild in rapSnap.children {
                 let coroRMEnLista = CoroEnLista(snapshot: (coroRMChild as! FIRDataSnapshot))

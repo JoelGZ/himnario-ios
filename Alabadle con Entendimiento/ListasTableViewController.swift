@@ -74,6 +74,7 @@ class ListasTableViewController: UITableViewController {
     
     func loadListasData(){
         var childrenCounter = 0
+        
         listasDeUsuarioRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
             var tempArray = [Lista]()
 
@@ -123,12 +124,14 @@ class ListasTableViewController: UITableViewController {
         let lista = self.resultArray[indexPath.row]
         self.delegate?.listaSelected(newLista: lista)
         
-        //FIX ERROR: when user signs out, and then signs in thru listastvc it later does not go into the list.
+        //TODO: FIX ERROR: when user signs out, and then signs in thru listastvc it later does not go into the list.
         //Also when signs out and going back to lists it reveals detail vc instead of master vc first
         //***********************
         
+        let detailViewCont = self.delegate as? DetailListViewController
+        print(detailViewCont)
         if let detailViewController = self.delegate as? DetailListViewController {
-            detailViewController.lista = lista
+           // detailViewController.lista = lista
             detailViewController.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
             detailViewController.navigationItem.leftItemsSupplementBackButton = true
             
@@ -146,22 +149,19 @@ class ListasTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let lista = self.resultArray[indexPath.row]
-          //  databaseManager?.deleteLista(lista._id)
+            let listaRef = listasDeUsuarioRef.child("\(lista.id)")
+            listaRef.removeValue()
             resultArray.remove(at: indexPath.row)
-            if indexPath.row != 0 {
+            if resultArray.count != 0 {
                 self.delegate?.listaSelected(newLista: resultArray[indexPath.row - 1])
             } else {
-                self.detailViewController?.setupNoListView()
-            }
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            if resultArray.count == 0 {
                 if let detailViewController = self.delegate as? DetailListViewController{
                     detailViewController.lista = Lista(id: 10000, nombreLista: "", ton_global: "", ton_rap: "", ton_lent: "")
                     detailViewController.setupNoListView()
                 }
             }
+            tableView.deleteRows(at: [indexPath], with: .fade)
         }
-
     }
 }
 

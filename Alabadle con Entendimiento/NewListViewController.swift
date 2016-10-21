@@ -56,7 +56,6 @@ class NewListViewController: UIViewController, UITextFieldDelegate {
         if segue.identifier == "searchCorosForList" {
             
             var nameOfList: String!
-            let dollarSign: NSString = "$"
             let customizedName = customizedNameTextField.text
             
             if (customizedName!.isEmpty || customizedName == "") {
@@ -74,7 +73,7 @@ class NewListViewController: UIViewController, UITextFieldDelegate {
             //Create row list
             let calendarFormatter = DateFormatter()
             calendarFormatter.dateFormat = "yyyyMdHms"
-            let newListID = Int(calendarFormatter.string(from: datePicker.date))!
+            let newListID = Int(calendarFormatter.string(from: NSDate() as Date))!
                     
             let newListDic: Dictionary<String,Any> = ["nombre": nameOfList,
                               "ton_global": "$",

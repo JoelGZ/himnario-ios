@@ -824,7 +824,7 @@
         <!--New List View Controller-->
         <scene sceneID="bIS-K9-gic">
             <objects>
-                <viewController id="y29-h9-AKE" customClass="NewListViewController" customModule="Alabadle_con_Entendimiento" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="y29-h9-AKE" customClass="NewListViewController" customModule="Alabadle_con_Entendimiento" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="cQU-SD-jhJ"/>
                         <viewControllerLayoutGuide type="bottom" id="O2r-uq-h6F"/>
@@ -1274,7 +1274,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="Z3J-H0-6du"/>
                     <connections>
-                        <outlet property="doneChoosingSongs" destination="oHg-ne-rEW" id="mnW-GS-xYN"/>
                         <outlet property="lentosButton" destination="LMf-BX-qei" id="0Gu-VX-wEL"/>
                         <outlet property="mediosButton" destination="4CE-r6-zCa" id="RlV-WD-e8h"/>
                         <outlet property="rapidosButton" destination="LGu-vU-M0O" id="STU-ie-suv"/>
