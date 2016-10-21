@@ -39,7 +39,6 @@ class CoroEnLista{
         let coroRef = corosRef.child(String(self.id))
         print(coroRef)
         coroRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
-            print(snapshot)
             let coroFIR = Coro(snapshot: snapshot, dbRef: corosRef)
             completion(coroFIR)
         })

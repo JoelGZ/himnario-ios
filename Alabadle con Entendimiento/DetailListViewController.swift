@@ -32,6 +32,10 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             let defaults = UserDefaults.standard
             let userUID = defaults.string(forKey: "USER_UID")!
             listaRef = rootRef.child("listas/\(userUID)/\(lista.id)")
+            corosEnListaRef = listaRef?.child("corosEnLista")
+            lentosRef = corosEnListaRef?.child("lentos")
+            rapidosMediosRef = corosEnListaRef?.child("rapidos-medios")
+            print(listaRef)
             loadDataWhenReady(completion: {(isReady:Bool) in
                 if isReady {
                     self.todosArray = self.lentosArray + self.rapidosMediosArray
@@ -61,9 +65,6 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         tableView.delegate = self
         tableView.dataSource = self
         
-        corosEnListaRef = listaRef?.child("corosEnLista")
-        lentosRef = corosEnListaRef?.child("lentos")
-        rapidosMediosRef = corosEnListaRef?.child("rapidos-medios")
         corosRef = rootRef.child("coros")
         
         splitViewController!.presentsWithGesture = false
@@ -211,17 +212,34 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         //if both arrays have been set (readyNumber == 2)then indicate it is ready to continue
         var readyNumber = 0
         rapidosMediosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(rapSnap) in
+            var tempArray1 = [CoroEnLista]()
             for coroRMChild in rapSnap.children {
                 let coroRMEnLista = CoroEnLista(snapshot: (coroRMChild as! FIRDataSnapshot))
-                self.rapidosMediosArray.append(coroRMEnLista)
+                print("nombre \(coroRMEnLista.nombre)")
+                tempArray1.append(coroRMEnLista)
             }
+            self.rapidosMediosArray = tempArray1
             readyNumber += 1
             if readyNumber == 2 {
                 completion(true)
             }
         })
         print(lentosRef)
-        lentosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(lentSnap) in
+        lentosRef?.observe(FIRDataEventType.value, with: {(lentSnap) in
+            var tempArray2 = [CoroEnLista]()
+            for coroLentoChild in lentSnap.children {
+                let coroLentoEnLista = CoroEnLista(snapshot: (coroLentoChild as! FIRDataSnapshot))
+                print("nombre \(coroLentoEnLista.nombre)")
+                tempArray2.append(coroLentoEnLista)
+            }
+            self.lentosArray = tempArray2
+            readyNumber += 1
+            if readyNumber == 2 {
+                completion(true)
+            }
+        })
+
+        /*lentosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(lentSnap) in
             for coroLentoChild in lentSnap.children {
                 let coroLentoEnLista = CoroEnLista(snapshot: (coroLentoChild as! FIRDataSnapshot))
                 self.lentosArray.append(coroLentoEnLista)
@@ -230,7 +248,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             if readyNumber == 2 {
                 completion(true)
             }
-        })
+        })*/
     }
     
     //MARK: Actions

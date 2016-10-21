@@ -72,7 +72,7 @@ class NewListViewController: UIViewController, UITextFieldDelegate {
             
             //Create row list
             let calendarFormatter = DateFormatter()
-            calendarFormatter.dateFormat = "yyyyMdHms"
+            calendarFormatter.dateFormat = "yyyyMMddHHmms"
             let newListID = Int(calendarFormatter.string(from: NSDate() as Date))!
                     
             let newListDic: Dictionary<String,Any> = ["nombre": nameOfList,
