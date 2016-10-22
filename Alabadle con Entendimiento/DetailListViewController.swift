@@ -288,9 +288,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     //MARK: Deleting, sharing and updating functions
-    func deleteList() {
-        //TODO: delete list
- 
+    func deleteList() { 
         listaRef?.removeValue()
         self.navigationController?.navigationController!.popToRootViewController(animated: true)
     }

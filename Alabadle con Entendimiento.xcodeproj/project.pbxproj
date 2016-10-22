@@ -11,6 +11,8 @@
 		3E6261177A9525C368E61831 /* Pods_Alabadle_con_Entendimiento.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ADC7D7DC64D37F98611500F /* Pods_Alabadle_con_Entendimiento.framework */; };
 		610D844E1DA7654600F525A2 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610D844D1DA7654600F525A2 /* LoginViewController.swift */; };
 		6113BD2B1DA47BFD00FB7A64 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6113BD2A1DA47BFD00FB7A64 /* GoogleService-Info.plist */; };
+		611EC5CC1DBB0A0C00F546F0 /* MusicaPagerItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611EC5CB1DBB0A0C00F546F0 /* MusicaPagerItemViewController.swift */; };
+		611EC5CE1DBB0CF500F546F0 /* MusicaPagerParentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611EC5CD1DBB0CF500F546F0 /* MusicaPagerParentViewController.swift */; };
 		611EF5631DADE252009AD4DF /* ListasTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611EF5621DADE251009AD4DF /* ListasTableViewController.swift */; };
 		611EF5651DADE40C009AD4DF /* Lista.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611EF5641DADE40C009AD4DF /* Lista.swift */; };
 		611EF5671DADE9C3009AD4DF /* DetailListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611EF5661DADE9C3009AD4DF /* DetailListViewController.swift */; };
@@ -64,6 +66,8 @@
 		604F214152BA922485DDE262 /* Pods-Alabadle con EntendimientoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alabadle con EntendimientoTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Alabadle con EntendimientoTests/Pods-Alabadle con EntendimientoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		610D844D1DA7654600F525A2 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		6113BD2A1DA47BFD00FB7A64 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		611EC5CB1DBB0A0C00F546F0 /* MusicaPagerItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicaPagerItemViewController.swift; sourceTree = "<group>"; };
+		611EC5CD1DBB0CF500F546F0 /* MusicaPagerParentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicaPagerParentViewController.swift; sourceTree = "<group>"; };
 		611EF5621DADE251009AD4DF /* ListasTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListasTableViewController.swift; sourceTree = "<group>"; };
 		611EF5641DADE40C009AD4DF /* Lista.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lista.swift; sourceTree = "<group>"; };
 		611EF5661DADE9C3009AD4DF /* DetailListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailListViewController.swift; sourceTree = "<group>"; };
@@ -176,6 +180,8 @@
 				611EF5621DADE251009AD4DF /* ListasTableViewController.swift */,
 				610D844D1DA7654600F525A2 /* LoginViewController.swift */,
 				616F0C8D1DA5F90300830F84 /* MusicaViewController.swift */,
+				611EC5CB1DBB0A0C00F546F0 /* MusicaPagerItemViewController.swift */,
+				611EC5CD1DBB0CF500F546F0 /* MusicaPagerParentViewController.swift */,
 				61DC1F8E1DB5DE5B002C3238 /* NewListViewController.swift */,
 				61C873791DB72C4000E2DD79 /* SelectCorosForListTableViewCell.swift */,
 				61C873771DB6CF0E00E2DD79 /* SelectCorosForListViewController.swift */,
@@ -513,10 +519,12 @@
 				611EF5691DADEA36009AD4DF /* ListasTableViewCell.swift in Sources */,
 				611EF5651DADE40C009AD4DF /* Lista.swift in Sources */,
 				61A0E3141DA41C6000DCB7D2 /* CorosTableViewController.swift in Sources */,
+				611EC5CC1DBB0A0C00F546F0 /* MusicaPagerItemViewController.swift in Sources */,
 				611EF5631DADE252009AD4DF /* ListasTableViewController.swift in Sources */,
 				616F0C8E1DA5F90300830F84 /* MusicaViewController.swift in Sources */,
 				61A0E3161DA41FF800DCB7D2 /* Coro.swift in Sources */,
 				61A0E31C1DA422DB00DCB7D2 /* GetReadableText.swift in Sources */,
+				611EC5CE1DBB0CF500F546F0 /* MusicaPagerParentViewController.swift in Sources */,
 				611EF56D1DADF1BE009AD4DF /* CoroEnListaTableViewCell.swift in Sources */,
 				616F0C8C1DA5E58700830F84 /* CoroDetailViewController.swift in Sources */,
 				61A17E761DA83C7100737049 /* User.swift in Sources */,
