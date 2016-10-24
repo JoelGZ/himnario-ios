@@ -56,7 +56,7 @@ class Coro: NSObject {
         key = snapshot.key
         let snapshotValue = snapshot.value as! [String: AnyObject]
         
-        id = (dbRef.key as NSString).integerValue
+        id = Int(key)!
         orden = snapshotValue["orden"] as! Int
         nombre = snapshotValue["nombre"] as! String
         cuerpo = snapshotValue["cuerpo"] as! String

@@ -29,10 +29,10 @@ class MusicaPagerParentViewController: UIViewController, UIPageViewControllerDat
         super.viewDidLoad()
         
         splitViewController!.presentsWithGesture = false
-        
-        loadDataWhenReady(completion: {(isReady) in
+    /*    loadDataWhenReady(completion: {(isReady) in
             if isReady {
                 for coroEnLista in self.corosEnListaRapidosArray {
+                    print("nombreeeee")
                     coroEnLista.convertToCoro(completion: {(coroResultante:Coro) in
                         let coro = coroResultante
                         self.partiturasArray.append(coro.partitura)
@@ -45,7 +45,7 @@ class MusicaPagerParentViewController: UIViewController, UIPageViewControllerDat
                     })
                 }
             }
-        })
+        })*/
         
         if coro.velocidad == "RM" {
             index = coro.orden - 1
@@ -62,6 +62,7 @@ class MusicaPagerParentViewController: UIViewController, UIPageViewControllerDat
         self.pageViewController = self.storyboard?.instantiateViewController(withIdentifier: "MusicaPager") as? UIPageViewController
         
         self.pageViewController!.dataSource = self
+
         let startVC = self.viewControllerAtIndex(index: index) as MusicaPagerItemViewController
         let viewControllers = NSArray(object: startVC)
         
@@ -71,7 +72,7 @@ class MusicaPagerParentViewController: UIViewController, UIPageViewControllerDat
         self.pageViewController!.didMove(toParentViewController: self)
     }
     
-    func loadDataWhenReady(completion:@escaping (_ isReady: Bool) -> Void ) {
+    /*func loadDataWhenReady(completion:@escaping (_ isReady: Bool) -> Void ) {
         //if both arrays have been set (readyNumber == 2)then indicate it is ready to continue
         var readyNumber = 0
         rapidosMediosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(rapSnap) in
@@ -101,7 +102,7 @@ class MusicaPagerParentViewController: UIViewController, UIPageViewControllerDat
                 completion(true)
             }
         })
-    }
+    }*/
 
     
     override func viewWillAppear(_ animated: Bool) {

@@ -37,7 +37,7 @@ class CoroEnLista{
     func convertToCoro(completion:@escaping (_ coro: Coro) -> Void ) {
         let corosRef = FIRDatabase.database().reference().child("coros")
         let coroRef = corosRef.child(String(self.id))
-        print(coroRef)
+
         coroRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
             let coroFIR = Coro(snapshot: snapshot, dbRef: corosRef)
             completion(coroFIR)

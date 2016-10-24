@@ -30,6 +30,7 @@
 		615057811D9ABC020008CC96 /* Alabadle_con_EntendimientoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615057801D9ABC020008CC96 /* Alabadle_con_EntendimientoUITests.swift */; };
 		616F0C8C1DA5E58700830F84 /* CoroDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F0C8B1DA5E58700830F84 /* CoroDetailViewController.swift */; };
 		616F0C8E1DA5F90300830F84 /* MusicaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F0C8D1DA5F90300830F84 /* MusicaViewController.swift */; };
+		6194135E1DBC875100EE35A4 /* CoroDetailWPagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6194135D1DBC875100EE35A4 /* CoroDetailWPagerViewController.swift */; };
 		61A0E3141DA41C6000DCB7D2 /* CorosTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A0E3131DA41C6000DCB7D2 /* CorosTableViewController.swift */; };
 		61A0E3161DA41FF800DCB7D2 /* Coro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A0E3151DA41FF800DCB7D2 /* Coro.swift */; };
 		61A0E3181DA4201900DCB7D2 /* VelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A0E3171DA4201900DCB7D2 /* VelButton.swift */; };
@@ -91,6 +92,7 @@
 		615057821D9ABC020008CC96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		616F0C8B1DA5E58700830F84 /* CoroDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoroDetailViewController.swift; sourceTree = "<group>"; };
 		616F0C8D1DA5F90300830F84 /* MusicaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicaViewController.swift; sourceTree = "<group>"; };
+		6194135D1DBC875100EE35A4 /* CoroDetailWPagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoroDetailWPagerViewController.swift; sourceTree = "<group>"; };
 		61A0E3131DA41C6000DCB7D2 /* CorosTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CorosTableViewController.swift; sourceTree = "<group>"; };
 		61A0E3151DA41FF800DCB7D2 /* Coro.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coro.swift; sourceTree = "<group>"; };
 		61A0E3171DA4201900DCB7D2 /* VelButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VelButton.swift; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 				61A0E3151DA41FF800DCB7D2 /* Coro.swift */,
 				611EF56A1DADEC07009AD4DF /* CoroEnLista.swift */,
 				616F0C8B1DA5E58700830F84 /* CoroDetailViewController.swift */,
+				6194135D1DBC875100EE35A4 /* CoroDetailWPagerViewController.swift */,
 				611EF56E1DADF2C5009AD4DF /* CorosContract.swift */,
 				611EF5721DADF2E5009AD4DF /* CorosEnListaContract.swift */,
 				611EF56C1DADF1BE009AD4DF /* CoroEnListaTableViewCell.swift */,
@@ -530,6 +533,7 @@
 				61A17E761DA83C7100737049 /* User.swift in Sources */,
 				61A0E3181DA4201900DCB7D2 /* VelButton.swift in Sources */,
 				611EF56B1DADEC07009AD4DF /* CoroEnLista.swift in Sources */,
+				6194135E1DBC875100EE35A4 /* CoroDetailWPagerViewController.swift in Sources */,
 				61C873781DB6CF0E00E2DD79 /* SelectCorosForListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

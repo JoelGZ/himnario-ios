@@ -25,19 +25,34 @@ class MusicaPagerItemViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        scrollView.delegate = self
+        
         scrollView.bounds.size.height = UIScreen.main.bounds.height - (defaults.object(forKey: "navBarHeight") as! CGFloat) + 7
         scrollView.bounds.size.width = UIScreen.main.bounds.width
         
-        setZoomParametersSize(scrollViewSize: scrollView.bounds.size, landscape: UIDevice.current.orientation.isLandscape)
+        let url = URL(string: imageName)
+        let data = try? Data(contentsOf: url!)
+        partituraImageView.image = UIImage(data: data!)
+        
+        //setZoomParametersSize(scrollViewSize: scrollView.bounds.size, landscape: UIDevice.current.orientation.isLandscape)
         
         scrollView.contentOffset.y = 0
-        self.partituraImageView.image = UIImage(named: self.imageName)
+        
         flag = true
-        scrollView.delegate = self
         
         setMyPageControl(fl: true)
         configurePageControl()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        if UIDevice.current.orientation.isLandscape {
+            setZoomParametersSize(scrollViewSize: scrollView.bounds.size, landscape: true)
+        } else {
+            setZoomParametersSize(scrollViewSize: scrollView.bounds.size, landscape: false)
+        }
+    }
+
     
     func setMyPageControl(fl: Bool) {
         
@@ -61,8 +76,13 @@ class MusicaPagerItemViewController: UIViewController {
     }
     
     func setZoomParametersSize(scrollViewSize: CGSize, landscape: Bool) {
-        let widthScale = scrollViewSize.width / 613
-        let heightScale = scrollViewSize.height / 793
+        let imageSize = partituraImageView.bounds.size
+        //let widthScale = scrollViewSize.width / 613
+        let widthScale = scrollViewSize.width / 1277
+        //let heightScale = scrollViewSize.height / 793
+        let heightScale = scrollViewSize.height / 1652
+        dump("image \(imageSize)")
+        dump("scroll \(scrollViewSize)")
         
         if landscape {
             minScale = max(widthScale,heightScale)
@@ -72,7 +92,9 @@ class MusicaPagerItemViewController: UIViewController {
         
         scrollView.minimumZoomScale = minScale
         scrollView.maximumZoomScale = 2.0
-        scrollView.zoomScale = minScale
+        scrollView.setZoomScale(minScale, animated: false)
+        print(scrollView.zoomScale)
+        print(minScale)
         scrollView.contentOffset.y = 0
     }
     
@@ -102,11 +124,11 @@ class MusicaPagerItemViewController: UIViewController {
 }
 
 extension MusicaPagerItemViewController: UIScrollViewDelegate {
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return partituraImageView
     }
-    
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         pageControl.currentPage = Int(itemIndex)
     }
 }

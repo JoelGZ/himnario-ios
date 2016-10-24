@@ -40,6 +40,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             loadDataWhenReady(completion: {(isReady:Bool) in
                 if isReady {
                     self.todosArray = self.lentosArray + self.rapidosMediosArray
+                    self.partiturasArray = self.partiturasRapidosArray + self.partiturasLentosArray
                     self.tableView.reloadData()
                 }
             })
@@ -57,6 +58,9 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     var lentosArray = Array<CoroEnLista>()
     var rapidosMediosArray = Array<CoroEnLista>()
     var todosArray = Array<CoroEnLista>()
+    var partiturasRapidosArray = Array<String>()
+    var partiturasLentosArray = Array<String>()
+    var partiturasArray = Array<String>()
     var celContract: CorosEnListaContract = CorosEnListaContract()
     
     
@@ -107,6 +111,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         loadDataWhenReady(completion: {(isReady:Bool) in
             if isReady {
                 self.todosArray = self.lentosArray + self.rapidosMediosArray
+                self.partiturasArray = self.partiturasRapidosArray + self.partiturasLentosArray
                 self.tableView.reloadData()
             }
         })
@@ -183,46 +188,47 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         tonalidadLabel.text = lista.ton_global
     }
     
-    func loadCorosEnListaData() {
-        print(corosEnListaRef)
-        
-        loadDataWhenReady(completion: {(isReady:Bool) in
-            if isReady {
-                self.todosArray = self.lentosArray + self.rapidosMediosArray
-                self.tableView.reloadData()
-            }
-        })
-    }
-    
     func loadDataWhenReady(completion:@escaping (_ isReady: Bool) -> Void ) {
         //if both arrays have been set (readyNumber == 2)then indicate it is ready to continue
         var readyNumber = 0
+        var rapidosCounter = 0
+        var lentosCounter = 0
         rapidosMediosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(rapSnap) in
             var tempArray1 = [CoroEnLista]()
+            var partRapArray = Array<String>()
             for coroRMChild in rapSnap.children {
                 let coroRMEnLista = CoroEnLista(snapshot: (coroRMChild as! FIRDataSnapshot))
-                print("nombre \(coroRMEnLista.nombre)")
                 tempArray1.append(coroRMEnLista)
+                coroRMEnLista.convertToCoro(completion: {(coroReturned: Coro) in
+                    partRapArray.append(coroReturned.partitura)
+                    self.partiturasRapidosArray = partRapArray
+                    rapidosCounter += 1
+                    if readyNumber == 2 && rapidosCounter == Int(rapSnap.childrenCount) {
+                        completion(true)
+                    }
+                })
             }
             self.rapidosMediosArray = tempArray1
             readyNumber += 1
-            if readyNumber == 2 {
-                completion(true)
-            }
         })
         
         lentosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(lentSnap) in
             var tempArray2 = [CoroEnLista]()
+            var partLentArray = Array<String>()
             for coroLentoChild in lentSnap.children {
                 let coroLentoEnLista = CoroEnLista(snapshot: (coroLentoChild as! FIRDataSnapshot))
-                print("nombre \(coroLentoEnLista.nombre)")
                 tempArray2.append(coroLentoEnLista)
+                coroLentoEnLista.convertToCoro(completion: {(coroReturned: Coro) in
+                    partLentArray.append(coroReturned.partitura)
+                    self.partiturasLentosArray = partLentArray
+                    lentosCounter += 1
+                    if readyNumber == 2 && lentosCounter == Int(lentSnap.childrenCount) {
+                        completion(true)
+                    }
+                })
             }
             self.lentosArray = tempArray2
             readyNumber += 1
-            if readyNumber == 2 {
-                completion(true)
-            }
         })
     }
     
@@ -254,7 +260,6 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         self.activityIndicator.startAnimating()
         self.activityIndicator.isHidden = false
         
-    //    dispatch_after(DispatchTime.now, (Int64)(1 * NSEC_PER_SEC)), dispatch_get_main_queue()){      };
         DispatchQueue.main.async {
             self.shareList(sender: sender)
             self.activityIndicator.stopAnimating()
@@ -303,6 +308,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
                 self.loadDataWhenReady(completion: {(isReady:Bool) in
                     if isReady {
                         self.todosArray = self.lentosArray + self.rapidosMediosArray
+                        self.partiturasArray = self.partiturasRapidosArray + self.partiturasLentosArray
                         self.tableView.reloadData()
                     }
                 })
@@ -438,6 +444,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
+    
     /*
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
      //TODO: move coros
@@ -482,8 +489,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             if sourceIndexPath.section < proposedDestinationIndexPath.section {
                 row = self.tableView(tableView, numberOfRowsInSection: sourceIndexPath.section) - 1
             }
-            //TODO: fix this
-          //  return NSIndexPath(forRow: row, inSection: sourceIndexPath.section)
+            return IndexPath(row: row, section: sourceIndexPath.section)
         }
         return proposedDestinationIndexPath
     }
@@ -495,47 +501,39 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == "addCorosToList" {
-            if let destination = segue.destination as? SelectCorosForListViewController {
-                destination.listaRef = listaRef
-            }
-        }
-        //TODO: prepare showCoroDetailPager segue
-        
-      /*  if segue.identifier == "showCoroDetailPager" {
+        if segue.identifier == "showCoroDetailPager" {
             let tabBarController = segue.destination as? UITabBarController
-            let destinationVC = tabBarController?.viewControllers?.first as? CoroDetailWPagerVC
+            let destinationVC = tabBarController?.viewControllers?.first as? CoroDetailWPagerViewController
             let secondVC = tabBarController?.viewControllers?.last as? MusicaPagerParentViewController
             
-            if let coroIndex = tableView.indexPathForSelectedRow {
-                let coro: Coro!
-                let coroEnLista: CoroEnLista!
-                if coroIndex.section == 0 {
-                    coroEnLista = rapidosMediosArray[coroIndex.row]
-                    coro = coroEnLista.convertToCoro()
-                } else {
-                    coroEnLista = todosArray[coroIndex.row]
-                    coro = coroEnLista.convertToCoro()
+            if tableView.indexPathForSelectedRow != nil {
+                if let coroIndex = tableView.indexPathForSelectedRow {
+                    var coro = Coro(id: 1, orden: 1, nombre: "", cuerpo: "", tonalidad: "", ton_alt: "", velletra: "", tiempo: 60, audio: "", partitura: "", autormusica: "", autorletra: "", cita: "", historia: "", sName: "")
+                    let coroEnLista: CoroEnLista!
+                    if coroIndex.section == 0 {
+                        coroEnLista = rapidosMediosArray[coroIndex.row]
+                    } else {
+                        coroEnLista = todosArray[coroIndex.row]
+                    }
+                    destinationVC!.coroEnLista = coroEnLista
+                    //para la partitura
+                    secondVC!.coro = coroEnLista
+                    dump(partiturasArray)
+                    secondVC!.partiturasArray = partiturasArray
+                    secondVC!.lista = lista
+                    navigationItem.title = nil
                 }
-                destinationVC!.coro = coro
-                //para la partitura
-                secondVC!.coro = coroEnLista
-                secondVC!.lista = lista
-                navigationItem.title = nil
             }
             
             // hide current tab bar to show other tab bar
             self.tabBarController?.tabBar.isHidden = true
             
             self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.primaryHidden
-            
         } else if segue.identifier == "addCorosToList" {
-            if let destination = segue.destinationViewController as? SelectCorosForListViewController {
-                destination.listId = lista._id
+            if let destination = segue.destination as? SelectCorosForListViewController {
+                destination.listaRef = listaRef
             }
         }
-*/
     }
     
     func reorderCorosEnLista(array: Array<CoroEnLista>, destination: Int, source: Int, section: Int) {

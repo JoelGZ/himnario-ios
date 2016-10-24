@@ -1,15 +1,14 @@
 //
-//  CoroDetailViewController.swift
+//  CoroDetailWPagerViewController.swift
 //  Alabadle con Entendimiento
 //
-//  Created by Joel García on 10/5/16.
+//  Created by Joel García on 10/22/16.
 //  Copyright © 2016 Joel García. All rights reserved.
 //
 
 import UIKit
 
-class CoroDetailViewController: UIViewController, UIAlertViewDelegate {
-    
+class CoroDetailWPagerViewController: UIViewController {        
     //MARK: Properties
     @IBOutlet weak var nombreCoroLabel: UILabel!
     @IBOutlet weak var numeroCoroLabel: UILabel!
@@ -37,12 +36,16 @@ class CoroDetailViewController: UIViewController, UIAlertViewDelegate {
     @IBOutlet weak var scrollView: UIScrollView!
     // Coro que viene del table view
     var coro:Coro?
+    var coroEnLista: CoroEnLista?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //setup content of labels
-        self.setupViews()
+        coroEnLista?.convertToCoro(completion: {(coroResultante: Coro) in
+            self.coro = coroResultante
+            self.setupViews()
+        })
         
         //Prevent screen from dimming
         UIApplication.shared.isIdleTimerDisabled = true
@@ -125,5 +128,3 @@ class CoroDetailViewController: UIViewController, UIAlertViewDelegate {
     }
     
 }
-
-

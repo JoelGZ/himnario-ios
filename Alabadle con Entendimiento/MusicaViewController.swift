@@ -27,24 +27,13 @@ class MusicaViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if UIDevice.current.orientation.isLandscape
-        {
-            setZoomParametersSize(scrollViewSize: scrollView.bounds.size, landscape: true)
-            scrollViewWidthPortrait = scrollView.bounds.height
-            scrollViewHeightPortrait = scrollView.bounds.width
-        } else {
-            setZoomParametersSize(scrollViewSize: scrollView.bounds.size, landscape: false)
-            scrollViewWidthPortrait = scrollView.bounds.width
-            scrollViewHeightPortrait = scrollView.bounds.height
-        }
-        
-        scrollView.delegate = self
-        //partituraImageView.image = UIImage(named: coro!.musica)
-        print("Partitura: \(coro!.partitura)")
+        self.scrollView.delegate = self
+
         let url = URL(string: coro!.partitura)
         let data = try? Data(contentsOf: url!)
         partituraImageView.image = UIImage(data: data!)
-        setZoomParametersSize(scrollViewSize: scrollView.bounds.size, landscape: UIDevice().orientation.isLandscape)
+        
+        //setZoomParametersSize(scrollViewSize: scrollView.bounds.size, landscape: UIDevice().orientation.isLandscape)
         flag = true
         
         UIApplication.shared.isIdleTimerDisabled = true
@@ -54,6 +43,17 @@ class MusicaViewController: UIViewController {
         rootViewController = self.navigationController?.topViewController   //viewControllers[vc]
         let playBarButtonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(self.playSong(sender:)))
         rootViewController!.navigationItem.rightBarButtonItem = playBarButtonItem
+        
+        if UIDevice.current.orientation.isLandscape {
+            setZoomParametersSize(scrollViewSize: scrollView.bounds.size, landscape: true)
+            scrollViewWidthPortrait = scrollView.bounds.height
+            scrollViewHeightPortrait = scrollView.bounds.width
+        } else {
+            setZoomParametersSize(scrollViewSize: scrollView.bounds.size, landscape: false)
+            scrollViewWidthPortrait = scrollView.bounds.width
+            scrollViewHeightPortrait = scrollView.bounds.height
+        }
+        dump("scroll : \(scrollView.bounds)")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -65,6 +65,7 @@ class MusicaViewController: UIViewController {
     
     @IBAction func pauseSong(sender: UIBarButtonItem) {
         //let path = Bundle.main.pathForResource(coro?.musica, ofType: "mp3")
+        //TODO: setup audio
         let path = Bundle.main.path(forResource: "", ofType: "mp3")
         if let thePath = path {
             let url = NSURL(fileURLWithPath: thePath)
@@ -125,6 +126,8 @@ class MusicaViewController: UIViewController {
         let imageSize = partituraImageView.bounds.size
         let widthScale = scrollViewSize.width / imageSize.width
         let heightScale = scrollViewSize.height / imageSize.height
+        dump("image1 \(imageSize)")
+        dump("scroll1 \(scrollViewSize)")
         
         var minScale:CGFloat
         if landscape {
@@ -134,7 +137,9 @@ class MusicaViewController: UIViewController {
         }
         scrollView.minimumZoomScale = minScale
         scrollView.maximumZoomScale = 2.0
-        scrollView.zoomScale = minScale
+        scrollView.setZoomScale(minScale, animated: false)
+        print(scrollView.zoomScale)
+        print(minScale)
         scrollView.contentOffset.y = 0
     }
     
@@ -160,13 +165,14 @@ class MusicaViewController: UIViewController {
                 scrollViewWidthPortrait = scrollView.bounds.width
                 scrollViewHeightPortrait = scrollView.bounds.height
             }
+            dump("scroll2 : \(scrollView.bounds)")
             contAux += 1
         }
     }
 }
 
 extension MusicaViewController: UIScrollViewDelegate {
-    private func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return partituraImageView
     }
 }
