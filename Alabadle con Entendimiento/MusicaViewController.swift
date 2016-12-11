@@ -8,6 +8,8 @@
 
 import UIKit
 import AVFoundation
+import FirebaseStorage
+import FirebaseDatabase
 
 class MusicaViewController: UIViewController {
     
@@ -24,19 +26,67 @@ class MusicaViewController: UIViewController {
     var audioPlayer: AVAudioPlayer!
     var rootViewController: UIViewController!
     
+    let storage = FIRStorage.storage()
+    
+    // Create a storage reference from our storage service
+    var storageRef: FIRStorageReference!
+    var musicaString: String!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        partituraImageView.isHidden = true
         self.scrollView.delegate = self
-
-        let url = URL(string: coro!.partitura)
-        let data = try? Data(contentsOf: url!)
-        partituraImageView.image = UIImage(data: data!)
+        
+        storageRef = storage.reference(forURL: "gs://alabadle-con-entendimiento.appspot.com/")
         
         //setZoomParametersSize(scrollViewSize: scrollView.bounds.size, landscape: UIDevice().orientation.isLandscape)
         flag = true
         
         UIApplication.shared.isIdleTimerDisabled = true
+        
+        //declare this property where it won't go out of scope relative to your listener
+        let reachability = Reachability()!
+        
+        reachability.whenReachable = { reachability in
+            // this is called on a background thread, but UI updates must
+            // be on the main thread, like this:
+            DispatchQueue.main.async() {
+                let sName = self.coro?.sName
+                self.musicaString = (sName?.replacingOccurrences(of: " ", with:"_"))!
+                let partituraRef = self.storageRef.child("partituras/\(self.musicaString!).jpg")
+                partituraRef.data(withMaxSize: 1*1024*1024) {(data, error) -> Void in
+                    if (error != nil) {
+                        // TODO: inform user that something went wrong
+                    } else {
+                        self.partituraImageView.image = UIImage(data: data!)
+                        self.partituraImageView.isHidden = false
+                    }
+                }
+            }
+        }
+        
+        reachability.whenUnreachable = { reachability in
+            // this is called on a background thread, but UI updates must
+            // be on the main thread, like this:
+            DispatchQueue.main.async() {
+                let alert = UIAlertController(title: "Sin conexión...", message: "Este contenido solamente está disponible en linea.", preferredStyle: UIAlertControllerStyle.alert)
+                let regresarAction = UIAlertAction(title: "Regresar", style: .default, handler: {
+                    (alert: UIAlertAction!) -> Void in self.goBackWhenNoConnection()
+                })
+                alert.addAction(regresarAction)
+                alert.popoverPresentationController?.sourceView = self.view
+                alert.popoverPresentationController?.sourceRect = self.view.bounds
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,20 +113,28 @@ class MusicaViewController: UIViewController {
         rootViewController!.navigationItem.rightBarButtonItem = nil
     }
     
+    func goBackWhenNoConnection() {
+        tabBarController?.selectedIndex = 0
+    }
+    
     @IBAction func pauseSong(sender: UIBarButtonItem) {
-        //let path = Bundle.main.pathForResource(coro?.musica, ofType: "mp3")
-        //TODO: setup audio
-        let path = Bundle.main.path(forResource: "", ofType: "mp3")
-        if let thePath = path {
-            let url = NSURL(fileURLWithPath: thePath)
-            do {
-                audioPlayer = try AVAudioPlayer(contentsOf: url as URL, fileTypeHint: nil)
-                audioPlayer.pause()
-            } catch {
-                errorPlayingSong()
+        
+        let audioRef = storageRef.child("audios/\(musicaString!).mp3")
+        
+        // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
+        audioRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) -> Void in
+            if (error != nil) {
+                self.errorPlayingSong()
+                print(error)
+            } else {
+                do {
+                    self.audioPlayer = try AVAudioPlayer(data: data!)
+                    self.audioPlayer.prepareToPlay()
+                    self.audioPlayer.pause()
+                } catch {
+                    self.errorPlayingSong()
+                }
             }
-        } else {
-            errorPlayingSong()
         }
         let newBarButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.play, target: self, action: #selector(self.playSong(sender:)))
         rootViewController!.navigationItem.rightBarButtonItem = newBarButton
@@ -95,21 +153,25 @@ class MusicaViewController: UIViewController {
         
     }
     @IBAction func playSong(sender: UIBarButtonItem) {
-     //   let path = Bundle.main.pathForResource(coro?.musica, ofType: "mp3")
-        let path = Bundle.main.path(forResource: "", ofType: "mp3")
-        if let thePath = path {
-            let url = NSURL(fileURLWithPath: thePath)
-            do {
-                audioPlayer = try AVAudioPlayer(contentsOf: url as URL, fileTypeHint: nil)
-                audioPlayer.prepareToPlay()
-                audioPlayer.play()
-                audioPlayer.numberOfLoops = -1
-            } catch {
-                errorPlayingSong()
+        // Create a reference to the file you want to download
+        let audioRef = storageRef.child("audios/\(musicaString!).mp3")
+        
+        // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
+        audioRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) -> Void in
+            if (error != nil) {
+                self.errorPlayingSong()
+            } else {
+                do {
+                    self.audioPlayer = try AVAudioPlayer(data: data!)
+                    self.audioPlayer.prepareToPlay()
+                    self.audioPlayer.play()
+                    self.audioPlayer.numberOfLoops = -1
+                } catch {
+                    self.errorPlayingSong()
+                }
             }
-        } else {
-            errorPlayingSong()
         }
+        
         let newBarButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.pause, target: self, action: #selector(self.pauseSong(sender:)))
         rootViewController!.navigationItem.rightBarButtonItem = newBarButton
     }

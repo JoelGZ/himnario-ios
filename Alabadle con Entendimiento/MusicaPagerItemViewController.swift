@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseStorage
 
 class MusicaPagerItemViewController: UIViewController {
     
@@ -22,6 +23,13 @@ class MusicaPagerItemViewController: UIViewController {
     var pageControl: UIPageControl!
     let defaults = UserDefaults.standard
     
+    let storage = FIRStorage.storage()
+    
+    // Create a storage reference from our storage service
+    var storageRef: FIRStorageReference!
+    var musicaString: String!
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -30,11 +38,49 @@ class MusicaPagerItemViewController: UIViewController {
         scrollView.bounds.size.height = UIScreen.main.bounds.height - (defaults.object(forKey: "navBarHeight") as! CGFloat) + 7
         scrollView.bounds.size.width = UIScreen.main.bounds.width
         
-        let url = URL(string: imageName)
-        let data = try? Data(contentsOf: url!)
-        partituraImageView.image = UIImage(data: data!)
+        storageRef = storage.reference(forURL: "gs://alabadle-con-entendimiento.appspot.com/")
         
-        //setZoomParametersSize(scrollViewSize: scrollView.bounds.size, landscape: UIDevice.current.orientation.isLandscape)
+        //declare this property where it won't go out of scope relative to your listener
+        let reachability = Reachability()!
+        
+        reachability.whenReachable = { reachability in
+            // this is called on a background thread, but UI updates must
+            // be on the main thread, like this:
+            DispatchQueue.main.async() {
+                let sName = self.coro?.sName
+                self.musicaString = (sName?.replacingOccurrences(of: " ", with:"_"))!
+                let partituraRef = self.storageRef.child("partituras/\(self.musicaString!).jpg")
+                partituraRef.data(withMaxSize: 1*1024*1024) {(data, error) -> Void in
+                    if (error != nil) {
+                        // TODO: inform user that something went wrong
+                    } else {
+                        self.partituraImageView.image = UIImage(data: data!)
+                        self.partituraImageView.isHidden = false
+                    }
+                }
+            }
+        }
+        
+        reachability.whenUnreachable = { reachability in
+            // this is called on a background thread, but UI updates must
+            // be on the main thread, like this:
+            DispatchQueue.main.async() {
+                let alert = UIAlertController(title: "Sin conexión...", message: "Este contenido solamente está disponible en linea.", preferredStyle: UIAlertControllerStyle.alert)
+                let regresarAction = UIAlertAction(title: "Regresar", style: .default, handler: {
+                    (alert: UIAlertAction!) -> Void in self.goBackWhenNoConnection()
+                })
+                alert.addAction(regresarAction)
+                alert.popoverPresentationController?.sourceView = self.view
+                alert.popoverPresentationController?.sourceRect = self.view.bounds
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
         
         scrollView.contentOffset.y = 0
         
@@ -53,6 +99,9 @@ class MusicaPagerItemViewController: UIViewController {
         }
     }
 
+    func goBackWhenNoConnection() {
+        tabBarController?.selectedIndex = 0
+    }
     
     func setMyPageControl(fl: Bool) {
         

@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseDatabase
+import FirebaseAuth
 
 class SelectCorosForListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UISearchControllerDelegate {
     
@@ -47,10 +48,16 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
         let defaults = UserDefaults.standard
         isSafeToDisplayFlag = defaults.bool(forKey: "SAFE")
         
-        if (isSafeToDisplayFlag) {
-            loadData()
-        } else {
-            loadSafeData()
+        loadFakeData()
+        FIRAuth.auth()!.addStateDidChangeListener { auth, FIRuser in
+            if FIRuser != nil {
+                let user = User(authData: FIRuser!)
+                if user.email == "test@nomail.com" {
+                    self.loadSafeData()
+                } else {
+                    self.loadData()
+                }
+            }
         }
         
         // Keyboard subscriptions
@@ -307,7 +314,7 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
                     })
                 } else {        //agregar primer coro a lentos
                     let coroRef = lentosRef.child("\(coro.id)")
-                    coroRef.setValue(self.setupCoroForList(coro: coro, corosInVelCount: 1))
+                    coroRef.setValue(self.setupCoroForList(coro: coro, corosInVelCount: 0))
                     tableView.reloadData()
                 }
             } else {
@@ -326,7 +333,7 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
                     })
                 } else {            //agregar primer coro a rapidos-medios
                     let coroRef = rapidosMediosRef.child("\(coro.id)")
-                    coroRef.setValue(self.setupCoroForList(coro: coro, corosInVelCount: 1))
+                    coroRef.setValue(self.setupCoroForList(coro: coro, corosInVelCount: 0))
                     tableView.reloadData()
                 }
             }

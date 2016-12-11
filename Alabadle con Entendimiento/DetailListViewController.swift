@@ -9,7 +9,7 @@
 import UIKit
 import FirebaseDatabase
 
-class DetailListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UIAlertViewDelegate {
+class DetailListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UIAlertViewDelegate, ListaSelectionDelegate {
     
     @IBOutlet weak var tituloLabel: UILabel!
     @IBOutlet weak var navBar: UINavigationItem!
@@ -41,10 +41,12 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
                 if isReady {
                     self.todosArray = self.lentosArray + self.rapidosMediosArray
                     self.partiturasArray = self.partiturasRapidosArray + self.partiturasLentosArray
-                    self.tableView.reloadData()
+                    if self.tableView != nil {
+                        self.tableView.reloadData()
+                        self.setupLabels()
+                    }
                 }
             })
-           // setupNoListView()
         }
     }
     
@@ -96,7 +98,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         let screenSize: CGRect = UIScreen.main.bounds
         let maxSize = max(screenSize.width,screenSize.height)
         if maxSize >= 736 {         //If it is iPhone 6s Plus or iPad
-            self.navigationItem.rightBarButtonItems = [editButtonItem, addCorosButton, actionInListButton]
+            self.navigationItem.rightBarButtonItems = [editButtonItem, addCorosButton, actionInListButton, deleteListButton]
             self.tabBarController?.tabBar.isHidden = false
         } else {
             self.tabBarController?.tabBar.isHidden = true
@@ -124,6 +126,8 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     override func viewWillDisappear(_ animated: Bool) {
         UIApplication.shared.isIdleTimerDisabled = false
     }
+    
+    
     
     func setupNoListView() {
         let screenSize: CGRect = UIScreen.main.bounds
@@ -181,10 +185,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     //Load Data
     func setupLabels(){
         tituloLabel.text = lista.nombreLista
-        if lista.ton_global.isEmpty {
-            tonalidadLabel.text = "Tonalidad no se ha resuelto"
-        }
-        
+        //TODO: settle tonalidad
         tonalidadLabel.text = lista.ton_global
     }
     
@@ -319,10 +320,8 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func shareList(sender: AnyObject){
-        //TODO: shareList
-        /*
         var sharingItems = [AnyObject]()
-        let sharingText = self.lista.toString()
+        let sharingText = self.lista.toString(listaURL: listaRef!)
         sharingItems.append(sharingText as AnyObject)
         
         let shareVC = UIActivityViewController(activityItems: sharingItems, applicationActivities: nil)
@@ -331,7 +330,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             popoverController.barButtonItem = sender as? UIBarButtonItem
         }
         
-        self.present(shareVC, animated: true, completion: nil)*/
+        self.present(shareVC, animated: true, completion: nil)
     }
     
     
@@ -528,7 +527,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             // hide current tab bar to show other tab bar
             self.tabBarController?.tabBar.isHidden = true
             
-            self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.primaryHidden
+          //  self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.primaryHidden
         } else if segue.identifier == "addCorosToList" {
             if let destination = segue.destination as? SelectCorosForListViewController {
                 destination.listaRef = listaRef
@@ -610,9 +609,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         self.tableView.reloadData()
         */
     }
-}
-
-extension DetailListViewController: ListaSelectionDelegate {
+    
     func listaSelected(newLista: Lista) {
         lista = newLista
     }

@@ -14,7 +14,7 @@ protocol ListaSelectionDelegate: class {
     func listaSelected(newLista: Lista)
 }
 
-class ListasTableViewController: UITableViewController {
+class ListasTableViewController: UITableViewController, UISplitViewControllerDelegate {
     
     @IBOutlet weak var navBar: UINavigationItem!
     var resultArray: Array<Lista> = []
@@ -33,19 +33,33 @@ class ListasTableViewController: UITableViewController {
         super.viewDidLoad()
         
         let defaults = UserDefaults.standard
-        listasDeUsuarioRef = rootRef.child("listas/\(defaults.string(forKey: "USER_UID")!)")
+        let userUID = defaults.string(forKey: "USER_UID")
+        listasDeUsuarioRef = rootRef.child("listas/\(userUID!)")
         // TODO: localize
         navBar.title = "Mis Listas"
         flag = true
         
         navigationItem.leftBarButtonItem = editButtonItem
-        
         if let split = self.splitViewController {
             let controllers = split.viewControllers
             self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailListViewController
         }
         
-        
+        FIRAuth.auth()?.addStateDidChangeListener { auth, user in
+            if user != nil {
+                self.loadListasData()
+            } else {
+                let alert = UIAlertController(title: "Inicie sesión", message: "Para poder visualizar sus listas, por favor inicie sesión.", preferredStyle: .alert)
+                let inicarSesionAction = UIAlertAction(title: "Iniciar sesión", style: .default, handler: {_ in
+                    self.navigationController?.navigationBar.isHidden = true
+                    //TODO: do not permit to go back
+                    self.performSegue(withIdentifier: "goToLogInScreen", sender: nil)
+                })
+                alert.addAction(inicarSesionAction)
+                
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,10 +80,8 @@ class ListasTableViewController: UITableViewController {
                 self.present(alert, animated: true, completion: nil)
             }
         }
-        
-        
+
         self.tabBarController?.tabBar.isHidden = false
-        
     }
     
     func loadListasData(){
@@ -88,10 +100,32 @@ class ListasTableViewController: UITableViewController {
                     if childrenCounter == Int(snapshot.childrenCount) {
                         self.resultArray = tempArray
                         self.tableView.reloadData()
+                        self.delegate?.listaSelected(newLista: lista)
                     }
                 })
             }
         })
+        
+       /* self.listasDeUsuarioRef.observeSingleEvent(of: FIRDataEventType.value, with: {
+            (snapshot) in
+            if snapshot.hasChildren() {
+                var counter = 0
+                for listaID in snapshot.children {
+                    counter += 1
+                    if counter == Int(snapshot.childrenCount) {     // display last list
+                        let index = counter - 1
+                        let indexPath = NSIndexPath(row: index, section: 0)
+                        self.tableView.selectRow(at: indexPath as IndexPath, animated: false, scrollPosition: UITableViewScrollPosition.middle)
+                        let listaIDStr = "\((listaID as! FIRDataSnapshot).key)"
+                        let listaRef = self.listasDeUsuarioRef.child(listaIDStr)
+                        listaRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshotChild) in
+                            let lista = Lista(snapshot: snapshotChild, dbRef: listaRef)
+                            self.delegate?.listaSelected(newLista: lista)
+                        })
+                    }
+                }
+            }
+        })*/
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -129,8 +163,6 @@ class ListasTableViewController: UITableViewController {
         //Also when signs out and going back to lists it reveals detail vc instead of master vc first
         //***********************
         
-        let detailViewCont = self.delegate as? DetailListViewController
-        print(detailViewCont)
         if let detailViewController = self.delegate as? DetailListViewController {
            // detailViewController.lista = lista
             detailViewController.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
@@ -166,5 +198,16 @@ class ListasTableViewController: UITableViewController {
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
+    
+    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController:UIViewController, onto primaryViewController:UIViewController) -> Bool {
+        guard let secondaryAsNavController = secondaryViewController as? UINavigationController else { return false }
+        guard let topAsDetailController = secondaryAsNavController.topViewController as? DetailListViewController else { return false }
+        
+        if topAsDetailController.lista == nil || topAsDetailController.lista.id == 10000 {
+            return true
+        }
+        return true
+    }
+    
 }
 

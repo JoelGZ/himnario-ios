@@ -48,21 +48,19 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
         let tabBarHeight = tabBarController!.tabBar.bounds.height
         defaults.set(Int(tabBarHeight), forKey: "tabBarHeight")
         
-        isSafeToDisplayFlag = defaults.bool(forKey: "SAFE")
-        print("Pring: \(isSafeToDisplayFlag)")
-        if (isSafeToDisplayFlag) {
-            loadData()
-        } else {
-            loadSafeData()
-        }
-    
-        FIRAuth.auth()!.addStateDidChangeListener { auth, user in
-            if user == nil {        //not signed in
+        loadFakeData()
+        FIRAuth.auth()!.addStateDidChangeListener { auth, FIRuser in
+            if FIRuser == nil {        //not signed in
                 self.performSegue(withIdentifier: "logInScreenSegue", sender: nil)
+            } else {
+                let user = User(authData: FIRuser!)
+                if user.email == "test@nomail.com" {
+                    self.loadSafeData()
+                } else {
+                    self.loadData()
+                }
             }
         }
-        
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -104,11 +102,13 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
                 let coroRef = self.corosRef.child(String(coroId))
                 
                 coroRef.observe(FIRDataEventType.value, with: {(sp) in
-                   // print(sp.value)
                     let coro = Coro(snapshot: sp, coroId: coroId)
                     tempCoroArray2.append(coro)
                     if tempCoroArray2.count == self.safeCoros.count {
                         self.corosArray = tempCoroArray2
+                        for coro in self.corosArray! {
+                            print("\(coro.nombre)\n")
+                        }
                         self.tableView.reloadData()
                     }
                 })

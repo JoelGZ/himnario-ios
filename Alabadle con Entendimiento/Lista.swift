@@ -40,6 +40,7 @@ class Lista {
         let snapshotValue = snapshot.value as! [String: AnyObject]
         
         id = (dbRef.key as NSString).integerValue
+        print(id)
         nombreLista = snapshotValue["nombre"] as! String
         ton_global = snapshotValue["ton_global"] as! String
         if ton_global == dollarSign {
@@ -57,25 +58,82 @@ class Lista {
         ref = snapshot.ref
     }
     
-  /*  func toString() -> String{
-        let databaseManager = DatabaseManager()
-        let celContract = CorosEnListaContract()
-        var text = "\(self.nombreLista.uppercased())\nTonalidad: \(self.ton_global)\n------------\nRAPIDOS\n"
-        let whereRapidos = "\(celContract.KEY_VELOCIDAD)='RM'"
-        let whereLentos = "\(celContract.KEY_VELOCIDAD)='L'"
-        let rapidosArray = databaseManager.getAllRowsCoroEnLista(self._id, whereClause: whereRapidos)
-        let lentosArray = databaseManager.getAllRowsCoroEnLista(self._id, whereClause: whereLentos)
-        for coro in rapidosArray {
-            text += "- \(coro.nombre)\n"
+    init(snapshot: FIRDataSnapshot, listaid: Int) {
+        let dollarSign = "$"
+        key = snapshot.key
+        
+        let snapshotValue = snapshot.value as! [String: AnyObject]
+        
+        id = listaid
+        print(id)
+        nombreLista = snapshotValue["nombre"] as! String
+        ton_global = snapshotValue["ton_global"] as! String
+        if ton_global == dollarSign {
+            ton_global = ""
         }
-        text += "------------\nLENTOS\n"
-        for coro in lentosArray {
-            text += "- \(coro.nombre)\n"
+        ton_rap = snapshotValue["ton_rap"] as! String
+        if ton_rap == dollarSign {
+            ton_rap = ""
+        }
+        ton_lent = snapshotValue["ton_lent"] as! String
+        if ton_lent == dollarSign {
+            ton_lent = ""
+        }
+        
+        ref = snapshot.ref
+    }
+    
+    func toString(listaURL: FIRDatabaseReference) -> String{
+        
+        var text = "\(self.nombreLista.uppercased())\nTonalidad: \(self.ton_global)\n------------\nRAPIDOS\n"
+        
+        loadData(listaURL: listaURL){
+            (rapMedText: String, lentText: String) in
+            text += rapMedText
+            text += "------------\nLENTOS\n"
+            text += lentText
         }
         
         text += "\nCreada con la Aplicación Alabadle con Entendimiento."
         
         return text
     }
-*/
+    
+    func loadData(listaURL: FIRDatabaseReference, completion:@escaping (_ rapMedText: String, _ lentText: String) -> Void){
+        
+        var rapMedText = ""
+        var lentText = ""
+        let lentosRef = listaURL.child("lentos")
+        let rapidosMediosRef = listaURL.child("rapidos-medios")
+        
+        //if both arrays have been set (readyNumber == 2)then indicate it is ready to continue
+        var readyNumber = 0
+        var rapidosCounter = 0
+        var lentosCounter = 0
+        rapidosMediosRef.observeSingleEvent(of: FIRDataEventType.value, with: {(rapSnap) in
+            for coroRMChild in rapSnap.children {
+                let coroRMEnLista = CoroEnLista(snapshot: (coroRMChild as! FIRDataSnapshot))
+                rapMedText += "- \(coroRMEnLista.nombre)\n"
+                rapidosCounter += 1
+                if readyNumber == 2 && rapidosCounter == Int(rapSnap.childrenCount) {
+                    completion(rapMedText, lentText)
+                }
+            }
+            readyNumber += 1
+        })
+        
+        lentosRef.observeSingleEvent(of: FIRDataEventType.value, with: {(lentSnap) in
+            for coroLentoChild in lentSnap.children {
+                let coroLentoEnLista = CoroEnLista(snapshot: (coroLentoChild as! FIRDataSnapshot))
+                lentText += "- \(coroLentoEnLista.nombre)\n"
+                lentosCounter += 1
+                if readyNumber == 2 && lentosCounter == Int(lentSnap.childrenCount) {
+                    completion(rapMedText, lentText)
+                }
+            }
+            readyNumber += 1
+        })
+    
+    }
+
 }

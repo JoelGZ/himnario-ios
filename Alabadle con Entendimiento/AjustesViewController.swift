@@ -41,8 +41,11 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     
     func rateApp() {
         let rateString = "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=\(APP_ID)&onlyLatestVersion=true&pageNumber=0&sortOrdering=1)"
-        UIApplication.shared.open(NSURL(string: rateString)! as URL)
-       // UIApplication.shared.openURL(NSURL(string : rateString)! as URL)
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(NSURL(string: rateString)! as URL)
+        } else {
+            UIApplication.shared.openURL(NSURL(string : rateString)! as URL)
+        }
     }
     
     func reportProblem() {
@@ -155,7 +158,11 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
         switch indexPath.section {
         case 0:
             let url = NSURL(string: "https://innovateideasjg.wordpress.com/tutoriales/")
-            UIApplication.shared.open(url! as URL)
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(url! as URL)
+            } else {
+                UIApplication.shared.openURL(url! as URL)
+            }
             break
         case 1:
             switch indexPath.row {
