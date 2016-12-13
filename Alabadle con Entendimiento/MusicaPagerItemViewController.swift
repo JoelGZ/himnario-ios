@@ -48,6 +48,7 @@ class MusicaPagerItemViewController: UIViewController {
             // be on the main thread, like this:
             DispatchQueue.main.async() {
                 let sName = self.coro?.sName
+                print(sName)
                 self.musicaString = (sName?.replacingOccurrences(of: " ", with:"_"))!
                 let partituraRef = self.storageRef.child("partituras/\(self.musicaString!).jpg")
                 partituraRef.data(withMaxSize: 1*1024*1024) {(data, error) -> Void in
