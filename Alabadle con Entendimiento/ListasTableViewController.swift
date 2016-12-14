@@ -87,7 +87,7 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
     func loadListasData(){
         var childrenCounter = 0
         
-        listasDeUsuarioRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
+        listasDeUsuarioRef.observe(FIRDataEventType.value, with: {(snapshot) in
             var tempArray = [Lista]()
 
             for listaID in snapshot.children {
@@ -188,7 +188,11 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
             
             //TODO: fix bug when deleting coros
             if resultArray.count != 0 {
-                self.delegate?.listaSelected(newLista: resultArray[indexPath.row - 1])
+                if indexPath.row == 0 {
+                    self.delegate?.listaSelected(newLista: resultArray[indexPath.row])      // indexPath.row = 0
+                } else {
+                    self.delegate?.listaSelected(newLista: resultArray[indexPath.row - 1])
+                }
             } else {
                 if let detailViewController = self.delegate as? DetailListViewController{
                     detailViewController.lista = Lista(id: 10000, nombreLista: "", ton_global: "", ton_rap: "", ton_lent: "")
