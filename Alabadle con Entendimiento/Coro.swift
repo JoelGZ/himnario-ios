@@ -57,9 +57,9 @@ class Coro: NSObject {
         let snapshotValue = snapshot.value as! [String: AnyObject]
         
         id = Int(key)!
-        orden = snapshotValue["orden"] as! Int
         nombre = snapshotValue["nombre"] as! String
         cuerpo = snapshotValue["cuerpo"] as! String
+        orden = snapshotValue["orden"] as! Int
         tonalidad = snapshotValue["ton"] as! String
         ton_alt = snapshotValue["ton_alt"] as! String
         if ton_alt == dollarSign {

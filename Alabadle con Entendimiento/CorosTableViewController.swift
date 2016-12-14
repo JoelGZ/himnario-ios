@@ -74,11 +74,11 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func loadData() {
-        corosRef.observe(FIRDataEventType.value, with: {(snapshot) in
+        corosRef.queryOrdered(byChild: "orden").observe(FIRDataEventType.value, with: {(snapshot) in
             var tempCoroArray = [Coro]()
             
             for coroSnap in snapshot.children {
-                let coro = Coro(snapshot: coroSnap as! FIRDataSnapshot, dbRef: self.corosRef)
+                let coro = Coro(snapshot: coroSnap as! FIRDataSnapshot, coroId: Int((coroSnap as AnyObject).key)!)
                 tempCoroArray.append(coro)
             }
             
