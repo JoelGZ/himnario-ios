@@ -30,25 +30,22 @@ class MusicaPagerParentViewController: UIViewController, UIPageViewControllerDat
         super.viewDidLoad()
         
         splitViewController!.presentsWithGesture = false
-        loadDataWhenReady(completion: {(isReady) in
+        /*loadDataWhenReady(completion: {(isReady) in
             if isReady {
                 for coroEnLista in self.corosEnListaRapidosArray {
-                    print("nombreeeee")
                     coroEnLista.convertToCoro(completion: {(coroResultante:Coro) in
                         let coro = coroResultante
-                        self.partiturasArray.append(coro.partitura)
                         self.corosArray.append(coro)
                     })
                 }
                 for coroEnLista in self.corosEnListaLentosArray {
                     coroEnLista.convertToCoro(completion: {(coroResultante: Coro) in
                         let coro = coroResultante
-                        self.partiturasArray.append(coro.partitura)
                         self.corosArray.append(coro)
                     })
                 }
             }
-        })
+        })*/
         
         if coro.velocidad == "RM" {
             index = coro.orden - 1
@@ -78,6 +75,11 @@ class MusicaPagerParentViewController: UIViewController, UIPageViewControllerDat
     func loadDataWhenReady(completion:@escaping (_ isReady: Bool) -> Void ) {
         //if both arrays have been set (readyNumber == 2)then indicate it is ready to continue
         var readyNumber = 0
+        
+        print("corosRef: \(corosEnListaRef)")
+        rapidosMediosRef = corosEnListaRef?.child("rapidos-medios")
+        lentosRef = corosEnListaRef?.child("lentos")
+        
         rapidosMediosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(rapSnap) in
             var tempArray1 = [CoroEnLista]()
             for coroRMChild in rapSnap.children {
@@ -119,6 +121,7 @@ class MusicaPagerParentViewController: UIViewController, UIPageViewControllerDat
         }
         
         let vc: MusicaPagerItemViewController = self.storyboard?.instantiateViewController(withIdentifier: "MusicaItem") as! MusicaPagerItemViewController
+        dump(corosArray)
         vc.coro = self.corosArray[index]
         vc.imageName = self.partiturasArray[index]
         vc.itemIndex = index

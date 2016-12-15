@@ -164,7 +164,6 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
         //***********************
         
         if let detailViewController = self.delegate as? DetailListViewController {
-           // detailViewController.lista = lista
             detailViewController.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
             detailViewController.navigationItem.leftItemsSupplementBackButton = true
             

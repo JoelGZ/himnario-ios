@@ -39,7 +39,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             print(listaRef)
             loadDataWhenReady(completion: {(isReady:Bool) in
                 if isReady {
-                    self.todosArray = self.lentosArray + self.rapidosMediosArray
+                    self.todosArray = self.rapidosMediosArray + self.lentosArray
                     self.partiturasArray = self.partiturasRapidosArray + self.partiturasLentosArray
                     if self.tableView != nil {
                         self.tableView.reloadData()
@@ -112,7 +112,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         
         loadDataWhenReady(completion: {(isReady:Bool) in
             if isReady {
-                self.todosArray = self.lentosArray + self.rapidosMediosArray
+                self.todosArray = self.rapidosMediosArray + self.lentosArray
                 self.partiturasArray = self.partiturasRapidosArray + self.partiturasLentosArray
                 self.tableView.reloadData()
             }
@@ -517,8 +517,17 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
                     destinationVC!.coroEnLista = coroEnLista
                     //para la partitura
                     secondVC!.coro = coroEnLista
-                    dump(partiturasArray)
                     secondVC!.partiturasArray = partiturasArray
+                    var corosArray = Array<Coro>()
+                    for coroEnLista in todosArray {
+                        coroEnLista.convertToCoro(completion: {(coro) in
+                            corosArray.append(coro)
+                            if corosArray.count == self.todosArray.count {
+                                secondVC!.corosArray = corosArray
+                            }
+                        })
+                    }
+                    secondVC!.corosEnListaRef = corosEnListaRef
                     secondVC!.lista = lista
                     navigationItem.title = nil
                 }

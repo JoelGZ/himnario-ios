@@ -33,6 +33,7 @@ class MusicaPagerItemViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        partituraImageView.isHidden = true
         scrollView.delegate = self
         
         scrollView.bounds.size.height = UIScreen.main.bounds.height - (defaults.object(forKey: "navBarHeight") as! CGFloat) + 7
@@ -48,7 +49,6 @@ class MusicaPagerItemViewController: UIViewController {
             // be on the main thread, like this:
             DispatchQueue.main.async() {
                 let sName = self.coro?.sName
-                print(sName)
                 self.musicaString = (sName?.replacingOccurrences(of: " ", with:"_"))!
                 let partituraRef = self.storageRef.child("partituras/\(self.musicaString!).jpg")
                 partituraRef.data(withMaxSize: 1*1024*1024) {(data, error) -> Void in
