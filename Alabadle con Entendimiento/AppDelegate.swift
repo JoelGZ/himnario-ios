@@ -30,17 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         let rightNavController = splitViewController.viewControllers.last as! UINavigationController
         let detailViewController = rightNavController.topViewController as! DetailListViewController
         
-        
-      /*  let databaseManager = DatabaseManager()
-       // let listasArray = databaseManager.getAllListas()
-        let listasArray = [Lista]()
-        if listasArray.isEmpty {
-            lista = masterViewController.resultArray.first
-        } else {
-            lista = listasArray.last as! Lista?
-        }
-        detailViewController.lista = lista*/
-        
         let defaults = UserDefaults.standard
         let userUID = defaults.string(forKey: "USER_UID")
         if userUID != nil {
@@ -61,11 +50,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
                                 let list = Lista(snapshot: snap, listaid: Int((listaID as! FIRDataSnapshot).key)!)
                                 detailViewController.lista = list
                             })
-                           /* listaRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshotChild) in
-                                let lista = Lista(snapshot: snapshotChild, dbRef: listaRef)
-                                print(lista.id)
-                                detailViewController.lista = lista
-                            })*/
                         }
                     }
                 }

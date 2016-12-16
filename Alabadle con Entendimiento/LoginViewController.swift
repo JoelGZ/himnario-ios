@@ -22,7 +22,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     let usersRef = FIRDatabase.database().reference().child("users")
     
     var keyboardIsShowing = false
-    
+    var userUID: String?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,6 +32,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
      
         FIRAuth.auth()?.addStateDidChangeListener() {auth, user in
             if user != nil {
+                self.userUID = user?.uid
                 self.performSegue(withIdentifier: "loggedInSegue", sender: nil)
                 
                 //add user to db if it does not exist
@@ -59,6 +61,37 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidDisappear(_ animated: Bool) {
         self.unsubscribeFromKeyboardNotifications()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "loggedInSegue" {
+            let tabBarController = segue.destination as! UITabBarController
+            let splitViewController = tabBarController.viewControllers![1] as! UISplitViewController
+            let rightNavController = splitViewController.viewControllers.last as! UINavigationController
+            let detailViewController = rightNavController.topViewController as! DetailListViewController
+            
+            let listasDeUsuarioRef = FIRDatabase.database().reference().child("listas/\(userUID!)")
+            listasDeUsuarioRef.observeSingleEvent(of: FIRDataEventType.value, with: {
+                (snapshot) in
+                if snapshot.hasChildren() {
+                    var counter = 0
+                    for listaID in snapshot.children {
+                        counter += 1
+                        if counter == Int(snapshot.childrenCount) {     // display last list
+                            let listaIDStr = "\((listaID as! FIRDataSnapshot).key)"
+                            print(listaIDStr)
+                            let listaRef = listasDeUsuarioRef.child(listaIDStr)
+                            print(listaRef)
+                            listaRef.observe(FIRDataEventType.value, with: {(snap) in
+                                print(Int((listaID as! FIRDataSnapshot).key)!)
+                                let list = Lista(snapshot: snap, listaid: Int((listaID as! FIRDataSnapshot).key)!)
+                                detailViewController.lista = list
+                            })
+                        }
+                    }
+                }
+            })
+        }
     }
     
     func setupUI() {

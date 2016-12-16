@@ -535,8 +535,6 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             
             // hide current tab bar to show other tab bar
             self.tabBarController?.tabBar.isHidden = true
-            
-          //  self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.primaryHidden
         } else if segue.identifier == "addCorosToList" {
             if let destination = segue.destination as? SelectCorosForListViewController {
                 destination.listaRef = listaRef
