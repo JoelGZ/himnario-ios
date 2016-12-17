@@ -1,0 +1,6 @@
+framework module Pods_Alabadle_con_Entendimiento {
+  umbrella header "Pods-Alabadle con Entendimiento-umbrella.h"
+
+  export *
+  module * { export * }
+}
