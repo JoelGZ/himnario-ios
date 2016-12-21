@@ -36,7 +36,6 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
     var safeCorosRef: FIRDatabaseReference!
     var listaRef: FIRDatabaseReference!
     var corosEnListaRef: FIRDatabaseReference!
-    var isSafeToDisplayFlag = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,9 +43,6 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
         //listaRef is set by parent VC
         corosRef = rootRef.child("coros")
         corosEnListaRef = listaRef.child("corosEnLista")
-        
-        let defaults = UserDefaults.standard
-        isSafeToDisplayFlag = defaults.bool(forKey: "SAFE")
         
         loadFakeData()
         FIRAuth.auth()!.addStateDidChangeListener { auth, FIRuser in
@@ -71,17 +67,6 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = true
         navigationItem.hidesBackButton = true
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        //TODO: See what's going on
-        
-        let app = UIApplication.shared
-        if searchController.isActive && !app.isStatusBarHidden && searchController.searchBar.frame.origin.y == 0 {
-            if let container = self.searchController.searchBar.superview {
-           //     container.frame = CGRectMake(container.frame.origin.x, container.frame.origin.y, container.frame.size.width, container.frame.size.height + app.statusBarFrame.height)
-            }
-        }
     }
     
     func loadData() {

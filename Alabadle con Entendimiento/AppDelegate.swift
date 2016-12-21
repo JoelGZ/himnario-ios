@@ -24,11 +24,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         // Override point for customization after application launch.
         
         let tabBarController = self.window!.rootViewController as! UITabBarController
-        let splitViewController = tabBarController.viewControllers![1] as! UISplitViewController
-        let leftNavController = splitViewController.viewControllers.first as! UINavigationController
+        let spViewController = tabBarController.viewControllers![1] as! UISplitViewController
+        let leftNavController = spViewController.viewControllers.first as! UINavigationController
         let masterViewController = leftNavController.topViewController as! ListasTableViewController
-        let rightNavController = splitViewController.viewControllers.last as! UINavigationController
+        let rightNavController = spViewController.viewControllers.last as! UINavigationController
         let detailViewController = rightNavController.topViewController as! DetailListViewController
+        
+        spViewController.delegate = self
         
         let defaults = UserDefaults.standard
         let userUID = defaults.string(forKey: "USER_UID")
@@ -62,24 +64,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         pageController.currentPageIndicatorTintColor = UIColor.black
         pageController.backgroundColor = UIColor.white
         
-        masterViewController.delegate = detailViewController
+        masterViewController.delegate1 = detailViewController
+        print(masterViewController.delegate1 ?? "nothing")
+        let navigationController = spViewController.viewControllers[spViewController.viewControllers.count-1] as! UINavigationController
+        navigationController.topViewController!.navigationItem.leftBarButtonItem = spViewController.displayModeButtonItem
         
-        let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
-        navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
-        splitViewController.delegate = self
         
         return true
     }
 
     // MARK: - Split view
     
+    func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
+        print("nothing")
+        return nil
+    }
+    
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController:UIViewController, onto primaryViewController:UIViewController) -> Bool {
         guard let secondaryAsNavController = secondaryViewController as? UINavigationController else { return false }
         guard let topAsDetailController = secondaryAsNavController.topViewController as? DetailListViewController else { return false }
         
-        if topAsDetailController.lista == nil || topAsDetailController.lista.id == 10000 {
-            return true
-        }	
         return true
     }
 }
