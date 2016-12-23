@@ -193,6 +193,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         case FIRAuthErrorCode.errorCodeUserNotFound.rawValue?:
                             self.errorAlert(flag: 6)
                             break
+                        case FIRAuthErrorCode.errorCodeInvalidEmail.rawValue?:
+                            self.errorAlert(flag: 7)
+                            break
                         default:
                             break
                         }
@@ -200,7 +203,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     }
                 }
             } else {
-                let alert = UIAlertController(title: "Email invalido", message: "Ingrese un correo valido.", preferredStyle: .alert)
+                let alert = UIAlertController(title: "Correo inválido", message: "Ingrese un correo válido.", preferredStyle: .alert)
                 let okAlertAction = UIAlertAction(title: "OK", style: .default)
                 
                 alert.addAction(okAlertAction)
@@ -298,6 +301,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         case 6:
             titulo = "Usuario no existe"
             message = "No existe una cuenta asociada con este correo. Porfavor cree una cuenta nueva."
+        case 7:
+            titulo = "Correo inválido"
+            message = "Porfavor ingrese un correo válido."
         default:
             break
         }
