@@ -1,4 +1,4 @@
-//
+	//
 //  LoginViewController.swift
 //  Alabadle con Entendimiento
 //
@@ -29,28 +29,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         self.tabBarController?.tabBar.isHidden = true
         self.navigationController?.navigationBar.isHidden = true
+        
+        checkReachability()
      
-        FIRAuth.auth()?.addStateDidChangeListener() {auth, user in
-            if user != nil {
-                self.userUID = user?.uid
-                self.performSegue(withIdentifier: "loggedInSegue", sender: nil)
-                
-                //add user to db if it does not exist
-                let userToAdd = User(authData: user!)
-                if !self.userExists(email: userToAdd.email) {
-                    let userItemRef = self.usersRef.child(userToAdd.uid)
-
-                    userItemRef.setValue(userToAdd.toAnyObject())
-                }
-                
-                guard let userData = user else { return }
-                let user = User(authData: userData)
-                let defaults = UserDefaults.standard
-                defaults.set(user.uid, forKey: "USER_UID")
-                defaults.set(user.email, forKey: "USER_EMAIL")
-            }
-        }
-
         setupUI()
         
         // Keyboard subscriptions
@@ -61,6 +42,58 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidDisappear(_ animated: Bool) {
         self.unsubscribeFromKeyboardNotifications()
+    }
+    
+    func checkReachability() {
+        let reachability = Reachability()!
+        
+        reachability.whenReachable = { reachability in
+            // this is called on a background thread, but UI updates must
+            // be on the main thread, like this:
+            DispatchQueue.main.async() {
+                FIRAuth.auth()?.addStateDidChangeListener() {auth, user in
+                    if user != nil {
+                        self.userUID = user?.uid
+                        self.performSegue(withIdentifier: "loggedInSegue", sender: nil)
+                        
+                        //add user to db if it does not exist
+                        let userToAdd = User(authData: user!)
+                        if !self.userExists(email: userToAdd.email) {
+                            let userItemRef = self.usersRef.child(userToAdd.uid)
+                            
+                            userItemRef.setValue(userToAdd.toAnyObject())
+                        }
+                        
+                        guard let userData = user else { return }
+                        let user = User(authData: userData)
+                        let defaults = UserDefaults.standard
+                        defaults.set(user.uid, forKey: "USER_UID")
+                        defaults.set(user.email, forKey: "USER_EMAIL")
+                    }
+                }
+            }
+        }
+        
+        reachability.whenUnreachable = { reachability in
+            // this is called on a background thread, but UI updates must
+            // be on the main thread, like this:
+            DispatchQueue.main.async() {
+                let alert = UIAlertController(title: "Sin conexión...", message: "Ha perdido conexión con el servidor. Por favor revise su conexión y vuelva a intentar.", preferredStyle: UIAlertControllerStyle.alert)
+                let regresarAction = UIAlertAction(title: "Reconectar", style: .default, handler: {
+                    (alert: UIAlertAction!) -> Void in self.checkReachability()
+                })
+                alert.addAction(regresarAction)
+                alert.popoverPresentationController?.sourceView = self.view
+                alert.popoverPresentationController?.sourceRect = self.view.bounds
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -82,7 +115,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                             print(listaIDStr)
                             let listaRef = listasDeUsuarioRef.child(listaIDStr)
                             print(listaRef)
-                            listaRef.observe(FIRDataEventType.value, with: {(snap) in
+                            listaRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snap) in
                                 print(Int((listaID as! FIRDataSnapshot).key)!)
                                 let list = Lista(snapshot: snap, listaid: Int((listaID as! FIRDataSnapshot).key)!)
                                 detailViewController.lista = list

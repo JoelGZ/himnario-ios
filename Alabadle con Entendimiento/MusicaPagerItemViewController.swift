@@ -41,6 +41,25 @@ class MusicaPagerItemViewController: UIViewController {
         
         storageRef = storage.reference(forURL: "gs://alabadle-con-entendimiento.appspot.com/")
         
+        checkReachability()
+        scrollView.contentOffset.y = 0
+        
+        flag = true
+        
+        setMyPageControl(fl: true)
+        configurePageControl()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        if UIDevice.current.orientation.isLandscape {
+            setZoomParametersSize(scrollViewSize: scrollView.bounds.size, landscape: true)
+        } else {
+            setZoomParametersSize(scrollViewSize: scrollView.bounds.size, landscape: false)
+        }
+    }
+    
+    func checkReachability() {
         //declare this property where it won't go out of scope relative to your listener
         let reachability = Reachability()!
         
@@ -82,24 +101,7 @@ class MusicaPagerItemViewController: UIViewController {
         } catch {
             print("Unable to start notifier")
         }
-        
-        scrollView.contentOffset.y = 0
-        
-        flag = true
-        
-        setMyPageControl(fl: true)
-        configurePageControl()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        
-        if UIDevice.current.orientation.isLandscape {
-            setZoomParametersSize(scrollViewSize: scrollView.bounds.size, landscape: true)
-        } else {
-            setZoomParametersSize(scrollViewSize: scrollView.bounds.size, landscape: false)
-        }
-    }
-
     func goBackWhenNoConnection() {
         tabBarController?.selectedIndex = 0
     }

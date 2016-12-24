@@ -74,12 +74,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
 
     // MARK: - Split view
-    
-    func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
-        print("nothing")
-        return nil
-    }
-    
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController:UIViewController, onto primaryViewController:UIViewController) -> Bool {
         guard let secondaryAsNavController = secondaryViewController as? UINavigationController else { return false }
         guard let topAsDetailController = secondaryAsNavController.topViewController as? DetailListViewController else { return false }
