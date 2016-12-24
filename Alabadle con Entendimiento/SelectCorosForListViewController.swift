@@ -70,7 +70,7 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
     }
     
     func loadData() {
-        corosRef.observe(FIRDataEventType.value, with: {(snapshot) in
+        corosRef.queryOrdered(byChild: "orden").observe(FIRDataEventType.value, with: {(snapshot) in
             var tempCoroArray = [Coro]()
             
             for coroSnap in snapshot.children {
