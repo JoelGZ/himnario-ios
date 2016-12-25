@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -75,7 +75,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="62"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FGE-X2-Lse" id="D2Z-u1-Kma">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="61"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="62"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Tonalidad" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lrY-bg-QnX">
@@ -174,6 +174,10 @@
                                     <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="a_cristo_coronad" translatesAutoresizingMaskIntoConstraints="NO" id="CZp-k9-zxF">
                                         <rect key="frame" x="0.0" y="0.0" width="613" height="793"/>
                                     </imageView>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="1Li-lf-PFB">
+                                        <rect key="frame" x="177" y="203" width="20" height="20"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </activityIndicatorView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="CZp-k9-zxF" secondAttribute="trailing" id="KRe-kc-LSs"/>
@@ -197,6 +201,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Musica" image="music" id="U6w-lB-tMD"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="1Li-lf-PFB" id="Vg0-VC-9j9"/>
                         <outlet property="partituraImageView" destination="CZp-k9-zxF" id="XRm-pZ-y1T"/>
                         <outlet property="scrollView" destination="pd7-LC-RIP" id="91J-sB-Go4"/>
                     </connections>
@@ -573,7 +578,7 @@
                             <tableViewSection headerTitle="Cuenta" footerTitle="" id="jl3-DL-7hR">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="Fw7-LZ-4qk" style="IBUITableViewCellStyleDefault" id="q1M-ea-7H9">
-                                        <rect key="frame" x="0.0" y="208" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="207" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="q1M-ea-7H9" id="q1a-iP-yny">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
@@ -590,7 +595,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="Qf2-Tc-VYR" style="IBUITableViewCellStyleDefault" id="8Pv-KZ-Ctd">
-                                        <rect key="frame" x="0.0" y="252" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="251" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8Pv-KZ-Ctd" id="PXR-Hg-Taw">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
@@ -611,7 +616,7 @@
                             <tableViewSection headerTitle="Contacto" id="9cg-w4-TWt">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="dUL-4e-oLJ" style="IBUITableViewCellStyleDefault" id="nwS-X4-Nn8">
-                                        <rect key="frame" x="0.0" y="353" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="351" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nwS-X4-Nn8" id="Lq0-q2-NuQ">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
@@ -628,7 +633,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="f5c-fw-ej3" style="IBUITableViewCellStyleDefault" id="6HU-E6-tMg">
-                                        <rect key="frame" x="0.0" y="397" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="395" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6HU-E6-tMg" id="V4t-nE-jMb">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
@@ -645,7 +650,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="EzK-41-e9O" style="IBUITableViewCellStyleDefault" id="fEM-bS-2zF">
-                                        <rect key="frame" x="0.0" y="441" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="439" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fEM-bS-2zF" id="ZgV-W4-aOK">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
@@ -737,7 +742,7 @@
                                         <rect key="frame" x="0.0" y="28" width="363" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bMJ-t3-t4t" id="Fst-mH-DV3">
-                                            <rect key="frame" x="0.0" y="0.0" width="330" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="330" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ccU-gu-FQF">
@@ -1301,7 +1306,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="65"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AsX-BJ-Qxi" id="me2-Ww-U5h">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="64"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="65"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nombre del Coro" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8CD-YK-mZf">
@@ -1421,6 +1426,10 @@
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="a_cristo_coronad" translatesAutoresizingMaskIntoConstraints="NO" id="ewd-wE-EUT">
                                         <rect key="frame" x="0.0" y="0.0" width="1277" height="1652"/>
                                     </imageView>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="5iX-og-uVz">
+                                        <rect key="frame" x="177" y="313" width="20" height="20"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </activityIndicatorView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="ewd-wE-EUT" firstAttribute="leading" secondItem="zgz-aW-AyF" secondAttribute="leading" id="3zj-RT-UEX"/>
@@ -1441,6 +1450,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Musica" id="BVS-TR-cXO"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="5iX-og-uVz" id="qbT-iS-KWm"/>
                         <outlet property="partituraImageView" destination="ewd-wE-EUT" id="pHq-pX-owA"/>
                         <outlet property="scrollView" destination="zgz-aW-AyF" id="fXR-xb-rdD"/>
                     </connections>

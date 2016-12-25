@@ -186,22 +186,6 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Alabadle con Entendimiento/MusicaPagerParentViewController.swift"
-            timestampString = "499107492.305235"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
-            landmarkName = "loadDataWhenReady(completion:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Alabadle con Entendimiento/MusicaPagerParentViewController.swift"
             timestampString = "499107499.570969"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"

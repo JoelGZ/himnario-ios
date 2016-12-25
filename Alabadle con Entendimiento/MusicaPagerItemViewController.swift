@@ -13,6 +13,7 @@ class MusicaPagerItemViewController: UIViewController {
     
     @IBOutlet var partituraImageView: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: - Variables
     var itemIndex: Int!
@@ -33,6 +34,7 @@ class MusicaPagerItemViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        activityIndicator.startAnimating()
         partituraImageView.isHidden = true
         scrollView.delegate = self
         
@@ -76,6 +78,8 @@ class MusicaPagerItemViewController: UIViewController {
                     } else {
                         self.partituraImageView.image = UIImage(data: data!)
                         self.partituraImageView.isHidden = false
+                        self.activityIndicator.stopAnimating()
+                        self.activityIndicator.isHidden = true
                     }
                 }
             }

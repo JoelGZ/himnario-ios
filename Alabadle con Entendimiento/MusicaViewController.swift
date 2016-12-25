@@ -15,6 +15,7 @@ class MusicaViewController: UIViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var partituraImageView: UIImageView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var coro:Coro?
     var scrollViewWidthPortrait:CGFloat?
@@ -36,6 +37,8 @@ class MusicaViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.activityIndicator.startAnimating()
+        self.activityIndicator.isHidden = false
         partituraImageView.isHidden = true
         self.scrollView.delegate = self
         
@@ -65,6 +68,8 @@ class MusicaViewController: UIViewController {
                     } else {
                         self.partituraImageView.image = UIImage(data: data!)
                         self.partituraImageView.isHidden = false
+                        self.activityIndicator.stopAnimating()
+                        self.activityIndicator.isHidden = true
                     }
                 }
             }
