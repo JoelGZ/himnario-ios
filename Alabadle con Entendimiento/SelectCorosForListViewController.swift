@@ -326,11 +326,9 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
     }
     
     func setupCoroForList(coro: Coro, corosInVelCount: Int) -> Any {
-        let orden = corosInVelCount + 1
-
         return [
             "nombre": coro.nombre,
-            "orden": orden,
+            "orden": corosInVelCount,
             "ton": coro.tonalidad
         ]
     }
