@@ -47,12 +47,6 @@ class MusicaPagerParentViewController: UIViewController, UIPageViewControllerDat
             }
         })*/
         
-        if coro.velocidad == "RM" {
-            index = coro.orden - 1
-        } else {
-            index = corosEnListaRapidosArray.count + coro.orden - 1
-        }
-        
         let defaults = UserDefaults.standard
         
         defaults.set(Int(navigationController!.navigationBar.bounds.height), forKey: "navBarHeight")
@@ -121,7 +115,6 @@ class MusicaPagerParentViewController: UIViewController, UIPageViewControllerDat
         }
         
         let vc: MusicaPagerItemViewController = self.storyboard?.instantiateViewController(withIdentifier: "MusicaItem") as! MusicaPagerItemViewController
-        dump(corosArray)
         vc.coro = self.corosArray[index]
         vc.imageName = self.partiturasArray[index]
         vc.itemIndex = index
@@ -141,6 +134,7 @@ class MusicaPagerParentViewController: UIViewController, UIPageViewControllerDat
         }
         
         index -= 1
+        
         return self.viewControllerAtIndex(index: index)
         
     }

@@ -159,9 +159,6 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let lista = self.resultArray[indexPath.row]
-        print("lista nombre \(lista.nombreLista)")
-        print("delegate1: \(delegate1)")
-        print("delegate2: \(self.delegate1)")
         self.delegate1?.listaSelected(newLista: lista)
         
         //TODO: FIX ERROR: when user signs out, and then signs in thru listastvc it later does not go into the list.

@@ -265,7 +265,6 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             self.shareList(sender: sender)
             self.activityIndicator.stopAnimating()
             self.activityIndicator.isHidden = true
-
         }
     }
     
@@ -308,7 +307,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             if flag {
                 self.loadDataWhenReady(completion: {(isReady:Bool) in
                     if isReady {
-                        self.todosArray = self.lentosArray + self.rapidosMediosArray
+                        self.todosArray = self.rapidosMediosArray + self.lentosArray
                         self.partiturasArray = self.partiturasRapidosArray + self.partiturasLentosArray
                         self.tableView.reloadData()
                     }
@@ -512,11 +511,12 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
                     if coroIndex.section == 0 {
                         coroEnLista = rapidosMediosArray[coroIndex.row]
                     } else {
-                        coroEnLista = todosArray[coroIndex.row]
+                        coroEnLista = todosArray[coroIndex.row + rapidosMediosArray.count]
                     }
                     destinationVC!.coroEnLista = coroEnLista
                     //para la partitura
                     secondVC!.coro = coroEnLista
+                    dump(partiturasArray)
                     secondVC!.partiturasArray = partiturasArray
                     var corosArray = Array<Coro>()
                     for coroEnLista in todosArray {
@@ -529,6 +529,11 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
                     }
                     secondVC!.corosEnListaRef = corosEnListaRef
                     secondVC!.lista = lista
+                    if coroIndex.section == 0 {
+                        secondVC!.index = coroIndex.row
+                    } else {
+                        secondVC!.index = coroIndex.row + self.rapidosMediosArray.count
+                    }
                     navigationItem.title = nil
                 }
             }
@@ -612,7 +617,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             lentosArray = databaseManager.getAllRowsCoroEnLista(lista._id, whereClause: "\(celContract.COLUMN_VELOCIDAD)='L'")
         }
         
-        todosArray = lentosArray + rapidosMediosArray
+        todosArray = rapidosMediosArray + lentosArray
         self.tableView.reloadData()
         */
     }
