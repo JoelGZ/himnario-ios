@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Alabadle con Entendimiento/DetailListViewController.swift"
-            timestampString = "504391062.722046"
+            timestampString = "504417059.727858"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "521"
-            endingLineNumber = "521"
+            startingLineNumber = "544"
+            endingLineNumber = "544"
             landmarkName = "prepare(for:sender:)"
             landmarkType = "7">
          </BreakpointContent>

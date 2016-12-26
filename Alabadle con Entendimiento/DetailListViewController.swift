@@ -31,12 +31,10 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         didSet{
             let defaults = UserDefaults.standard
             let userUID = defaults.string(forKey: "USER_UID")!
-            print("listaid: \(lista.id)")
             listaRef = rootRef.child("listas/\(userUID)/\(lista.id)")
             corosEnListaRef = listaRef?.child("corosEnLista")
             lentosRef = corosEnListaRef?.child("lentos")
             rapidosMediosRef = corosEnListaRef?.child("rapidos-medios")
-            print(listaRef)
             loadDataWhenReady(completion: {(isReady:Bool) in
                 if isReady {
                     self.todosArray = self.rapidosMediosArray + self.lentosArray
@@ -443,31 +441,61 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         self.tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
     
-    /*
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
      //TODO: delete coros
      
-        /*if editingStyle == UITableViewCellEditingStyle.delete {
+        if editingStyle == UITableViewCellEditingStyle.delete {
             if indexPath.section == 0 {
-                let coro = rapidosMediosArray[indexPath.row]
+                
+                rapidosMediosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
+                    for coroEnListaSnap in snapshot.children {
+                        let coro = CoroEnLista(snapshot: coroEnListaSnap as! FIRDataSnapshot)
+                        let coroRef = self.rapidosMediosRef?.child("\((coroEnListaSnap as! FIRDataSnapshot).key)")
+                        if coro.orden == indexPath.row {
+                            coroRef?.removeValue()
+                        } else if coro.orden > indexPath.row {
+                            let update = ["orden": (coro.orden - 1)]
+                            coroRef?.updateChildValues(update)
+                        }
+                    }
+                })
+               /* let coro = rapidosMediosArray[indexPath.row]
                 rapidosMediosArray.remove(at: indexPath.row)
-                databaseManager.deleteCoroEnLista(lista._id, coroId: coro._id, flag: true)
+                let coroRef = rapidosMediosRef?.child("\(coro.id)")
+                coroRef?.removeValue()*/
+               // databaseManager.deleteCoroEnLista(lista._id, coroId: coro._id, flag: true)
             } else {
+                lentosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
+                    for coroEnListaSnap in snapshot.children {
+                        let coro = CoroEnLista(snapshot: coroEnListaSnap as! FIRDataSnapshot)
+                        let coroRef = self.lentosRef?.child("\((coroEnListaSnap as! FIRDataSnapshot).key)")
+                        if coro.orden == indexPath.row {
+                            coroRef?.removeValue()
+                        } else if coro.orden > indexPath.row {
+                            let update = ["orden": (coro.orden - 1)]
+                            coroRef?.updateChildValues(update)
+                        }
+                    }
+                })
+                /*
                 let coro = lentosArray[indexPath.row]
                 lentosArray.remove(at: indexPath.row)
-                databaseManager.deleteCoroEnLista(lista._id, coroId: coro._id, flag: true)
+                let coroRef = lentosRef?.child("\(coro.id)")
+                coroRef?.removeValue()*/
+                //databaseManager.deleteCoroEnLista(lista._id, coroId: coro._id, flag: true)
             }
             
-            if indexPath.section == 0 {
+           /* if indexPath.section == 0 {
                 rapidosMediosArray = databaseManager.getAllRowsCoroEnLista(lista._id, whereClause: "\(celContract.COLUMN_VELOCIDAD)='RM'")
             } else {
                 lentosArray = databaseManager.getAllRowsCoroEnLista(lista._id, whereClause: "\(celContract.COLUMN_VELOCIDAD)='L'")
             }
             
-            tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
-            todosArray = lentosArray + rapidosMediosArray
-        }*/
-    }*/
+            tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)*/
+            //todosArray = lentosArray + rapidosMediosArray
+        }
+    }
     
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
