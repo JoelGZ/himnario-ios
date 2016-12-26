@@ -194,7 +194,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         var readyNumber = 0
         var rapidosCounter = 0
         var lentosCounter = 0
-        rapidosMediosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(rapSnap) in
+        rapidosMediosRef?.queryOrdered(byChild: "orden").observeSingleEvent(of: FIRDataEventType.value, with: {(rapSnap) in
             var tempArray1 = [CoroEnLista]()
             var partRapArray = Array<String>()
             for coroRMChild in rapSnap.children {
@@ -445,7 +445,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     
     /*
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-     //TODO: move coros
+     //TODO: delete coros
      
         /*if editingStyle == UITableViewCellEditingStyle.delete {
             if indexPath.section == 0 {
@@ -474,11 +474,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        if sourceIndexPath.section == 0 {
-            reorderCorosEnLista(array: rapidosMediosArray, destination: destinationIndexPath.row,source:  sourceIndexPath.row, section: sourceIndexPath.section)
-        } else {
-            reorderCorosEnLista(array: lentosArray, destination: destinationIndexPath.row, source: sourceIndexPath.row, section: sourceIndexPath.section)
-        }
+        reorderCorosEnLista(destination: destinationIndexPath.row, source:  sourceIndexPath.row, section: sourceIndexPath.section)
     }
     
     func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
@@ -547,79 +543,60 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
-    func reorderCorosEnLista(array: Array<CoroEnLista>, destination: Int, source: Int, section: Int) {
-        //TODO: reorder coros
-        
-       /* if source < destination {
-            // borrar todo de tabla en db
-            for coro in array {
-                databaseManager.deleteCoroEnLista(lista._id, coroId: coro._id, flag: false)
-            }
-            
-            // insertar coros antes del source
-            if source != 0 {
-                for coro in array {
-                    if (coro.orden - 1) < source {
-                        databaseManager.agregarCoroALista(lista._id, coroId: coro._id)
+    func reorderCorosEnLista(destination: Int, source: Int, section: Int) {
+        if source < destination {
+            var contDespuesDeSource = 0
+            if section == 0 {
+                rapidosMediosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
+                    for coroSnap in snapshot.children {
+                        let coro = CoroEnLista(snapshot: coroSnap as! FIRDataSnapshot)
+                        let coroInListaRef = self.rapidosMediosRef?.child("\(coro.id)")
+                        if coro.orden > source && coro.orden <= destination {
+                            let updates = ["orden": source + contDespuesDeSource]
+                            coroInListaRef?.updateChildValues(updates)
+                            contDespuesDeSource += 1
+                        } else if coro.orden == source {
+                            let updates = ["orden": destination]
+                            coroInListaRef?.updateChildValues(updates)
+                        }
                     }
-                }
-            }
-            
-            // insertar coros despues del source
-            for coro in array {
-                if (coro.orden - 1) > source && (coro.orden - 1) <= destination {
-                    databaseManager.agregarCoroALista(lista._id, coroId: coro._id)
-                }
-            }
-            
-            // insertar el coro que se esta moviendo
-            databaseManager.agregarCoroALista(lista._id, coroId: array[source]._id)
-            
-            // insertar coros despues del destination
-            if destination != (array.count - 1) {
-                for coro in array {
-                    if (coro.orden - 1) > destination {
-                        databaseManager.agregarCoroALista(lista._id, coroId: coro._id)
+                })
+            } else {
+                lentosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
+                    for coroSnap in snapshot.children {
+                        let coro = CoroEnLista(snapshot: coroSnap as! FIRDataSnapshot)
+                        let coroInListaRef = self.rapidosMediosRef?.child("\(coro.id)")
+                        if coro.orden > source && coro.orden <= destination {
+                            let updates = ["orden": source + contDespuesDeSource]
+                            coroInListaRef?.updateChildValues(updates)
+                            contDespuesDeSource += 1
+                        } else if coro.orden == source {
+                            let updates = ["orden": destination]
+                            coroInListaRef?.updateChildValues(updates)
+                        }
                     }
-                }
+                })
             }
         } else if source > destination {
-            // borrar coros desde destination
-            for coro in array {
-                if (coro.orden - 1) >= destination {
-                    databaseManager.deleteCoroEnLista(lista._id, coroId: coro._id, flag: false)
-                }
-            }
-            
-            //insertar el coro que se esta moviendo
-            databaseManager.agregarCoroALista(lista._id, coroId: array[source]._id)
-            
-            //insertar coros desde destination hasta antes de source
-            for coro in array {
-                if (coro.orden - 1) >= destination  && (coro.orden - 1) < source {
-                    databaseManager.agregarCoroALista(lista._id, coroId: coro._id)
-                }
-            }
-            
-            //insertar coros despues de source
-            if source != (array.count - 1) {
-                for coro in array {
-                    if (coro.orden - 1) > source {
-                        databaseManager.agregarCoroALista(lista._id, coroId: coro._id)
+            var contDesdeDestinationyAntesDeSource = 1
+            if section == 0 {
+                rapidosMediosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
+                    for coroSnap in snapshot.children {
+                        let coro = CoroEnLista(snapshot: coroSnap as! FIRDataSnapshot)
+                        let coroInListaRef = self.rapidosMediosRef?.child("\(coro.id)")
+                        
+                        if coro.orden == source {
+                            let updates = ["orden": destination]
+                            coroInListaRef?.updateChildValues(updates)
+                        } else if coro.orden >= destination && coro.orden < source {
+                            let updates = ["orden": destination + contDesdeDestinationyAntesDeSource]
+                            coroInListaRef?.updateChildValues(updates)
+                            contDesdeDestinationyAntesDeSource += 1
+                        }
                     }
-                }
+                })
             }
         }
-        
-        if section == 0 {
-            rapidosMediosArray = databaseManager.getAllRowsCoroEnLista(lista._id, whereClause: "\(celContract.COLUMN_VELOCIDAD)='RM'")
-        } else {
-            lentosArray = databaseManager.getAllRowsCoroEnLista(lista._id, whereClause: "\(celContract.COLUMN_VELOCIDAD)='L'")
-        }
-        
-        todosArray = rapidosMediosArray + lentosArray
-        self.tableView.reloadData()
-        */
     }
     
     func listaSelected(newLista: Lista) {
