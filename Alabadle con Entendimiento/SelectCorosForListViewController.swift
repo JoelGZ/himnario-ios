@@ -243,13 +243,58 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
     
     
     @IBAction func doneChoosingCoros(_ sender: AnyObject) {
+        var tonalidadArray = Array<String> ()
+        var contFinish = 1
+        let lentosRef = corosEnListaRef.child("lentos")
+        let rapidosMediosRef = corosEnListaRef.child("rapidos-medios")
+        lentosRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
+            for coroEnListaSnap in snapshot.children {
+                let coroEnLista = CoroEnLista(snapshot: coroEnListaSnap as! FIRDataSnapshot)
+                if coroEnLista.tonalidad != "$" {
+                    if !tonalidadArray.contains(coroEnLista.tonalidad) {
+                        tonalidadArray.append(coroEnLista.tonalidad)
+                    }
+                }
+                if contFinish == Int(snapshot.childrenCount) {
+                    var tonString = ""
+                    for tonalidad in tonalidadArray {
+                        tonString += "\(tonalidad), "
+                    }
+                    let index = tonString.index(tonString.endIndex, offsetBy: -2)
+                    tonString = tonString.substring(to: index)
+                    let tonalidadUpdate = ["ton_global": tonString]
+                    print("tonalidadUpdate: \(tonalidadUpdate)")
+                    self.listaRef?.updateChildValues(tonalidadUpdate)
+                }
+                contFinish += 1
+            }
+        })
+        
+        contFinish = 1
+        rapidosMediosRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
+            for coroEnListaSnap in snapshot.children {
+                let coroEnLista = CoroEnLista(snapshot: coroEnListaSnap as! FIRDataSnapshot)
+                if coroEnLista.tonalidad != "$" {
+                    if !tonalidadArray.contains(coroEnLista.tonalidad) {
+                        tonalidadArray.append(coroEnLista.tonalidad)
+                    }
+                }
+                if contFinish == Int(snapshot.childrenCount) {
+                    var tonString = ""
+                    for tonalidad in tonalidadArray {
+                        tonString += "\(tonalidad), "
+                    }
+                    let index = tonString.index(tonString.endIndex, offsetBy: -2)
+                    tonString = tonString.substring(to: index)
+                    let tonalidadUpdate = ["ton_global": tonString]
+                    print("tonalidadUpdate: \(tonalidadUpdate)")
+                    self.listaRef?.updateChildValues(tonalidadUpdate)
+                }
+                contFinish += 1
+            }
+        })
         navigationController?.popToRootViewController(animated: false)
     }
-    
-   /* @IBAction func doneChoosingSongs(unwindSegue: UIStoryboardSegue) {
-        navigationController?.popToRootViewController(animated: false)
-        //hice algo con un unwindsegue exit en storyboard
-    }*/
     
     // MARK: table view data source
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -326,10 +371,14 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
     }
     
     func setupCoroForList(coro: Coro, corosInVelCount: Int) -> Any {
+        var tonalidad = coro.tonalidad
+        if coro.ton_alt != "" {
+            tonalidad = "$"
+        }
         return [
             "nombre": coro.nombre,
             "orden": corosInVelCount,
-            "ton": coro.tonalidad
+            "ton": tonalidad
         ]
     }
     
@@ -388,40 +437,6 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
         
         return cell
 
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        //TODO: prepare doneChoosingCoros segue
-        
-       /* if segue.identifier == "doneChoosingCoros" {
-            //MAY NOT NEED
-            let destinationVC = segue.destination as? DetailListViewController
-            let lista = databaseManager.getLista(listId)
-            destinationVC!.lista = lista
-            // hide current tab bar to show other tab bar
-            self.tabBarController?.tabBar.isHidden = true
-        } else if segue.identifier == "showCoroDetail" {
-            let tabBarController = segue.destination as? UITabBarController
-            let destinationVC = tabBarController?.viewControllers?.first as? CoroDetailViewController
-            let secondVC = tabBarController?.viewControllers?.last as? MusicaViewController
-            
-            var coro: Coro!
-            if searchController.isActive {
-                coro = filteredCorosArray![coroIndex!]
-            } else {
-                coro = corosArray![coroIndex!]
-            }
-            destinationVC!.coro = coro
-            //para la partitura
-            secondVC!.coro = coro
-            secondVC!.vc = 3
-            navigationItem.title = nil
-            
-            // hide current tab bar to show other tab bar
-            self.tabBarController?.tabBar.isHidden = true
-        }
-*/
     }
     
     //Keyboard

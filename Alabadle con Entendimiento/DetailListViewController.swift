@@ -211,7 +211,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             readyNumber += 1
         })
         
-        lentosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(lentSnap) in
+        lentosRef?.queryOrdered(byChild: "orden").observeSingleEvent(of: FIRDataEventType.value, with: {(lentSnap) in
             var tempArray2 = [CoroEnLista]()
             var partLentArray = Array<String>()
             for coroLentoChild in lentSnap.children {
@@ -441,10 +441,8 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         self.tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
     
-    
+    //delete coros
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-     //TODO: delete coros
-     
         if editingStyle == UITableViewCellEditingStyle.delete {
             if indexPath.section == 0 {
                 
@@ -460,11 +458,6 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
                         }
                     }
                 })
-               /* let coro = rapidosMediosArray[indexPath.row]
-                rapidosMediosArray.remove(at: indexPath.row)
-                let coroRef = rapidosMediosRef?.child("\(coro.id)")
-                coroRef?.removeValue()*/
-               // databaseManager.deleteCoroEnLista(lista._id, coroId: coro._id, flag: true)
             } else {
                 lentosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
                     for coroEnListaSnap in snapshot.children {
@@ -478,22 +471,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
                         }
                     }
                 })
-                /*
-                let coro = lentosArray[indexPath.row]
-                lentosArray.remove(at: indexPath.row)
-                let coroRef = lentosRef?.child("\(coro.id)")
-                coroRef?.removeValue()*/
-                //databaseManager.deleteCoroEnLista(lista._id, coroId: coro._id, flag: true)
             }
-            
-           /* if indexPath.section == 0 {
-                rapidosMediosArray = databaseManager.getAllRowsCoroEnLista(lista._id, whereClause: "\(celContract.COLUMN_VELOCIDAD)='RM'")
-            } else {
-                lentosArray = databaseManager.getAllRowsCoroEnLista(lista._id, whereClause: "\(celContract.COLUMN_VELOCIDAD)='L'")
-            }
-            
-            tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)*/
-            //todosArray = lentosArray + rapidosMediosArray
         }
     }
     

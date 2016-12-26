@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Alabadle con Entendimiento/DetailListViewController.swift"
-            timestampString = "504417059.727858"
+            timestampString = "504480270.466852"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "544"
-            endingLineNumber = "544"
+            startingLineNumber = "522"
+            endingLineNumber = "522"
             landmarkName = "prepare(for:sender:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -177,54 +177,6 @@
             endingLineNumber = "54"
             landmarkName = "connectedToNetwork()"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Alabadle con Entendimiento/MusicaPagerParentViewController.swift"
-            timestampString = "504337205.471713"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "117"
-            endingLineNumber = "117"
-            landmarkName = "viewControllerAtIndex(index:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Alabadle_con_Entendimiento.MusicaPagerParentViewController.viewControllerAtIndex (index : Swift.Int) -&gt; Alabadle_con_Entendimiento.MusicaPagerItemViewController"
-                  moduleName = "Alabadle con Entendimiento"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/joelgarcia/himnario-ios/Alabadle%20con%20Entendimiento/MusicaPagerParentViewController.swift"
-                  timestampString = "504397030.958548"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "117"
-                  endingLineNumber = "117"
-                  offsetFromSymbolStart = "283">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Alabadle_con_Entendimiento.MusicaPagerParentViewController.viewControllerAtIndex (index : Swift.Int) -&gt; Alabadle_con_Entendimiento.MusicaPagerItemViewController"
-                  moduleName = "Alabadle con Entendimiento"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/joelgarcia/himnario-ios/Alabadle%20con%20Entendimiento/MusicaPagerParentViewController.swift"
-                  timestampString = "504397030.971745"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "117"
-                  endingLineNumber = "117"
-                  offsetFromSymbolStart = "890">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
