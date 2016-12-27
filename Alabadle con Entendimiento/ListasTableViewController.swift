@@ -89,7 +89,8 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
     
     func loadListasData(){
         var childrenCounter = 0
-        
+        resultArray = []
+        tableView.reloadData()
         listasDeUsuarioRef.observe(FIRDataEventType.value, with: {(snapshot) in
             var tempArray = [Lista]()
 
@@ -108,27 +109,6 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
                 })
             }
         })
-        
-       /* self.listasDeUsuarioRef.observeSingleEvent(of: FIRDataEventType.value, with: {
-            (snapshot) in
-            if snapshot.hasChildren() {
-                var counter = 0
-                for listaID in snapshot.children {
-                    counter += 1
-                    if counter == Int(snapshot.childrenCount) {     // display last list
-                        let index = counter - 1
-                        let indexPath = NSIndexPath(row: index, section: 0)
-                        self.tableView.selectRow(at: indexPath as IndexPath, animated: false, scrollPosition: UITableViewScrollPosition.middle)
-                        let listaIDStr = "\((listaID as! FIRDataSnapshot).key)"
-                        let listaRef = self.listasDeUsuarioRef.child(listaIDStr)
-                        listaRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshotChild) in
-                            let lista = Lista(snapshot: snapshotChild, dbRef: listaRef)
-                            self.delegate1?.listaSelected(newLista: lista)
-                        })
-                    }
-                }
-            }
-        })*/
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

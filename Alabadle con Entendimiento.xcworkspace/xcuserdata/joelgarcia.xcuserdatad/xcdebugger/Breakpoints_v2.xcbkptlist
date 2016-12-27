@@ -73,22 +73,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Alabadle con Entendimiento/ListasTableViewController.swift"
-            timestampString = "504027560.227342"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
-            landmarkName = "loadListasData()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Alabadle con Entendimiento/NewListViewController.swift"
             timestampString = "498722383.180727"
             startingColumnNumber = "9223372036854775807"
@@ -186,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Alabadle con Entendimiento/ListasTableViewController.swift"
-            timestampString = "504321419.039885"
+            timestampString = "504495193.632616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "208"
-            endingLineNumber = "208"
+            startingLineNumber = "188"
+            endingLineNumber = "188"
             landmarkName = "ListasTableViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -202,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Alabadle con Entendimiento/ListasTableViewController.swift"
-            timestampString = "504321419.039885"
+            timestampString = "504495193.632616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "211"
-            endingLineNumber = "211"
+            startingLineNumber = "191"
+            endingLineNumber = "191"
             landmarkName = "ListasTableViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -224,22 +208,6 @@
             startingLineNumber = "273"
             endingLineNumber = "273"
             landmarkName = "createUserAction(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Alabadle con Entendimiento/LoginViewController.swift"
-            timestampString = "504220262.371722"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "57"
-            endingLineNumber = "57"
-            landmarkName = "checkReachability()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
