@@ -9,6 +9,8 @@
 import UIKit
 import MessageUI
 import FirebaseAuth
+import FirebaseDatabase
+import FirebaseStorage
 
 class AjustesTableViewController: UITableViewController, MFMailComposeViewControllerDelegate {
     
@@ -66,6 +68,44 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
         } else {
             self.showAlertErrorWithEmail()
         }
+    }
+    
+    func downloadPartituras() {
+        // tengo que ver que hacer cuando se interrumpe la senal de internet
+        // tengo que ver q hacer cuando se agreguen nuevos coros
+        // podria hacer algo como que cuando se agregue un coro nuevo en firebase que en el app al abrirla salga un mensaje preguntando si se desea descargar la partitura. 
+        
+        let storage = FIRStorage.storage()
+        let corosRef = FIRDatabase.database().reference().child("coros")
+        corosRef.observe(FIRDataEventType.value, with: {(snapshot) in
+            for coroRef in snapshot.children {
+                
+            }
+        })
+        let coroPartituraRef = storage.reference(forURL: "https://firebasestorage.googleapis.com/v0/b/alabadle-con-entendimiento.appspot.com/o/partituras%2Fa_cristo_coronad.jpg?alt=media&token=5f19e55f-b1d4-44bc-a370-92912f8d7ab7")
+        
+        // Create local filesystem URL
+        let localURL = getDocumentsDirectory().appendingPathComponent("a_cristo_coronad.jpg")
+
+        // Download to the local filesystem
+        let downloadTask = coroPartituraRef.write(toFile: localURL) { url, error in
+            if let error = error {
+                // Uh-oh, an error occurred!
+                print(error)
+            } else {
+                print(url)
+                // Local file URL for "images/island.jpg" is returned
+            }
+        }
+        let observer = downloadTask.observe(.progress) {snapshot in
+            print(snapshot.status.rawValue)
+        }
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
     }
     
     func signInOut() {
@@ -143,7 +183,7 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 1
+            return 2
         case 1:
             return 2
         case 2:
@@ -157,11 +197,19 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
         
         switch indexPath.section {
         case 0:
-            let url = NSURL(string: "https://innovateideasjg.wordpress.com/tutoriales/")
-            if #available(iOS 10.0, *) {
-                UIApplication.shared.open(url! as URL)
-            } else {
-                UIApplication.shared.openURL(url! as URL)
+            switch indexPath.row {
+            case 0:
+                let url = NSURL(string: "https://innovateideasjg.wordpress.com/tutoriales/")
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(url! as URL)
+                } else {
+                    UIApplication.shared.openURL(url! as URL)
+                }
+            case 1:
+                downloadPartituras()
+                break
+            default:
+                break
             }
             break
         case 1:
