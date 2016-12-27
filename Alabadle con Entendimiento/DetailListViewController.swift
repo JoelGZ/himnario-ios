@@ -537,6 +537,12 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
                         secondVC!.index = coroIndex.row + self.rapidosMediosArray.count
                     }
                     navigationItem.title = nil
+                    
+                    let screenSize: CGRect = UIScreen.main.bounds
+                    let maxSize = max(screenSize.width,screenSize.height)
+                    if maxSize >= 736 {
+                        self.splitViewController?.preferredDisplayMode = UISplitViewControllerDisplayMode.primaryHidden
+                    }
                 }
             }
             
