@@ -16,6 +16,7 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    @IBOutlet weak var downloadProgressLabel: UILabel!
     @IBOutlet weak var signInOutLabel: UILabel!
     
     let APP_ID = "1118729781"
@@ -73,33 +74,40 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     func downloadPartituras() {
         // tengo que ver que hacer cuando se interrumpe la senal de internet
         // tengo que ver q hacer cuando se agreguen nuevos coros
-        // podria hacer algo como que cuando se agregue un coro nuevo en firebase que en el app al abrirla salga un mensaje preguntando si se desea descargar la partitura. 
+        // podria hacer algo como que cuando se agregue un coro nuevo en firebase que en el app al abrirla salga un mensaje preguntando si se desea descargar la partitura.
+        var corosCont = 0.0
+        downloadProgressLabel.text = "0%"
+        downloadProgressLabel.isHidden = false
         
         let storage = FIRStorage.storage()
         let corosRef = FIRDatabase.database().reference().child("coros")
         corosRef.observe(FIRDataEventType.value, with: {(snapshot) in
-            for coroRef in snapshot.children {
+            let cantCoros = Double(snapshot.childrenCount)
+            for coroSnap in snapshot.children {
+                let coro = Coro(snapshot: coroSnap as! FIRDataSnapshot, coroId: Int((coroSnap as AnyObject).key)!)
+                let coroPartituraRef = storage.reference(forURL: coro.partitura)
+                let sName = coro.sName
+                let musicaString = sName.replacingOccurrences(of: " ", with:"_")
                 
+                // Create local filesystem URL
+                let localURL = self.getDocumentsDirectory().appendingPathComponent("\(musicaString).jpg")
+                
+                // Download to the local filesystem
+                let downloadTask = coroPartituraRef.write(toFile: localURL) { url, error in
+                    if let error = error {
+                        let alert = UIAlertController(title: "Error", message: "Hubo un error en la descarga. Por favor, intentelo nuevamente. Si el problema persiste no dude en contactarnos.", preferredStyle: .alert)
+                        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        alert.addAction(okAction)
+                        self.present(alert, animated: true, completion: nil)
+                        print(error)
+                    } else {
+                        corosCont += 1
+                        let progressPercentage = (corosCont/cantCoros) * 100
+                        self.downloadProgressLabel.text = "\(Int(progressPercentage))%"
+                    }
+                }
             }
         })
-        let coroPartituraRef = storage.reference(forURL: "https://firebasestorage.googleapis.com/v0/b/alabadle-con-entendimiento.appspot.com/o/partituras%2Fa_cristo_coronad.jpg?alt=media&token=5f19e55f-b1d4-44bc-a370-92912f8d7ab7")
-        
-        // Create local filesystem URL
-        let localURL = getDocumentsDirectory().appendingPathComponent("a_cristo_coronad.jpg")
-
-        // Download to the local filesystem
-        let downloadTask = coroPartituraRef.write(toFile: localURL) { url, error in
-            if let error = error {
-                // Uh-oh, an error occurred!
-                print(error)
-            } else {
-                print(url)
-                // Local file URL for "images/island.jpg" is returned
-            }
-        }
-        let observer = downloadTask.observe(.progress) {snapshot in
-            print(snapshot.status.rawValue)
-        }
     }
     
     func getDocumentsDirectory() -> URL {
@@ -206,7 +214,12 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
                     UIApplication.shared.openURL(url! as URL)
                 }
             case 1:
-                downloadPartituras()
+                let alert = UIAlertController(title: "Atención", message: "Al descargar las partituras podrá accesarlas sin conexión de internet. ", preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "OK", style: .default, handler: {(alert : UIAlertAction!) -> Void in self.downloadPartituras()})
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                alert.addAction(okAction)
+                alert.addAction(cancelAction)
+                present(alert, animated: true, completion: nil)
                 break
             default:
                 break
