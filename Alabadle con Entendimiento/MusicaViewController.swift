@@ -37,18 +37,38 @@ class MusicaViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.activityIndicator.startAnimating()
-        self.activityIndicator.isHidden = false
         partituraImageView.isHidden = true
         self.scrollView.delegate = self
         
-        storageRef = storage.reference(forURL: "gs://alabadle-con-entendimiento.appspot.com/")
-        
-        //setZoomParametersSize(scrollViewSize: scrollView.bounds.size, landscape: UIDevice().orientation.isLandscape)
         flag = true
         
         UIApplication.shared.isIdleTimerDisabled = true
-        checkReachability()
+        
+        let sName = coro?.sName
+        let musicaString = sName?.replacingOccurrences(of: " ", with:"_")
+       
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let url = NSURL(fileURLWithPath: path)
+        let filePath = url.appendingPathComponent("partitura/\(musicaString!).jpg")?.path
+        let fileManager = FileManager.default
+        print(filePath!)
+        if fileManager.fileExists(atPath: filePath!) {
+            partituraImageView.image = UIImage(contentsOfFile: filePath!)
+            self.partituraImageView.isHidden = false
+            self.activityIndicator.stopAnimating()
+            self.activityIndicator.isHidden = true
+        } else {
+            self.activityIndicator.startAnimating()
+            self.activityIndicator.isHidden = false
+            storageRef = storage.reference(forURL: "gs://alabadle-con-entendimiento.appspot.com/")
+            checkReachability()
+        }
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
     }
     
     func checkReachability() {
@@ -111,7 +131,6 @@ class MusicaViewController: UIViewController {
             scrollViewWidthPortrait = scrollView.bounds.width
             scrollViewHeightPortrait = scrollView.bounds.height
         }
-        dump("scroll : \(scrollView.bounds)")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -133,7 +152,6 @@ class MusicaViewController: UIViewController {
         audioRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) -> Void in
             if (error != nil) {
                 self.errorPlayingSong()
-                print(error)
             } else {
                 do {
                     self.audioPlayer = try AVAudioPlayer(data: data!)

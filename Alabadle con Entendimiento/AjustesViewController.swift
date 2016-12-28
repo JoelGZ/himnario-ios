@@ -87,10 +87,10 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
                 let coro = Coro(snapshot: coroSnap as! FIRDataSnapshot, coroId: Int((coroSnap as AnyObject).key)!)
                 let coroPartituraRef = storage.reference(forURL: coro.partitura)
                 let sName = coro.sName
-                let musicaString = sName.replacingOccurrences(of: " ", with:"_")
+                let musicaString = sName.replacingOccurrences(of: " ", with:"_")                            
                 
                 // Create local filesystem URL
-                let localURL = self.getDocumentsDirectory().appendingPathComponent("\(musicaString).jpg")
+                let localURL = self.getDocumentsDirectory().appendingPathComponent("partitura/\(musicaString).jpg")
                 
                 // Download to the local filesystem
                 let downloadTask = coroPartituraRef.write(toFile: localURL) { url, error in

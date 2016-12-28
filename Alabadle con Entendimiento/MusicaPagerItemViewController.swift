@@ -41,9 +41,23 @@ class MusicaPagerItemViewController: UIViewController {
         scrollView.bounds.size.height = UIScreen.main.bounds.height - (defaults.object(forKey: "navBarHeight") as! CGFloat) + 7
         scrollView.bounds.size.width = UIScreen.main.bounds.width
         
-        storageRef = storage.reference(forURL: "gs://alabadle-con-entendimiento.appspot.com/")
+        let sName = coro?.sName
+        let musicaString = sName?.replacingOccurrences(of: " ", with:"_")
         
-        checkReachability()
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let url = NSURL(fileURLWithPath: path)
+        let filePath = url.appendingPathComponent("partitura/\(musicaString!).jpg")?.path
+        let fileManager = FileManager.default
+        print(filePath!)
+        if fileManager.fileExists(atPath: filePath!) {
+            partituraImageView.image = UIImage(contentsOfFile: filePath!)
+            self.partituraImageView.isHidden = false
+            self.activityIndicator.stopAnimating()
+            self.activityIndicator.isHidden = true
+        } else {
+            storageRef = storage.reference(forURL: "gs://alabadle-con-entendimiento.appspot.com/")
+            checkReachability()
+        }
         scrollView.contentOffset.y = 0
         
         flag = true
