@@ -700,6 +700,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Ajustes" id="I9k-NU-PB6"/>
                     <connections>
+                        <outlet property="descargaLabel" destination="7D2-R7-bso" id="NWL-Ab-MFa"/>
                         <outlet property="downloadProgressLabel" destination="KVD-md-G6U" id="mYm-my-oYU"/>
                         <outlet property="signInOutLabel" destination="Fw7-LZ-4qk" id="dCU-KT-edE"/>
                         <segue destination="h3e-HK-bXZ" kind="show" identifier="goToLogScreenSegue" id="els-pB-jgH"/>
