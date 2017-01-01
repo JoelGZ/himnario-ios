@@ -1209,7 +1209,7 @@
         <scene sceneID="xCx-E7-zMR">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="TLp-tK-YAQ" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Ajustes" image="settings" id="ftc-tG-QOM"/>
+                    <tabBarItem key="tabBarItem" title="Ajustes" image="Settings-30" selectedImage="Settings-30" id="ftc-tG-QOM"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="f1A-3h-6pK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -1755,13 +1755,13 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Settings-30" width="30" height="30"/>
         <image name="a_cristo_coronad" width="1277" height="1652"/>
         <image name="lists" width="19" height="19"/>
         <image name="lyrics" width="18" height="18"/>
         <image name="music" width="18" height="18"/>
         <image name="rsz_2rsz_logoios" width="85" height="85"/>
         <image name="search" width="19" height="19"/>
-        <image name="settings" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="woc-nO-kIB"/>
