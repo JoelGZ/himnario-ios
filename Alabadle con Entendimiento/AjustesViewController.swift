@@ -340,7 +340,7 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
             case 1:
                 var message = ""
                 if downloadDeleteFlag {
-                    message = "Al descargar las partituras podrá accesarlas sin conexión de internet."
+                    message = "Se descargarán aproximadamente 28MB de información a la memoria interna de su teléfono. Por favor mantengase conectado al internet."
                     let alert = UIAlertController(title: "¡Atención!", message: message, preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "OK", style: .default, handler: {(alert : UIAlertAction!) -> Void in self.downloadPartituras()})
                     let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -360,7 +360,7 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
             case 2:
                 var message = ""
                 if downloadAudioDeleteFlag {
-                    message = "Al descargar los audios podrá accesarlas sin conexión de internet."
+                    message = "Se descargarán aproximadamente 75MB de información a la memoria interna de su teléfono. Por favor mantengase conectado al internet."
                     let alert = UIAlertController(title: "¡Atención!", message: message, preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "OK", style: .default, handler: {(alert : UIAlertAction!) -> Void in self.downloadAudios()})
                     let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
