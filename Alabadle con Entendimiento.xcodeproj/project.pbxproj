@@ -194,8 +194,8 @@
 				61A0E3171DA4201900DCB7D2 /* VelButton.swift */,
 				61A17E751DA83C7100737049 /* User.swift */,
 				615057671D9ABC020008CC96 /* Assets.xcassets */,
-				615057641D9ABC020008CC96 /* Main.storyboard */,
 				615057691D9ABC020008CC96 /* LaunchScreen.storyboard */,
+				615057641D9ABC020008CC96 /* Main.storyboard */,
 				6150576C1D9ABC020008CC96 /* Info.plist */,
 				6113BD2A1DA47BFD00FB7A64 /* GoogleService-Info.plist */,
 			);

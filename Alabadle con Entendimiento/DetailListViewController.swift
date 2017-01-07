@@ -26,6 +26,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     
     var noListView: UIView?
     var label: UILabel?
+    var createListButton: UIButton?
     
     var lista:Lista! {
         didSet{
@@ -131,24 +132,39 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         let screenSize: CGRect = UIScreen.main.bounds
         
         if UIDevice.current.orientation.isLandscape {
-            noListView = UIView(frame: CGRect(x: 0, y: 60, width: screenSize.width, height: screenSize.height))
             label = UILabel(frame: CGRect(x: 25, y: 16, width: screenSize.height * 0.75, height: 100))
-            
+            noListView = UIView(frame: CGRect(x: 0, y: 30, width: screenSize.width, height: screenSize.height))
         } else {
-            noListView = UIView(frame: CGRect(x: 0, y: 60, width: screenSize.width, height: screenSize.height))
             label = UILabel(frame: CGRect(x: 16, y: 25, width: 325, height: 100))
+            noListView = UIView(frame: CGRect(x: 0, y: 60, width: screenSize.width, height: screenSize.height))
         }
         
         if lista.id == 10000 {
             noListView!.tag = 100
-            noListView!.backgroundColor = UIColor(red: 229/255, green: 229/255, blue: 229/255, alpha: 1.0)
-            label!.textColor = UIColor.black
-            label!.font = UIFont(name: label!.font.fontName, size: 25)
+            noListView!.backgroundColor = UIColor.white
+            label!.textColor = UIColor.lightGray
+            label!.font = UIFont(name: label!.font.fontName, size: 20)
             label!.lineBreakMode = NSLineBreakMode.byWordWrapping
             label!.numberOfLines = 3
-            label!.text = "No hay ninguna lista creada. Para crear listas, pulsa sobre el boton de +."
-            noListView!.addSubview(label!)
             
+            let screenSize: CGRect = UIScreen.main.bounds
+            let maxSize = max(screenSize.width,screenSize.height)
+            if maxSize >= 736 {         //If it is iPhone 6s Plus or iPad
+                label!.text = "No hay ninguna lista creada. Para crear listas, pulsa sobre el boton de +."
+            } else {
+                label!.text = "No hay ninguna lista creada."
+                if UIDevice.current.orientation.isLandscape {
+                    createListButton = UIButton(frame: CGRect(x: 25, y: 85, width: 100, height: 30))
+                } else {
+                    createListButton = UIButton(frame: CGRect(x: 16, y: 85, width: 100, height: 30))
+                }
+                createListButton?.addTarget(self, action: #selector(segueToNewList), for: .touchUpInside)
+                createListButton?.setTitle("Crear Lista", for: .normal)
+                createListButton?.setTitleColor(self.view.tintColor, for: .normal)
+                noListView!.addSubview(createListButton!)
+            }
+            
+            noListView!.addSubview(label!)
             
             self.view.addSubview(noListView!)
             
@@ -178,6 +194,10 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             
         }
         setupNoListView()
+    }
+    
+    func segueToNewList() {
+        self.performSegue(withIdentifier: "listaDesdeDetail", sender: nil)
     }
     
     //Load Data
