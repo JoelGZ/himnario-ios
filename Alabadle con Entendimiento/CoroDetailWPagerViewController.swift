@@ -66,7 +66,7 @@ class CoroDetailWPagerViewController: UIViewController {
         
         //Titulos caracteristicas
         tonalidadTituloLabel.text = "Tonalidad:"
-        tonAltTituloLabel.text = "Tonalidad Alternativa:"
+       // tonAltTituloLabel.text = "Tonalidad Alternativa:"
         velocidadTituloLabel.text = "Velocidad:"
         tiempoTituloLabel.text = "Tiempo:"
         autorLetraTituloLabel.text = "Autor Letra:"
@@ -75,13 +75,12 @@ class CoroDetailWPagerViewController: UIViewController {
         //Cambios dinamicos
         nombreCoroLabel.text = coro!.nombre
         
-        numeroCoroLabel.text = String(coro!.id)
         tonalidadLabel.text = "\(coro!.tonalidad.getReadableText()) (\(coro!.tonalidad))"
-        if coro!.ton_alt != "" {
+       /* if coro!.ton_alt != "" {
             tonAltLabel.text = "\(coro!.ton_alt.getReadableText()) (\(coro!.ton_alt))"
         } else {
             tonAltLabel.text = ""
-        }
+        }*/
         
         velocidadLabel.text = coro!.velletra.getReadableText()
         tiempoLabel.text = String(coro!.tiempo)
@@ -116,7 +115,7 @@ class CoroDetailWPagerViewController: UIViewController {
             self.historiaLabel.isHidden = true
         }
     }
-    
+    /*
     @IBAction func tonAltInfoAction(sender: AnyObject) {
         
         let alert = UIAlertController(title: "Tonalidades Alternativas", message: "Se recomienda siempre cantar los coros en su tonalidad original.", preferredStyle: UIAlertControllerStyle.alert)
@@ -126,5 +125,5 @@ class CoroDetailWPagerViewController: UIViewController {
         alert.popoverPresentationController?.sourceRect = self.view.bounds
         self.present(alert, animated: true, completion: nil)
     }
-    
+    */
 }
