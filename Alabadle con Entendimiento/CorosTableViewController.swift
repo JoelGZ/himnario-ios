@@ -32,6 +32,7 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
     var corosRef: FIRDatabaseReference!
     var safeCorosRef: FIRDatabaseReference!
     var isSafeToDisplayFlag = false      /// change this later to FALSE
+    var dataIsLoaded: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,10 +55,12 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
                 self.performSegue(withIdentifier: "logInScreenSegue", sender: nil)
             } else {
                 let user = User(authData: FIRuser!)
-                if user.email == "test@nomail.com" {
-                    self.loadSafeData()
-                } else {
-                    self.loadData()
+                if !self.dataIsLoaded {
+                    if user.email == "test@nomail.com" {
+                        self.loadSafeData()
+                    } else {
+                        self.loadData()
+                    }
                 }
             }
         }
@@ -74,6 +77,7 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func loadData() {
+        self.dataIsLoaded = true
         corosRef.queryOrdered(byChild: "orden").observe(FIRDataEventType.value, with: {(snapshot) in
             var tempCoroArray = [Coro]()
             
@@ -90,6 +94,7 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func loadSafeData() {
+        self.dataIsLoaded = true
         var tempCoroArray2 = [Coro]()
         safeCorosRef = rootRef.child("safeCoros")
         safeCorosRef.observe(FIRDataEventType.value, with: {(snapshot) in
@@ -106,9 +111,6 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
                     tempCoroArray2.append(coro)
                     if tempCoroArray2.count == self.safeCoros.count {
                         self.corosArray = tempCoroArray2
-                        for coro in self.corosArray! {
-                            print("\(coro.nombre)\n")
-                        }
                         self.tableView.reloadData()
                     }
                 })
