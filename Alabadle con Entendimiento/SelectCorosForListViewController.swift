@@ -151,7 +151,6 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
     }
     
     @IBAction func tonalidadFilterAction(sender: UISegmentedControl) {
-        print("executing")
         let index = sender.selectedSegmentIndex
         if index == 0 {
             scope = "Todos"
@@ -380,6 +379,19 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
             "orden": corosInVelCount,
             "ton": tonalidad
         ]
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showCoroDetail" {
+            let destination = segue.destination as! CoroDetailViewController
+            var coro: Coro
+            if searchController.isActive {
+                coro = filteredCorosArray![coroIndex!]
+            } else {
+                coro = corosArray![coroIndex!]
+            }
+            destination.coro = coro
+        }
     }
     
     // Verificar si el coro medio se pone con los lentos o no

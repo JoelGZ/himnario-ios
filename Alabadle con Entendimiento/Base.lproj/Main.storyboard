@@ -1367,6 +1367,7 @@
                         <outlet property="rapidosButton" destination="LGu-vU-M0O" id="STU-ie-suv"/>
                         <outlet property="segmentedControl" destination="SD7-Tp-iJB" id="k8j-0K-72u"/>
                         <outlet property="tableView" destination="UWk-BK-H8F" id="UP0-nE-CzO"/>
+                        <segue destination="ckD-tn-0NV" kind="show" identifier="showCoroDetail" id="vRX-69-BAD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZB3-z2-dpo" sceneMemberID="firstResponder"/>
@@ -1693,8 +1694,9 @@
         <image name="search" width="19" height="19"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="jMR-D2-Own"/>
         <segue reference="woc-nO-kIB"/>
         <segue reference="F0F-6m-2Dd"/>
+        <segue reference="jMR-D2-Own"/>
+        <segue reference="vRX-69-BAD"/>
     </inferredMetricsTieBreakers>
 </document>
