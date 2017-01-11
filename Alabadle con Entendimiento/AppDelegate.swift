@@ -44,11 +44,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
                         counter += 1
                         if counter == Int(snapshot.childrenCount) {     // display last list
                             let listaIDStr = "\((listaID as! FIRDataSnapshot).key)"
-                            print(listaIDStr)
                             let listaRef = listasDeUsuarioRef.child(listaIDStr)
-                            print(listaRef)
-                            listaRef.observe(FIRDataEventType.value, with: {(snap) in
-                                print(Int((listaID as! FIRDataSnapshot).key)!)
+                            listaRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snap) in
                                 let list = Lista(snapshot: snap, listaid: Int((listaID as! FIRDataSnapshot).key)!)
                                 detailViewController.lista = list
                             })
@@ -65,7 +62,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         pageController.backgroundColor = UIColor.white
         
         masterViewController.delegate1 = detailViewController
-        print(masterViewController.delegate1 ?? "nothing")
         let navigationController = spViewController.viewControllers[spViewController.viewControllers.count-1] as! UINavigationController
         navigationController.topViewController!.navigationItem.leftBarButtonItem = spViewController.displayModeButtonItem
         
