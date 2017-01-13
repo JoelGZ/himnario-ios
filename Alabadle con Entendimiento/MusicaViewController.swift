@@ -28,27 +28,47 @@ class MusicaViewController: UIViewController {
     var rootViewController: UIViewController!
     
     let storage = FIRStorage.storage()
+    var sName: String?
+    var musicaString: String?
     
     // Create a storage reference from our storage service
     var storageRef: FIRStorageReference!
-    var musicaString: String!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.activityIndicator.startAnimating()
-        self.activityIndicator.isHidden = false
         partituraImageView.isHidden = true
         self.scrollView.delegate = self
         
-        storageRef = storage.reference(forURL: "gs://alabadle-con-entendimiento.appspot.com/")
-        
-        //setZoomParametersSize(scrollViewSize: scrollView.bounds.size, landscape: UIDevice().orientation.isLandscape)
         flag = true
         
         UIApplication.shared.isIdleTimerDisabled = true
-        checkReachability()
+        
+        sName = coro?.sName
+        musicaString = sName?.replacingOccurrences(of: " ", with:"_")
+       
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let url = NSURL(fileURLWithPath: path)
+        let filePath = url.appendingPathComponent("partitura/\(musicaString!).jpg")?.path
+        let fileManager = FileManager.default
+        print(filePath!)
+        if fileManager.fileExists(atPath: filePath!) {
+            partituraImageView.image = UIImage(contentsOfFile: filePath!)
+            self.partituraImageView.isHidden = false
+            self.activityIndicator.stopAnimating()
+            self.activityIndicator.isHidden = true
+        } else {
+            self.activityIndicator.startAnimating()
+            self.activityIndicator.isHidden = false
+            storageRef = storage.reference(forURL: "gs://alabadle-con-entendimiento.appspot.com/")
+            checkReachability()
+        }
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
     }
     
     func checkReachability() {
@@ -59,8 +79,6 @@ class MusicaViewController: UIViewController {
             // this is called on a background thread, but UI updates must
             // be on the main thread, like this:
             DispatchQueue.main.async() {
-                let sName = self.coro?.sName
-                self.musicaString = (sName?.replacingOccurrences(of: " ", with:"_"))!
                 let partituraRef = self.storageRef.child("partituras/\(self.musicaString!).jpg")
                 partituraRef.data(withMaxSize: 1*1024*1024) {(data, error) -> Void in
                     if (error != nil) {
@@ -111,7 +129,6 @@ class MusicaViewController: UIViewController {
             scrollViewWidthPortrait = scrollView.bounds.width
             scrollViewHeightPortrait = scrollView.bounds.height
         }
-        dump("scroll : \(scrollView.bounds)")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -127,23 +144,40 @@ class MusicaViewController: UIViewController {
     
     @IBAction func pauseSong(sender: UIBarButtonItem) {
         
-        let audioRef = storageRef.child("audios/\(musicaString!).mp3")
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let url = NSURL(fileURLWithPath: path)
+        let filePath = url.appendingPathComponent("audios/\(musicaString!).mp3")?.path
+        let fileManager = FileManager.default
         
-        // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
-        audioRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) -> Void in
-            if (error != nil) {
-                self.errorPlayingSong()
-                print(error)
-            } else {
-                do {
-                    self.audioPlayer = try AVAudioPlayer(data: data!)
-                    self.audioPlayer.prepareToPlay()
-                    self.audioPlayer.pause()
-                } catch {
+        if fileManager.fileExists(atPath: filePath!) {
+            let url = NSURL(fileURLWithPath: filePath!)
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: url as URL, fileTypeHint: nil)
+                audioPlayer.prepareToPlay()
+                audioPlayer.pause()
+                audioPlayer.numberOfLoops = -1
+            } catch {
+                errorPlayingSong()
+            }
+        } else {
+            let audioRef = storageRef.child("audios/\(musicaString!).mp3")
+            
+            // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
+            audioRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) -> Void in
+                if (error != nil) {
                     self.errorPlayingSong()
+                } else {
+                    do {
+                        self.audioPlayer = try AVAudioPlayer(data: data!)
+                        self.audioPlayer.prepareToPlay()
+                        self.audioPlayer.pause()
+                    } catch {
+                        self.errorPlayingSong()
+                    }
                 }
             }
         }
+        
         let newBarButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.play, target: self, action: #selector(self.playSong(sender:)))
         rootViewController!.navigationItem.rightBarButtonItem = newBarButton
     }
@@ -161,21 +195,40 @@ class MusicaViewController: UIViewController {
         
     }
     @IBAction func playSong(sender: UIBarButtonItem) {
-        // Create a reference to the file you want to download
-        let audioRef = storageRef.child("audios/\(musicaString!).mp3")
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let url = NSURL(fileURLWithPath: path)
+        let filePath = url.appendingPathComponent("audios/\(musicaString!).mp3")?.path
+        let fileManager = FileManager.default
         
-        // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
-        audioRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) -> Void in
-            if (error != nil) {
-                self.errorPlayingSong()
-            } else {
-                do {
-                    self.audioPlayer = try AVAudioPlayer(data: data!)
-                    self.audioPlayer.prepareToPlay()
-                    self.audioPlayer.play()
-                    self.audioPlayer.numberOfLoops = -1
-                } catch {
+        if fileManager.fileExists(atPath: filePath!) {
+            print(filePath!)
+            let url = NSURL(fileURLWithPath: filePath!)
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: url as URL, fileTypeHint: nil)
+                audioPlayer.prepareToPlay()
+                audioPlayer.play()
+                audioPlayer.numberOfLoops = -1
+            } catch {
+                errorPlayingSong()
+            }
+
+        } else {
+            // Create a reference to the file you want to download
+            let audioRef = storageRef.child("audios/\(musicaString!).mp3")
+            
+            // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
+            audioRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) -> Void in
+                if (error != nil) {
                     self.errorPlayingSong()
+                } else {
+                    do {
+                        self.audioPlayer = try AVAudioPlayer(data: data!)
+                        self.audioPlayer.prepareToPlay()
+                        self.audioPlayer.play()
+                        self.audioPlayer.numberOfLoops = -1
+                    } catch {
+                        self.errorPlayingSong()
+                    }
                 }
             }
         }

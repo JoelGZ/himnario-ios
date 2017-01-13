@@ -9,18 +9,35 @@
 import UIKit
 import MessageUI
 import FirebaseAuth
+import FirebaseDatabase
+import FirebaseStorage
 
 class AjustesTableViewController: UITableViewController, MFMailComposeViewControllerDelegate {
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    @IBOutlet weak var descargaAudiosLabel: UILabel!
+    @IBOutlet weak var downloadProgressLabel: UILabel!
+    @IBOutlet weak var downloadAudiosProgressLabel: UILabel!
+    @IBOutlet weak var descargaLabel: UILabel!
     @IBOutlet weak var signInOutLabel: UILabel!
     
     let APP_ID = "1118729781"
+    var progressPercentage: Double?
+    var progressAudiosPercentage: Double?
+    var downloadDeleteFlag: Bool = true    //true= can download; false = can't download, just delete
+    var downloadAudioDeleteFlag: Bool = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
       //  activityIndicator.isHidden = true
+        if progressPercentage != nil {
+            downloadProgressLabel.text = "\(Int(progressPercentage!))"
+        }
+        if progressAudiosPercentage != nil {
+            downloadAudiosProgressLabel.text = "\(Int(progressAudiosPercentage!))"
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -66,6 +83,161 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
         } else {
             self.showAlertErrorWithEmail()
         }
+    }
+    
+    func downloadPartituras() {
+        // tengo que ver que hacer cuando se interrumpe la senal de internet
+        // tengo que ver q hacer cuando se agreguen nuevos coros
+        // podria hacer algo como que cuando se agregue un coro nuevo en firebase que en el app al abrirla salga un mensaje preguntando si se desea descargar la partitura.
+        var corosCont = 0.0
+        downloadProgressLabel.text = "0%"
+        downloadProgressLabel.isHidden = false
+        
+        let storage = FIRStorage.storage()
+        let corosRef = FIRDatabase.database().reference().child("coros")
+        corosRef.observe(FIRDataEventType.value, with: {(snapshot) in
+            let cantCoros = Double(snapshot.childrenCount)
+            for coroSnap in snapshot.children {
+                let coro = Coro(snapshot: coroSnap as! FIRDataSnapshot, coroId: Int((coroSnap as AnyObject).key)!)
+                let coroPartituraRef = storage.reference(forURL: coro.partitura)
+                let sName = coro.sName
+                let musicaString = sName.replacingOccurrences(of: " ", with:"_")                            
+                
+                // Create local filesystem URL
+                let localURL = self.getDocumentsDirectory().appendingPathComponent("partitura/\(musicaString).jpg")
+                
+                // Download to the local filesystem
+                _ = coroPartituraRef.write(toFile: localURL) { url, error in
+                    if let error = error {
+                        let alert = UIAlertController(title: "Error", message: "Hubo un error en la descarga. Por favor, intentelo nuevamente. Si el problema persiste no dude en contactarnos.", preferredStyle: .alert)
+                        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        alert.addAction(okAction)
+                        self.present(alert, animated: true, completion: nil)
+                        print(error)
+                    } else {
+                        corosCont += 1
+                        self.progressPercentage = (corosCont/cantCoros) * 100
+                        self.downloadProgressLabel.text = "\(Int(self.progressPercentage!))%"
+                        if corosCont == cantCoros {
+                            let alert = UIAlertController(title: "Descarga completa", message: "La descarga ha sido completada.", preferredStyle: .alert)
+                            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                            alert.addAction(okAction)
+                            self.present(alert, animated: true, completion: nil)
+                            self.downloadProgressLabel.isHidden = true
+                            self.descargaLabel.text = "Eliminar partituras descargadas"
+                        }
+                    }
+                }
+            }
+        })
+        
+        downloadDeleteFlag = false
+    }
+    
+    func deletePartiturasInMemory() {
+        var partituraURLsArray: Array<URL> = []
+        let corosRef = FIRDatabase.database().reference().child("coros")
+        corosRef.observe(FIRDataEventType.value, with: {(snapshot) in
+            for coroSnap in snapshot.children {
+                let coro = Coro(snapshot: coroSnap as! FIRDataSnapshot, coroId: Int((coroSnap as AnyObject).key)!)
+                let sName = coro.sName
+                let musicaString = sName.replacingOccurrences(of: " ", with:"_")
+                
+                // Create local filesystem URL
+                let localURL = self.getDocumentsDirectory().appendingPathComponent("partitura/\(musicaString).jpg")
+                
+                partituraURLsArray.append(localURL)
+            }
+            for url in partituraURLsArray {
+                do {
+                    try FileManager.default.removeItem(at: url)
+                } catch {
+                    print("No se pudo eliminar la partitura con url: \(url)")
+                }
+            }
+        })
+    
+        descargaLabel.text = "Descarga de partituras"
+        downloadDeleteFlag = true
+    }
+    
+    func downloadAudios() {
+        var corosCont = 0.0
+        downloadAudiosProgressLabel.text = "0%"
+        downloadAudiosProgressLabel.isHidden = false
+        
+        let storage = FIRStorage.storage()
+        let corosRef = FIRDatabase.database().reference().child("coros")
+        corosRef.observe(FIRDataEventType.value, with: {(snapshot) in
+            let cantCoros = Double(snapshot.childrenCount)
+            for coroSnap in snapshot.children {
+                let coro = Coro(snapshot: coroSnap as! FIRDataSnapshot, coroId: Int((coroSnap as AnyObject).key)!)
+                let coroAudioRef = storage.reference(forURL: coro.audio)
+                let sName = coro.sName
+                let musicaString = sName.replacingOccurrences(of: " ", with:"_")
+                
+                // Create local filesystem URL
+                let localURL = self.getDocumentsDirectory().appendingPathComponent("audios/\(musicaString).mp3")
+                
+                // Download to the local filesystem
+                _ = coroAudioRef.write(toFile: localURL) { url, error in
+                    if let error = error {
+                        let alert = UIAlertController(title: "Error", message: "Hubo un error en la descarga. Por favor, intentelo nuevamente. Si el problema persiste no dude en contactarnos.", preferredStyle: .alert)
+                        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        alert.addAction(okAction)
+                        self.present(alert, animated: true, completion: nil)
+                        print(error)
+                    } else {
+                        corosCont += 1
+                        self.progressAudiosPercentage = (corosCont/cantCoros) * 100
+                        self.downloadAudiosProgressLabel.text = "\(Int(self.progressAudiosPercentage!))%"
+                        if corosCont == cantCoros {
+                            let alert = UIAlertController(title: "Descarga completa", message: "La descarga ha sido completada.", preferredStyle: .alert)
+                            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                            alert.addAction(okAction)
+                            self.present(alert, animated: true, completion: nil)
+                            self.downloadAudiosProgressLabel.isHidden = true
+                            self.descargaAudiosLabel.text = "Eliminar audios descargados"
+                        }
+                    }
+                }
+            }
+        })
+        
+        downloadAudioDeleteFlag = false
+    }
+    
+    func deleteAudiosInMemory() {
+        var audiosURLsArray: Array<URL> = []
+        let corosRef = FIRDatabase.database().reference().child("coros")
+        corosRef.observe(FIRDataEventType.value, with: {(snapshot) in
+            for coroSnap in snapshot.children {
+                let coro = Coro(snapshot: coroSnap as! FIRDataSnapshot, coroId: Int((coroSnap as AnyObject).key)!)
+                let sName = coro.sName
+                let musicaString = sName.replacingOccurrences(of: " ", with:"_")
+                
+                // Create local filesystem URL
+                let localURL = self.getDocumentsDirectory().appendingPathComponent("audios/\(musicaString).mp3")
+                
+                audiosURLsArray.append(localURL)
+            }
+            for url in audiosURLsArray {
+                do {
+                    try FileManager.default.removeItem(at: url)
+                } catch {
+                    print("No se pudo eliminar el audio con url: \(url)")
+                }
+            }
+        })
+        
+        descargaAudiosLabel.text = "Descarga de audios"
+        downloadAudioDeleteFlag = true
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
     }
     
     func signInOut() {
@@ -143,7 +315,7 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 1
+            return 3
         case 1:
             return 2
         case 2:
@@ -157,11 +329,56 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
         
         switch indexPath.section {
         case 0:
-            let url = NSURL(string: "https://innovateideasjg.wordpress.com/tutoriales/")
-            if #available(iOS 10.0, *) {
-                UIApplication.shared.open(url! as URL)
-            } else {
-                UIApplication.shared.openURL(url! as URL)
+            switch indexPath.row {
+            case 0:
+                let url = NSURL(string: "https://innovateideasjg.wordpress.com/tutoriales/")
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(url! as URL)
+                } else {
+                    UIApplication.shared.openURL(url! as URL)
+                }
+            case 1:
+                var message = ""
+                if downloadDeleteFlag {
+                    message = "Se descargarán aproximadamente 28MB de información a la memoria interna de su teléfono. Por favor mantengase conectado al internet."
+                    let alert = UIAlertController(title: "¡Atención!", message: message, preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default, handler: {(alert : UIAlertAction!) -> Void in self.downloadPartituras()})
+                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                    alert.addAction(okAction)
+                    alert.addAction(cancelAction)
+                    present(alert, animated: true, completion: nil)
+                } else {
+                    message = "¿Desea eliminar totalmente las partituras?"
+                    let alert = UIAlertController(title: "¡Atención!", message: message, preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default, handler: {(alert : UIAlertAction!) -> Void in self.deletePartiturasInMemory()})
+                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                    alert.addAction(okAction)
+                    alert.addAction(cancelAction)
+                    present(alert, animated: true, completion: nil)
+                }
+                break
+            case 2:
+                var message = ""
+                if downloadAudioDeleteFlag {
+                    message = "Se descargarán aproximadamente 75MB de información a la memoria interna de su teléfono. Por favor mantengase conectado al internet."
+                    let alert = UIAlertController(title: "¡Atención!", message: message, preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default, handler: {(alert : UIAlertAction!) -> Void in self.downloadAudios()})
+                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                    alert.addAction(okAction)
+                    alert.addAction(cancelAction)
+                    present(alert, animated: true, completion: nil)
+                } else {
+                    message = "¿Desea eliminar totalmente los audios?"
+                    let alert = UIAlertController(title: "¡Atención!", message: message, preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default, handler: {(alert : UIAlertAction!) -> Void in self.deleteAudiosInMemory()})
+                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                    alert.addAction(okAction)
+                    alert.addAction(cancelAction)
+                    present(alert, animated: true, completion: nil)
+                }
+                break
+            default:
+                break
             }
             break
         case 1:
