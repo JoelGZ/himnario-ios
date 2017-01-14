@@ -62,7 +62,6 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     var partiturasRapidosArray = Array<String>()
     var partiturasLentosArray = Array<String>()
     var partiturasArray = Array<String>()
-    var celContract: CorosEnListaContract = CorosEnListaContract()
     
     
     override func viewDidLoad() {

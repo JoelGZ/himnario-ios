@@ -16,7 +16,6 @@ class MusicaPagerParentViewController: UIViewController, UIPageViewControllerDat
     var corosArray: Array<Coro> = []
     var coro: CoroEnLista!
     var lista: Lista!
-    var celContract: CorosEnListaContract = CorosEnListaContract()
     var index: Int!
     
     var corosEnListaRef: FIRDatabaseReference?
