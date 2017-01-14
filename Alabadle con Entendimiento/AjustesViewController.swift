@@ -27,6 +27,7 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     var progressAudiosPercentage: Double?
     var downloadDeleteFlag: Bool = true    //true= can download; false = can't download, just delete
     var downloadAudioDeleteFlag: Bool = true
+    var defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -260,7 +261,6 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     }
     
     func changePassword() {
-        let defaults = UserDefaults.standard
         let userEmail = defaults.value(forKey: "USER_EMAIL") as! String
         
         FIRAuth.auth()?.sendPasswordReset(withEmail: userEmail) {
@@ -322,6 +322,24 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
             return 2
         default:
             return 1
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return "GENERAL"
+        case 1:
+            if signInOutLabel.text! == "Salir" {
+                let userEmail = defaults.value(forKey: "USER_EMAIL") as! String
+                return "CUENTA - \(userEmail)"
+            } else {
+                return "CUENTA"
+            }
+        case 2:
+            return "CONTACTO"
+        default:
+            return ""
         }
     }
     
