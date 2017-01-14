@@ -1086,7 +1086,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="vxA-Hx-22k"/>
                                         </constraints>
-                                        <state key="normal" title="Sign In">
+                                        <state key="normal" title="Iniciar Sesión">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -1729,10 +1729,9 @@
         <image name="search" width="19" height="19"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="els-pB-jgH"/>
         <segue reference="woc-nO-kIB"/>
-        <segue reference="F0F-6m-2Dd"/>
         <segue reference="jMR-D2-Own"/>
+        <segue reference="F0F-6m-2Dd"/>
         <segue reference="vRX-69-BAD"/>
     </inferredMetricsTieBreakers>
 </document>
