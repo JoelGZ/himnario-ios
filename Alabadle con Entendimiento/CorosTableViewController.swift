@@ -83,7 +83,9 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
             
             for coroSnap in snapshot.children {
                 let coro = Coro(snapshot: coroSnap as! FIRDataSnapshot, coroId: Int((coroSnap as AnyObject).key)!)
-                tempCoroArray.append(coro)
+                if coro.orden > 0 {
+                   tempCoroArray.append(coro)
+                }
             }
             
             self.corosArray = tempCoroArray
