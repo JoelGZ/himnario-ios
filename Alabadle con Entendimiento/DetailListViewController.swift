@@ -72,7 +72,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         
         corosRef = rootRef.child("coros")
         
-        splitViewController!.presentsWithGesture = false
+        //splitViewController!.presentsWithGesture = false check to see what this is
         activityIndicator.isHidden = true
         
         deleteListButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(self.deleteListAction(sender:)))
@@ -211,6 +211,10 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         var readyNumber = 0
         var rapidosCounter = 0
         var lentosCounter = 0
+        
+        partiturasRapidosArray = []
+        partiturasLentosArray = []
+        
         rapidosMediosRef?.queryOrdered(byChild: "orden").observeSingleEvent(of: FIRDataEventType.value, with: {(rapSnap) in
             var tempArray1 = [CoroEnLista]()
             var partRapArray = Array<String>()

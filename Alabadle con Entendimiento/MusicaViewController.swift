@@ -83,6 +83,7 @@ class MusicaViewController: UIViewController {
                 partituraRef.data(withMaxSize: 1*1024*1024) {(data, error) -> Void in
                     if (error != nil) {
                         // TODO: inform user that something went wrong
+                        print(error)
                     } else {
                         self.partituraImageView.image = UIImage(data: data!)
                         self.partituraImageView.isHidden = false
