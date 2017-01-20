@@ -131,12 +131,13 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         let screenSize: CGRect = UIScreen.main.bounds
         
         if UIDevice.current.orientation.isLandscape {
-            label = UILabel(frame: CGRect(x: 25, y: 16, width: screenSize.height * 0.75, height: 100))
+            label = UILabel(frame: CGRect(x: 25, y: (screenSize.height/2 - 50), width: 270, height: 30))
             noListView = UIView(frame: CGRect(x: 0, y: 30, width: screenSize.width, height: screenSize.height))
         } else {
-            label = UILabel(frame: CGRect(x: 16, y: 25, width: 325, height: 100))
+            label = UILabel(frame: CGRect(x: 16, y: (screenSize.width/2 - 15), width: 270, height: 30))
             noListView = UIView(frame: CGRect(x: 0, y: 60, width: screenSize.width, height: screenSize.height))
         }
+        label?.center.x = self.view.center.x
         
         if lista.id == 10000 {
             noListView!.tag = 100
@@ -153,13 +154,14 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             } else {
                 label!.text = "No hay ninguna lista creada."
                 if UIDevice.current.orientation.isLandscape {
-                    createListButton = UIButton(frame: CGRect(x: 25, y: 85, width: 100, height: 30))
+                    createListButton = UIButton(frame: CGRect(x: 35, y: (screenSize.height/2-15), width: 100, height: 30))
                 } else {
-                    createListButton = UIButton(frame: CGRect(x: 16, y: 85, width: 100, height: 30))
+                    createListButton = UIButton(frame: CGRect(x: 16, y: (screenSize.width/2+20), width: 100, height: 30))
                 }
                 createListButton?.addTarget(self, action: #selector(segueToNewList), for: .touchUpInside)
                 createListButton?.setTitle("Crear Lista", for: .normal)
                 createListButton?.setTitleColor(self.view.tintColor, for: .normal)
+                createListButton?.center.x = self.view.center.x
                 noListView!.addSubview(createListButton!)
             }
             
