@@ -12,7 +12,7 @@ import FirebaseDatabase
 class Lista {
     
     //MARK: Properties
-    var id: Int
+    var id: String
     var nombreLista: String
     var ton_global: String
     var ton_rap: String
@@ -21,7 +21,7 @@ class Lista {
     var key: String
     var ref: FIRDatabaseReference?
     
-    init(id: Int, nombreLista: String, ton_global: String, ton_rap: String, ton_lent: String){
+    init(id: String, nombreLista: String, ton_global: String, ton_rap: String, ton_lent: String){
         
         self.id = id
         self.nombreLista = nombreLista
@@ -39,7 +39,7 @@ class Lista {
         
         let snapshotValue = snapshot.value as! [String: AnyObject]
         
-        id = (dbRef.key as NSString).integerValue
+        id = dbRef.key
         print(id)
         nombreLista = snapshotValue["nombre"] as! String
         ton_global = snapshotValue["ton_global"] as! String
@@ -58,7 +58,7 @@ class Lista {
         ref = snapshot.ref
     }
     
-    init(snapshot: FIRDataSnapshot, listaid: Int) {
+    init(snapshot: FIRDataSnapshot, listaid: String) {
         let dollarSign = "$"
         key = snapshot.key
         

@@ -27,7 +27,6 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
     let searchController = UISearchController(searchResultsController: nil)
     var velocidadDic: [String: Bool] = ["R": false, "M": false , "L": false]
     var keyboardIsUp:Bool = false
-    var listId: Int!
     var scope: String = "Todos"
     var coroIndex: Int?
     

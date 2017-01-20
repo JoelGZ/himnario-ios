@@ -43,10 +43,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
                     for listaID in snapshot.children {
                         counter += 1
                         if counter == Int(snapshot.childrenCount) {     // display last list
-                            let listaIDStr = "\((listaID as! FIRDataSnapshot).key)"
+                            let listaIDStr = (listaID as! FIRDataSnapshot).key
                             let listaRef = listasDeUsuarioRef.child(listaIDStr)
                             listaRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snap) in
-                                let list = Lista(snapshot: snap, listaid: Int((listaID as! FIRDataSnapshot).key)!)
+                                let list = Lista(snapshot: snap, listaid: snap.key)
                                 detailViewController.lista = list
                             })
                         }

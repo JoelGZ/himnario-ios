@@ -95,7 +95,7 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
             var tempArray = [Lista]()
 
             for listaID in snapshot.children {
-                let listaIDStr = "\((listaID as! FIRDataSnapshot).key)"
+                let listaIDStr = (listaID as! FIRDataSnapshot).key
                 let listaRef = self.listasDeUsuarioRef.child(listaIDStr)
                 listaRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshotChild) in
                     childrenCounter += 1
@@ -176,7 +176,7 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
                 }
             } else {
                 if let detailViewController = self.delegate1 as? DetailListViewController{
-                    detailViewController.lista = Lista(id: 10000, nombreLista: "", ton_global: "", ton_rap: "", ton_lent: "")
+                    detailViewController.lista = Lista(id: "10000", nombreLista: "", ton_global: "", ton_rap: "", ton_lent: "")
                     detailViewController.setupNoListView()
                 }
             }

@@ -88,7 +88,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         UIApplication.shared.isIdleTimerDisabled = true
         
         if lista == nil {
-            lista = Lista(id: 10000, nombreLista: "", ton_global: "", ton_rap: "", ton_lent: "")
+            lista = Lista(id: "10000", nombreLista: "", ton_global: "", ton_rap: "", ton_lent: "")
         }
     }
     
@@ -139,7 +139,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         }
         label?.center.x = self.view.center.x
         
-        if lista.id == 10000 {
+        if lista.id == "10000" {
             noListView!.tag = 100
             noListView!.backgroundColor = UIColor.white
             label!.textColor = UIColor.lightGray
@@ -188,7 +188,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     override func viewWillLayoutSubviews() {
-        if lista.id != 10000 {
+        if lista.id != "10000" {
             if noListView!.tag == 100 {
                 noListView!.removeFromSuperview()
             }

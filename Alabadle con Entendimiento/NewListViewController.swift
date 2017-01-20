@@ -64,8 +64,6 @@ class NewListViewController: UIViewController, UITextFieldDelegate {
                 dayTimePeriodFormatter.dateFormat = "MMMM d"
                 let dateString = dayTimePeriodFormatter.string(from: datePicker.date)
                 nameOfList = dateString.capitalized
-                print(datePicker.date)
-                
             } else {
                 nameOfList = customizedName?.capitalized
             }
@@ -73,7 +71,8 @@ class NewListViewController: UIViewController, UITextFieldDelegate {
             //Create row list
             let calendarFormatter = DateFormatter()
             calendarFormatter.dateFormat = "yyyyMMddHHmms"
-            let newListID = Int(calendarFormatter.string(from: NSDate() as Date))!
+            let date = calendarFormatter.string(from: Date())
+            let newListID = date
                     
             let newListDic: Dictionary<String,Any> = ["nombre": nameOfList,
                               "ton_global": "$",
@@ -84,7 +83,6 @@ class NewListViewController: UIViewController, UITextFieldDelegate {
             
             //destination VC setup
             if let destination = segue.destination as? SelectCorosForListViewController {
-                destination.listId = newListID
                 destination.listaRef = listaRef
             }
         }
