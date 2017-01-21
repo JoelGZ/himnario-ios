@@ -382,7 +382,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         guard let value = notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue else { return }
         let keyboardFrame = value.cgRectValue
         
-        let adjustmentHeight = (keyboardFrame.height - 50) * (show ? 1 : -1)
+        var variableHeight: CGFloat = 0.0
+        if UIDevice.current.orientation.isLandscape {
+            variableHeight = 100
+        } else {
+            variableHeight = 50
+        }
+        
+        let adjustmentHeight = (keyboardFrame.height - variableHeight) * (show ? 1 : -1)
         if keyboardIsShowing != show {
             self.view.frame.origin.y -= adjustmentHeight
         }
