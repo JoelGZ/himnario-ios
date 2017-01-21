@@ -219,9 +219,6 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         partiturasRapidosArray = []
         partiturasLentosArray = []
         
-        print(rapidosMediosRef)
-        print(lentosRef)
-        
         rapidosMediosRef?.queryOrdered(byChild: "orden").observeSingleEvent(of: FIRDataEventType.value, with: {(rapSnap) in
             var tempArray1 = [CoroEnLista]()
             var partRapArray = Array<String>()
@@ -548,7 +545,6 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
                     destinationVC!.coroEnLista = coroEnLista
                     //para la partitura
                     secondVC!.coro = coroEnLista
-                    dump(partiturasArray)
                     secondVC!.partiturasArray = partiturasArray
                     var corosArray = Array<Coro>()
                     for coroEnLista in todosArray {

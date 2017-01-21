@@ -51,7 +51,6 @@ class MusicaViewController: UIViewController {
         let url = NSURL(fileURLWithPath: path)
         let filePath = url.appendingPathComponent("partitura/\(musicaString!).jpg")?.path
         let fileManager = FileManager.default
-        print(filePath!)
         if fileManager.fileExists(atPath: filePath!) {
             partituraImageView.image = UIImage(contentsOfFile: filePath!)
             self.partituraImageView.isHidden = false
@@ -202,7 +201,6 @@ class MusicaViewController: UIViewController {
         let fileManager = FileManager.default
         
         if fileManager.fileExists(atPath: filePath!) {
-            print(filePath!)
             let url = NSURL(fileURLWithPath: filePath!)
             do {
                 audioPlayer = try AVAudioPlayer(contentsOf: url as URL, fileTypeHint: nil)
@@ -250,8 +248,6 @@ class MusicaViewController: UIViewController {
         let imageSize = partituraImageView.bounds.size
         let widthScale = scrollViewSize.width / imageSize.width
         let heightScale = scrollViewSize.height / imageSize.height
-        dump("image1 \(imageSize)")
-        dump("scroll1 \(scrollViewSize)")
         
         var minScale:CGFloat
         if landscape {
@@ -262,8 +258,6 @@ class MusicaViewController: UIViewController {
         scrollView.minimumZoomScale = minScale
         scrollView.maximumZoomScale = 2.0
         scrollView.setZoomScale(minScale, animated: false)
-        print(scrollView.zoomScale)
-        print(minScale)
         scrollView.contentOffset.y = 0
     }
     
@@ -289,7 +283,6 @@ class MusicaViewController: UIViewController {
                 scrollViewWidthPortrait = scrollView.bounds.width
                 scrollViewHeightPortrait = scrollView.bounds.height
             }
-            dump("scroll2 : \(scrollView.bounds)")
             contAux += 1
         }
     }

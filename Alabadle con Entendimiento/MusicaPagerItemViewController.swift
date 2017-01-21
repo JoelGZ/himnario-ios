@@ -151,8 +151,6 @@ class MusicaPagerItemViewController: UIViewController {
         let widthScale = scrollViewSize.width / 1277
         //let heightScale = scrollViewSize.height / 793
         let heightScale = scrollViewSize.height / 1652
-        dump("image \(imageSize)")
-        dump("scroll \(scrollViewSize)")
         
         if landscape {
             minScale = max(widthScale,heightScale)
