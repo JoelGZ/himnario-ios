@@ -34,33 +34,36 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
         
         let defaults = UserDefaults.standard
         let userUID = defaults.string(forKey: "USER_UID")
-        listasDeUsuarioRef = rootRef.child("listas/\(userUID!)")
-        // TODO: localize
-        navBar.title = "Mis Listas"
-        flag = true
-        
-        
-        
-        navigationItem.leftBarButtonItem = editButtonItem
-        if let split = self.splitViewController {
-            let controllers = split.viewControllers
-            self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailListViewController
-            self.delegate1 = detailViewController
-        }
-        
-        FIRAuth.auth()?.addStateDidChangeListener { auth, user in
-            if user != nil {
-                self.loadListasData()
-            } else {
-                let alert = UIAlertController(title: "Inicie sesión", message: "Para poder visualizar sus listas, por favor inicie sesión.", preferredStyle: .alert)
-                let inicarSesionAction = UIAlertAction(title: "Iniciar sesión", style: .default, handler: {_ in
-                    self.navigationController?.navigationBar.isHidden = true
-                    //TODO: do not permit to go back
-                    self.performSegue(withIdentifier: "goToLogInScreen", sender: nil)
-                })
-                alert.addAction(inicarSesionAction)
-                
-                self.present(alert, animated: true, completion: nil)
+        if userUID != nil {
+            listasDeUsuarioRef = rootRef.child("listas/\(userUID!)")
+            
+            // TODO: localize
+            navBar.title = "Mis Listas"
+            flag = true
+            
+            
+            
+            navigationItem.leftBarButtonItem = editButtonItem
+            if let split = self.splitViewController {
+                let controllers = split.viewControllers
+                self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailListViewController
+                self.delegate1 = detailViewController
+            }
+            
+            FIRAuth.auth()?.addStateDidChangeListener { auth, user in
+                if user != nil {
+                    self.loadListasData()
+                } else {
+                    let alert = UIAlertController(title: "Inicie sesión", message: "Para poder visualizar sus listas, por favor inicie sesión.", preferredStyle: .alert)
+                    let inicarSesionAction = UIAlertAction(title: "Iniciar sesión", style: .default, handler: {_ in
+                        self.navigationController?.navigationBar.isHidden = true
+                        //TODO: do not permit to go back
+                        self.performSegue(withIdentifier: "goToLogInScreen", sender: nil)
+                    })
+                    alert.addAction(inicarSesionAction)
+                    
+                    self.present(alert, animated: true, completion: nil)
+                }
             }
         }
     }

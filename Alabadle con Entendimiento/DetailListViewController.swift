@@ -31,21 +31,23 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     var lista:Lista! {
         didSet{
             let defaults = UserDefaults.standard
-            let userUID = defaults.string(forKey: "USER_UID")!
-            listaRef = rootRef.child("listas/\(userUID)/\(lista.id)")
-            corosEnListaRef = listaRef?.child("corosEnLista")
-            lentosRef = corosEnListaRef?.child("lentos")
-            rapidosMediosRef = corosEnListaRef?.child("rapidos-medios")
-            loadDataWhenReady(completion: {(isReady:Bool) in
-                if isReady {
-                    self.todosArray = self.rapidosMediosArray + self.lentosArray
-                    self.partiturasArray = self.partiturasRapidosArray + self.partiturasLentosArray
-                    if self.tableView != nil {
-                        self.tableView.reloadData()
-                        self.setupLabels()
+            let userUID = defaults.string(forKey: "USER_UID")
+            if userUID != nil {
+                listaRef = rootRef.child("listas/\(userUID)/\(lista.id)")
+                corosEnListaRef = listaRef?.child("corosEnLista")
+                lentosRef = corosEnListaRef?.child("lentos")
+                rapidosMediosRef = corosEnListaRef?.child("rapidos-medios")
+                loadDataWhenReady(completion: {(isReady:Bool) in
+                    if isReady {
+                        self.todosArray = self.rapidosMediosArray + self.lentosArray
+                        self.partiturasArray = self.partiturasRapidosArray + self.partiturasLentosArray
+                        if self.tableView != nil {
+                            self.tableView.reloadData()
+                            self.setupLabels()
+                        }
                     }
-                }
-            })
+                })
+            }
         }
     }
     
