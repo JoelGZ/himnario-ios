@@ -99,7 +99,6 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
                 let coroRef = self.corosRef.child(String(coroId))
                 
                 coroRef.observe(FIRDataEventType.value, with: {(sp) in
-                    // print(sp.value)
                     let coro = Coro(snapshot: sp, coroId: coroId)
                     tempCoroArray2.append(coro)
                     if tempCoroArray2.count == self.safeCoros.count {
@@ -263,7 +262,6 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
                     let index = tonString.index(tonString.endIndex, offsetBy: -2)
                     tonString = tonString.substring(to: index)
                     let tonalidadUpdate = ["ton_global": tonString]
-                    print("tonalidadUpdate: \(tonalidadUpdate)")
                     self.listaRef?.updateChildValues(tonalidadUpdate)
                 }
                 contFinish += 1
@@ -287,7 +285,6 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
                     let index = tonString.index(tonString.endIndex, offsetBy: -2)
                     tonString = tonString.substring(to: index)
                     let tonalidadUpdate = ["ton_global": tonString]
-                    print("tonalidadUpdate: \(tonalidadUpdate)")
                     self.listaRef?.updateChildValues(tonalidadUpdate)
                 }
                 contFinish += 1

@@ -69,7 +69,6 @@ class MusicaPagerParentViewController: UIViewController, UIPageViewControllerDat
         //if both arrays have been set (readyNumber == 2)then indicate it is ready to continue
         var readyNumber = 0
         
-        print("corosRef: \(corosEnListaRef)")
         rapidosMediosRef = corosEnListaRef?.child("rapidos-medios")
         lentosRef = corosEnListaRef?.child("lentos")
         
@@ -77,7 +76,6 @@ class MusicaPagerParentViewController: UIViewController, UIPageViewControllerDat
             var tempArray1 = [CoroEnLista]()
             for coroRMChild in rapSnap.children {
                 let coroRMEnLista = CoroEnLista(snapshot: (coroRMChild as! FIRDataSnapshot))
-                print("nombre \(coroRMEnLista.nombre)")
                 tempArray1.append(coroRMEnLista)
             }
             self.corosEnListaRapidosArray = tempArray1
@@ -91,7 +89,6 @@ class MusicaPagerParentViewController: UIViewController, UIPageViewControllerDat
             var tempArray2 = [CoroEnLista]()
             for coroLentoChild in lentSnap.children {
                 let coroLentoEnLista = CoroEnLista(snapshot: (coroLentoChild as! FIRDataSnapshot))
-                print("nombre \(coroLentoEnLista.nombre)")
                 tempArray2.append(coroLentoEnLista)
             }
             self.corosEnListaLentosArray = tempArray2

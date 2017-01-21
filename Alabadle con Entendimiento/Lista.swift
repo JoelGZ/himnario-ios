@@ -40,7 +40,7 @@ class Lista {
         let snapshotValue = snapshot.value as! [String: AnyObject]
         
         id = dbRef.key
-        print(id)
+       
         nombreLista = snapshotValue["nombre"] as! String
         ton_global = snapshotValue["ton_global"] as! String
         if ton_global == dollarSign {
@@ -65,7 +65,7 @@ class Lista {
         let snapshotValue = snapshot.value as! [String: AnyObject]
         
         id = listaid
-        print(id)
+        
         nombreLista = snapshotValue["nombre"] as! String
         ton_global = snapshotValue["ton_global"] as! String
         if ton_global == dollarSign {

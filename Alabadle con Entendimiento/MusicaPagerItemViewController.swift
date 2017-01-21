@@ -48,7 +48,7 @@ class MusicaPagerItemViewController: UIViewController {
         let url = NSURL(fileURLWithPath: path)
         let filePath = url.appendingPathComponent("partitura/\(musicaString!).jpg")?.path
         let fileManager = FileManager.default
-        print(filePath!)
+
         if fileManager.fileExists(atPath: filePath!) {
             partituraImageView.image = UIImage(contentsOfFile: filePath!)
             self.partituraImageView.isHidden = false
@@ -159,8 +159,6 @@ class MusicaPagerItemViewController: UIViewController {
         scrollView.minimumZoomScale = minScale
         scrollView.maximumZoomScale = 2.0
         scrollView.setZoomScale(minScale, animated: false)
-        print(scrollView.zoomScale)
-        print(minScale)
         scrollView.contentOffset.y = 0
     }
     

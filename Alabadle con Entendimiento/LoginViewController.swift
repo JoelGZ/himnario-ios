@@ -112,9 +112,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         counter += 1
                         if counter == Int(snapshot.childrenCount) {     // display last list
                             let listaIDStr = (listaID as! FIRDataSnapshot).key
-                            print(listaIDStr)
                             let listaRef = listasDeUsuarioRef.child(listaIDStr)
-                            print(listaRef)
                             listaRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snap) in
                                 let list = Lista(snapshot: snap, listaid: snap.key)
                                 detailViewController.lista = list
