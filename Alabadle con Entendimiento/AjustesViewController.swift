@@ -252,6 +252,8 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
             present(alert, animated: true, completion: nil)
             
             signInOutLabel.text = "Iniciar sesión"
+            _ = tableView(self.tableView, titleForHeaderInSection: 1)
+            tableView.reloadData()
         } else {
             self.navigationController?.isNavigationBarHidden = true
             self.tabBarController?.tabBar.isHidden = true

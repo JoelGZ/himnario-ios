@@ -147,9 +147,7 @@ class MusicaPagerItemViewController: UIViewController {
     
     func setZoomParametersSize(scrollViewSize: CGSize, landscape: Bool) {
         let imageSize = partituraImageView.bounds.size
-        //let widthScale = scrollViewSize.width / 613
         let widthScale = scrollViewSize.width / 1277
-        //let heightScale = scrollViewSize.height / 793
         let heightScale = scrollViewSize.height / 1652
         
         if landscape {
