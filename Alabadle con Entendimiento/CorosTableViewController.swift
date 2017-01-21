@@ -56,7 +56,7 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
             } else {
                 let defaults = UserDefaults.standard
                 let userUID = defaults.string(forKey: "USER_UID")
-                if userUID != nil {
+                if userUID == nil {
                     defaults.set((FIRuser?.uid)!, forKey: "USER_UID")
                     defaults.set((FIRuser?.email)!, forKey: "USER_EMAIL")
                 }
