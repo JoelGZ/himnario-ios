@@ -202,7 +202,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             let okAlertAction = UIAlertAction(title: "OK", style: .default)
             
             alert.addAction(okAlertAction)
-           // adjustInsetForKeyboardShow(show: false, notification: nil)
             present(alert, animated: true, completion: nil)
         } else if (passwordTextField.text?.isEmpty)! {
             let alert = UIAlertController(title: "Campo requerido", message: "Ingrese su contraseña en el campo provisto.", preferredStyle: .alert)
@@ -368,7 +367,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     func subscribeToKeyboardNotificationShow() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        //NotificationCenter
     }
     
     func subscribeToKeyboardNotificationHide() {
@@ -383,9 +381,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     func adjustInsetForKeyboardShow(show: Bool, notification: NSNotification) {
         guard let value = notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue else { return }
         let keyboardFrame = value.cgRectValue
-        let adjustmentHeight = (keyboardFrame.height - 20) * (show ? 1 : -1)
+        
+        let adjustmentHeight = (keyboardFrame.height - 50) * (show ? 1 : -1)
         if keyboardIsShowing != show {
             self.view.frame.origin.y -= adjustmentHeight
+        }
+            
+        if !show {
+            self.view.frame.origin.y = 0
         }
         scrollView.scrollIndicatorInsets.bottom += adjustmentHeight
     }
