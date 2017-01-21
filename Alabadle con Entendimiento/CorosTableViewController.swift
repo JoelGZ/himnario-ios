@@ -54,6 +54,12 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
             if FIRuser == nil {        //not signed in
                 self.performSegue(withIdentifier: "logInScreenSegue", sender: nil)
             } else {
+                let defaults = UserDefaults.standard
+                let userUID = defaults.string(forKey: "USER_UID")
+                if userUID != nil {
+                    defaults.set((FIRuser?.uid)!, forKey: "USER_UID")
+                    defaults.set((FIRuser?.email)!, forKey: "USER_EMAIL")
+                }
                 let user = User(authData: FIRuser!)
                 if !self.dataIsLoaded {
                     if user.email == "test@nomail.com" {
