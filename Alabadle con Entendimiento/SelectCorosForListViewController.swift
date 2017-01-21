@@ -74,7 +74,9 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
             
             for coroSnap in snapshot.children {
                 let coro = Coro(snapshot: coroSnap as! FIRDataSnapshot, dbRef: self.corosRef)
-                tempCoroArray.append(coro)
+                if coro.orden > 0 {
+                    tempCoroArray.append(coro)
+                }
             }
             
             self.corosArray = tempCoroArray
