@@ -345,7 +345,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     
     func shareList(sender: AnyObject){
         var sharingItems = [AnyObject]()
-        let sharingText = self.lista.toString(listaURL: listaRef!)
+        let sharingText = listaToString()
         sharingItems.append(sharingText as AnyObject)
         
         let shareVC = UIActivityViewController(activityItems: sharingItems, applicationActivities: nil)
@@ -355,6 +355,21 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         }
         
         self.present(shareVC, animated: true, completion: nil)
+    }
+    
+    func listaToString() -> String {
+        var text = "\(self.lista.nombreLista.uppercased())\nTonalidad: \(self.lista.ton_global)\n------------\nRAPIDOS\n"
+        for coro in rapidosMediosArray {
+            text += "- \(coro.nombre)\n"
+        }
+        text += "------------\nLENTOS\n"
+        for coro in lentosArray {
+            text += "- \(coro.nombre)\n"
+        }
+        
+        text += "\nCreada con la Aplicación Alabadle con Entendimiento."
+        
+        return text
     }
     
     
