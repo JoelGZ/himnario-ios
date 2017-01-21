@@ -33,7 +33,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
             let defaults = UserDefaults.standard
             let userUID = defaults.string(forKey: "USER_UID")
             if userUID != nil {
-                listaRef = rootRef.child("listas/\(userUID)/\(lista.id)")
+                listaRef = rootRef.child("listas/\(userUID!)/\(lista.id)")
                 corosEnListaRef = listaRef?.child("corosEnLista")
                 lentosRef = corosEnListaRef?.child("lentos")
                 rapidosMediosRef = corosEnListaRef?.child("rapidos-medios")
@@ -218,6 +218,9 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         
         partiturasRapidosArray = []
         partiturasLentosArray = []
+        
+        print(rapidosMediosRef)
+        print(lentosRef)
         
         rapidosMediosRef?.queryOrdered(byChild: "orden").observeSingleEvent(of: FIRDataEventType.value, with: {(rapSnap) in
             var tempArray1 = [CoroEnLista]()
