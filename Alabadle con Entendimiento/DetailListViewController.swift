@@ -598,12 +598,22 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
                             coroInListaRef?.updateChildValues(updates)
                         }
                     }
+                    
+                    self.loadDataWhenReady(completion: {(isReady:Bool) in
+                        if isReady {
+                            self.todosArray = self.rapidosMediosArray + self.lentosArray
+                            self.partiturasArray = self.partiturasRapidosArray + self.partiturasLentosArray
+                            if self.tableView != nil {
+                                self.tableView.reloadData()
+                            }
+                        }
+                    })
                 })
             } else {
                 lentosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
                     for coroSnap in snapshot.children {
                         let coro = CoroEnLista(snapshot: coroSnap as! FIRDataSnapshot)
-                        let coroInListaRef = self.rapidosMediosRef?.child("\(coro.id)")
+                        let coroInListaRef = self.lentosRef?.child("\(coro.id)")
                         if coro.orden > source && coro.orden <= destination {
                             let updates = ["orden": source + contDespuesDeSource]
                             coroInListaRef?.updateChildValues(updates)
@@ -613,6 +623,16 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
                             coroInListaRef?.updateChildValues(updates)
                         }
                     }
+                    
+                    self.loadDataWhenReady(completion: {(isReady:Bool) in
+                        if isReady {
+                            self.todosArray = self.rapidosMediosArray + self.lentosArray
+                            self.partiturasArray = self.partiturasRapidosArray + self.partiturasLentosArray
+                            if self.tableView != nil {
+                                self.tableView.reloadData()
+                            }
+                        }
+                    })
                 })
             }
         } else if source > destination {
@@ -632,6 +652,42 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
                             contDesdeDestinationyAntesDeSource += 1
                         }
                     }
+                    
+                    self.loadDataWhenReady(completion: {(isReady:Bool) in
+                        if isReady {
+                            self.todosArray = self.rapidosMediosArray + self.lentosArray
+                            self.partiturasArray = self.partiturasRapidosArray + self.partiturasLentosArray
+                            if self.tableView != nil {
+                                self.tableView.reloadData()
+                            }
+                        }
+                    })
+                })
+            } else {
+                lentosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
+                    for coroSnap in snapshot.children {
+                        let coro = CoroEnLista(snapshot: coroSnap as! FIRDataSnapshot)
+                        let coroInListaRef = self.lentosRef?.child("\(coro.id)")
+                        
+                        if coro.orden == source {
+                            let updates = ["orden": destination]
+                            coroInListaRef?.updateChildValues(updates)
+                        } else if coro.orden >= destination && coro.orden < source {
+                            let updates = ["orden": destination + contDesdeDestinationyAntesDeSource]
+                            coroInListaRef?.updateChildValues(updates)
+                            contDesdeDestinationyAntesDeSource += 1
+                        }
+                    }
+               
+                    self.loadDataWhenReady(completion: {(isReady:Bool) in
+                        if isReady {
+                            self.todosArray = self.rapidosMediosArray + self.lentosArray
+                            self.partiturasArray = self.partiturasRapidosArray + self.partiturasLentosArray
+                            if self.tableView != nil {
+                                self.tableView.reloadData()
+                            }
+                        }
+                    })
                 })
             }
         }
