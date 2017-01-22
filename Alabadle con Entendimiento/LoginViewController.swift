@@ -29,8 +29,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         self.tabBarController?.tabBar.isHidden = true
         self.navigationController?.navigationBar.isHidden = true
-        
-        checkReachability()
      
         setupUI()
         
@@ -79,9 +77,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             // be on the main thread, like this:
             DispatchQueue.main.async() {
                 let alert = UIAlertController(title: "Sin conexión...", message: "Ha perdido conexión con el servidor. Por favor revise su conexión y vuelva a intentar.", preferredStyle: UIAlertControllerStyle.alert)
-                let regresarAction = UIAlertAction(title: "Reconectar", style: .default, handler: {
-                    (alert: UIAlertAction!) -> Void in self.checkReachability()
-                })
+                let regresarAction = UIAlertAction(title: "Reconectar", style: .default, handler: nil)
                 alert.addAction(regresarAction)
                 alert.popoverPresentationController?.sourceView = self.view
                 alert.popoverPresentationController?.sourceRect = self.view.bounds
@@ -145,6 +141,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func forgotPasswordAction(_ sender: AnyObject) {
+        checkReachability()
         let alert = UIAlertController(title: "Enviar solicitud", message: "Para resetear su contraseña, porfavor provea su correo de usuario.", preferredStyle: .alert)
         let enviarAction = UIAlertAction(title: "Enviar", style: .default) { action in
             let emailField = alert.textFields![0]
@@ -195,6 +192,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func signInAction(_ sender: AnyObject) {
+        checkReachability()
         if (emailTextField.text?.isEmpty)! {
             let alert = UIAlertController(title: "Campo requerido", message: "Ingrese su correo en el campo provisto.", preferredStyle: .alert)
             let okAlertAction = UIAlertAction(title: "OK", style: .default)
@@ -242,6 +240,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func createUserAction(_ sender: AnyObject) {
+        checkReachability()
         if (emailTextField.text?.isEmpty)! {
             errorAlert(flag: 2)
         } else if (passwordTextField.text?.isEmpty)! {
