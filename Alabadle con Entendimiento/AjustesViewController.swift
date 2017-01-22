@@ -29,6 +29,8 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     var downloadAudioDeleteFlag: Bool = true
     var defaults = UserDefaults.standard
     
+    let reachability = Reachability()!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,6 +40,12 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
         }
         if progressAudiosPercentage != nil {
             downloadAudiosProgressLabel.text = "\(Int(progressAudiosPercentage!))"
+        }
+        
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
         }
     }
     
@@ -346,6 +354,7 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let internetStatus = reachability.currentReachabilityString
         
         switch indexPath.section {
         case 0:
@@ -359,42 +368,56 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
                 }
             case 1:
                 var message = ""
-                if downloadDeleteFlag {
-                    message = "Se descargarán aproximadamente 28MB de información a la memoria interna de su teléfono. Por favor mantengase conectado al internet."
-                    let alert = UIAlertController(title: "¡Atención!", message: message, preferredStyle: .alert)
-                    let okAction = UIAlertAction(title: "OK", style: .default, handler: {(alert : UIAlertAction!) -> Void in self.downloadPartituras()})
-                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-                    alert.addAction(okAction)
+                if internetStatus == "No Connection" {
+                    let alert = UIAlertController(title: "Sin conexión", message: "Revise su conexión de internet e intente de nuevo.", preferredStyle: .alert)
+                    let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
                     alert.addAction(cancelAction)
                     present(alert, animated: true, completion: nil)
                 } else {
-                    message = "¿Desea eliminar totalmente las partituras?"
-                    let alert = UIAlertController(title: "¡Atención!", message: message, preferredStyle: .alert)
-                    let okAction = UIAlertAction(title: "OK", style: .default, handler: {(alert : UIAlertAction!) -> Void in self.deletePartiturasInMemory()})
-                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-                    alert.addAction(okAction)
-                    alert.addAction(cancelAction)
-                    present(alert, animated: true, completion: nil)
+                    if downloadDeleteFlag {
+                        message = "Se descargarán aproximadamente 28MB de información a la memoria interna de su teléfono. Por favor mantengase conectado al internet."
+                        let alert = UIAlertController(title: "¡Atención!", message: message, preferredStyle: .alert)
+                        let okAction = UIAlertAction(title: "OK", style: .default, handler: {(alert : UIAlertAction!) -> Void in self.downloadPartituras()})
+                        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                        alert.addAction(okAction)
+                        alert.addAction(cancelAction)
+                        present(alert, animated: true, completion: nil)
+                    } else {
+                        message = "¿Desea eliminar totalmente las partituras?"
+                        let alert = UIAlertController(title: "¡Atención!", message: message, preferredStyle: .alert)
+                        let okAction = UIAlertAction(title: "OK", style: .default, handler: {(alert : UIAlertAction!) -> Void in self.deletePartiturasInMemory()})
+                        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                        alert.addAction(okAction)
+                        alert.addAction(cancelAction)
+                        present(alert, animated: true, completion: nil)
+                    }
                 }
                 break
             case 2:
                 var message = ""
-                if downloadAudioDeleteFlag {
-                    message = "Se descargarán aproximadamente 75MB de información a la memoria interna de su teléfono. Por favor mantengase conectado al internet."
-                    let alert = UIAlertController(title: "¡Atención!", message: message, preferredStyle: .alert)
-                    let okAction = UIAlertAction(title: "OK", style: .default, handler: {(alert : UIAlertAction!) -> Void in self.downloadAudios()})
-                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-                    alert.addAction(okAction)
+                if internetStatus == "No Connection" {
+                    let alert = UIAlertController(title: "Sin conexión", message: "Revise su conexión de internet e intente de nuevo.", preferredStyle: .alert)
+                    let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
                     alert.addAction(cancelAction)
                     present(alert, animated: true, completion: nil)
                 } else {
-                    message = "¿Desea eliminar totalmente los audios?"
-                    let alert = UIAlertController(title: "¡Atención!", message: message, preferredStyle: .alert)
-                    let okAction = UIAlertAction(title: "OK", style: .default, handler: {(alert : UIAlertAction!) -> Void in self.deleteAudiosInMemory()})
-                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-                    alert.addAction(okAction)
-                    alert.addAction(cancelAction)
-                    present(alert, animated: true, completion: nil)
+                    if downloadAudioDeleteFlag {
+                        message = "Se descargarán aproximadamente 75MB de información a la memoria interna de su teléfono. Por favor mantengase conectado al internet."
+                        let alert = UIAlertController(title: "¡Atención!", message: message, preferredStyle: .alert)
+                        let okAction = UIAlertAction(title: "OK", style: .default, handler: {(alert : UIAlertAction!) -> Void in self.downloadAudios()})
+                        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                        alert.addAction(okAction)
+                        alert.addAction(cancelAction)
+                        present(alert, animated: true, completion: nil)
+                    } else {
+                        message = "¿Desea eliminar totalmente los audios?"
+                        let alert = UIAlertController(title: "¡Atención!", message: message, preferredStyle: .alert)
+                        let okAction = UIAlertAction(title: "OK", style: .default, handler: {(alert : UIAlertAction!) -> Void in self.deleteAudiosInMemory()})
+                        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                        alert.addAction(okAction)
+                        alert.addAction(cancelAction)
+                        present(alert, animated: true, completion: nil)
+                    }
                 }
                 break
             default:
@@ -402,15 +425,22 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
             }
             break
         case 1:
-            switch indexPath.row {
-            case 0:
-                signInOut()
-                break;
-            case 1:
-                changePassword()
-                break;
-            default:
-                break;
+            if internetStatus == "No Connection" {
+                let alert = UIAlertController(title: "Sin conexión", message: "Revise su conexión de internet e intente de nuevo.", preferredStyle: .alert)
+                let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
+                alert.addAction(cancelAction)
+                present(alert, animated: true, completion: nil)
+            } else {
+                switch indexPath.row {
+                case 0:
+                    signInOut()
+                    break;
+                case 1:
+                    changePassword()
+                    break;
+                default:
+                    break;
+                }
             }
             break
         case 2:
@@ -424,18 +454,6 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
             default:
                 break;
             }
-            /* case 0:
-             rateAppAlert()
-             break;
-             case 1:
-             reportProblem()
-             break;
-             case 2:
-             contactUs()
-             break;
-             default:
-             break;
-             }*/
             break
         default:
             break

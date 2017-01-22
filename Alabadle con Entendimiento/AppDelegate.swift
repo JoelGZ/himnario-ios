@@ -53,7 +53,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
                     }
                 }
             })
-
         }
         
         let pageController = UIPageControl.appearance()
