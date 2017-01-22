@@ -81,10 +81,10 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
                 let alert = UIAlertController(title: "Inicie sesión", message: "Para poder visualizar sus listas, por favor inicie sesión.", preferredStyle: .alert)
                 let inicarSesionAction = UIAlertAction(title: "Iniciar sesión", style: .default, handler: {_ in
                     self.navigationController?.navigationBar.isHidden = true
-                    self.performSegue(withIdentifier: "goToLogInScreen", sender: nil)
+                    self.tabBarController?.selectedIndex = 2
                 })
                 let cancelarAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: {_ in
-                    self.tabBarController?.selectedIndex = 2
+                    self.tabBarController?.selectedIndex = 0
                 })
                 alert.addAction(inicarSesionAction)
                 alert.addAction(cancelarAction)
