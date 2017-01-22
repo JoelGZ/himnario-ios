@@ -60,8 +60,11 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
                         //TODO: do not permit to go back
                         self.performSegue(withIdentifier: "goToLogInScreen", sender: nil)
                     })
+                    let cancelarAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: {_ in
+                        self.tabBarController?.selectedIndex = 2
+                    })
                     alert.addAction(inicarSesionAction)
-                    
+                    alert.addAction(cancelarAction)
                     self.present(alert, animated: true, completion: nil)
                 }
             }
@@ -78,10 +81,13 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
                 let alert = UIAlertController(title: "Inicie sesión", message: "Para poder visualizar sus listas, por favor inicie sesión.", preferredStyle: .alert)
                 let inicarSesionAction = UIAlertAction(title: "Iniciar sesión", style: .default, handler: {_ in
                     self.navigationController?.navigationBar.isHidden = true
-                    //TODO: do not permit to go back
                     self.performSegue(withIdentifier: "goToLogInScreen", sender: nil)
                 })
+                let cancelarAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: {_ in
+                    self.tabBarController?.selectedIndex = 2
+                })
                 alert.addAction(inicarSesionAction)
+                alert.addAction(cancelarAction)
                 
                 self.present(alert, animated: true, completion: nil)
             }
