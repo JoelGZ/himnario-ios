@@ -33,7 +33,25 @@ class MusicaPagerParentViewController: UIViewController, UIPageViewControllerDat
         defaults.set(Int(navigationController!.navigationBar.bounds.height), forKey: "navBarHeight")
         defaults.set(partiturasArray.count, forKey: "cantidadCoros")
         
-        checkReachability()
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let url = NSURL(fileURLWithPath: path)
+        let filePath = url.appendingPathComponent("partitura/a_cristo_coronad.jpg")?.path
+        let fileManager = FileManager.default
+        if !fileManager.fileExists(atPath: filePath!) {
+            checkReachability()
+        } else {
+            self.pageViewController = self.storyboard?.instantiateViewController(withIdentifier: "MusicaPager") as? UIPageViewController
+            
+            self.pageViewController!.dataSource = self
+            
+            let startVC = self.viewControllerAtIndex(index: self.index) as MusicaPagerItemViewController
+            let viewControllers = NSArray(object: startVC)
+            
+            self.pageViewController!.setViewControllers(viewControllers as? [UIViewController], direction: .forward, animated: true, completion: nil)
+            self.pageViewController!.view.frame = CGRect(x: 0, y: self.navigationController!.navigationBar.bounds.height + 8, width: self.view.frame.width, height: self.view.frame.height)
+            self.view.addSubview(self.pageViewController!.view)
+            self.pageViewController!.didMove(toParentViewController: self)
+        }
     }
     
     func checkReachability() {
