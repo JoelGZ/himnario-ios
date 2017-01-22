@@ -29,41 +29,61 @@ class MusicaPagerParentViewController: UIViewController, UIPageViewControllerDat
         super.viewDidLoad()
         
         splitViewController!.presentsWithGesture = false
-        /*loadDataWhenReady(completion: {(isReady) in
-            if isReady {
-                for coroEnLista in self.corosEnListaRapidosArray {
-                    coroEnLista.convertToCoro(completion: {(coroResultante:Coro) in
-                        let coro = coroResultante
-                        self.corosArray.append(coro)
-                    })
-                }
-                for coroEnLista in self.corosEnListaLentosArray {
-                    coroEnLista.convertToCoro(completion: {(coroResultante: Coro) in
-                        let coro = coroResultante
-                        self.corosArray.append(coro)
-                    })
-                }
-            }
-        })*/
-        
         let defaults = UserDefaults.standard
-        
         defaults.set(Int(navigationController!.navigationBar.bounds.height), forKey: "navBarHeight")
         defaults.set(partiturasArray.count, forKey: "cantidadCoros")
         
-        
-        self.pageViewController = self.storyboard?.instantiateViewController(withIdentifier: "MusicaPager") as? UIPageViewController
-        
-        self.pageViewController!.dataSource = self
-
-        let startVC = self.viewControllerAtIndex(index: index) as MusicaPagerItemViewController
-        let viewControllers = NSArray(object: startVC)
-        
-        self.pageViewController!.setViewControllers(viewControllers as? [UIViewController], direction: .forward, animated: true, completion: nil)
-        self.pageViewController!.view.frame = CGRect(x: 0, y: self.navigationController!.navigationBar.bounds.height + 8, width: self.view.frame.width, height: self.view.frame.height)
-        self.view.addSubview(self.pageViewController!.view)
-        self.pageViewController!.didMove(toParentViewController: self)
+        checkReachability()
     }
+    
+    func checkReachability() {
+        //declare this property where it won't go out of scope relative to your listener
+        let reachability = Reachability()!
+        
+        reachability.whenReachable = { reachability in
+            // this is called on a background thread, but UI updates must
+            // be on the main thread, like this:
+            DispatchQueue.main.async() {
+                self.pageViewController = self.storyboard?.instantiateViewController(withIdentifier: "MusicaPager") as? UIPageViewController
+                
+                self.pageViewController!.dataSource = self
+                
+                let startVC = self.viewControllerAtIndex(index: self.index) as MusicaPagerItemViewController
+                let viewControllers = NSArray(object: startVC)
+                
+                self.pageViewController!.setViewControllers(viewControllers as? [UIViewController], direction: .forward, animated: true, completion: nil)
+                self.pageViewController!.view.frame = CGRect(x: 0, y: self.navigationController!.navigationBar.bounds.height + 8, width: self.view.frame.width, height: self.view.frame.height)
+                self.view.addSubview(self.pageViewController!.view)
+                self.pageViewController!.didMove(toParentViewController: self)
+            }
+        }
+        
+        reachability.whenUnreachable = { reachability in
+            // this is called on a background thread, but UI updates must
+            // be on the main thread, like this:
+            DispatchQueue.main.async() {
+                let alert = UIAlertController(title: "Sin conexión...", message: "Este contenido solamente está disponible en linea.", preferredStyle: UIAlertControllerStyle.alert)
+                let regresarAction = UIAlertAction(title: "Regresar", style: .default, handler: {
+                    (alert: UIAlertAction!) -> Void in self.goBackWhenNoConnection()
+                })
+                alert.addAction(regresarAction)
+                alert.popoverPresentationController?.sourceView = self.view
+                alert.popoverPresentationController?.sourceRect = self.view.bounds
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+    }
+    
+    func goBackWhenNoConnection() {
+        self.tabBarController?.selectedIndex = 0
+    }
+
     
     func loadDataWhenReady(completion:@escaping (_ isReady: Bool) -> Void ) {
         //if both arrays have been set (readyNumber == 2)then indicate it is ready to continue

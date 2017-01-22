@@ -56,7 +56,19 @@ class MusicaPagerItemViewController: UIViewController {
             self.activityIndicator.isHidden = true
         } else {
             storageRef = storage.reference(forURL: "gs://alabadle-con-entendimiento.appspot.com/")
-            checkReachability()
+            let sName = self.coro?.sName
+            self.musicaString = (sName?.replacingOccurrences(of: " ", with:"_"))!
+            let partituraRef = self.storageRef.child("partituras/\(self.musicaString!).jpg")
+            partituraRef.data(withMaxSize: 1*1024*1024) {(data, error) -> Void in
+                if (error != nil) {
+                    // TODO: inform user that something went wrong
+                } else {
+                    self.partituraImageView.image = UIImage(data: data!)
+                    self.partituraImageView.isHidden = false
+                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator.isHidden = true
+                }
+            }
         }
         scrollView.contentOffset.y = 0
         
@@ -73,55 +85,6 @@ class MusicaPagerItemViewController: UIViewController {
         } else {
             setZoomParametersSize(scrollViewSize: scrollView.bounds.size, landscape: false)
         }
-    }
-    
-    func checkReachability() {
-        //declare this property where it won't go out of scope relative to your listener
-        let reachability = Reachability()!
-        
-        reachability.whenReachable = { reachability in
-            // this is called on a background thread, but UI updates must
-            // be on the main thread, like this:
-            DispatchQueue.main.async() {
-                let sName = self.coro?.sName
-                self.musicaString = (sName?.replacingOccurrences(of: " ", with:"_"))!
-                let partituraRef = self.storageRef.child("partituras/\(self.musicaString!).jpg")
-                partituraRef.data(withMaxSize: 1*1024*1024) {(data, error) -> Void in
-                    if (error != nil) {
-                        // TODO: inform user that something went wrong
-                    } else {
-                        self.partituraImageView.image = UIImage(data: data!)
-                        self.partituraImageView.isHidden = false
-                        self.activityIndicator.stopAnimating()
-                        self.activityIndicator.isHidden = true
-                    }
-                }
-            }
-        }
-        
-        reachability.whenUnreachable = { reachability in
-            // this is called on a background thread, but UI updates must
-            // be on the main thread, like this:
-            DispatchQueue.main.async() {
-                let alert = UIAlertController(title: "Sin conexión...", message: "Este contenido solamente está disponible en linea.", preferredStyle: UIAlertControllerStyle.alert)
-                let regresarAction = UIAlertAction(title: "Regresar", style: .default, handler: {
-                    (alert: UIAlertAction!) -> Void in self.goBackWhenNoConnection()
-                })
-                alert.addAction(regresarAction)
-                alert.popoverPresentationController?.sourceView = self.view
-                alert.popoverPresentationController?.sourceRect = self.view.bounds
-                self.present(alert, animated: true, completion: nil)
-            }
-        }
-        
-        do {
-            try reachability.startNotifier()
-        } catch {
-            print("Unable to start notifier")
-        }
-    }
-    func goBackWhenNoConnection() {
-        tabBarController?.selectedIndex = 0
     }
     
     func setMyPageControl(fl: Bool) {
