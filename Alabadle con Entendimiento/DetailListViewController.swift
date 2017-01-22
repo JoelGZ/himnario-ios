@@ -350,6 +350,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
         
         let shareVC = UIActivityViewController(activityItems: sharingItems, applicationActivities: nil)
         shareVC.excludedActivityTypes = [UIActivityType.airDrop,UIActivityType.addToReadingList,UIActivityType.assignToContact,UIActivityType.postToTencentWeibo,UIActivityType.postToVimeo,UIActivityType.saveToCameraRoll,UIActivityType.postToWeibo]
+        
         if let popoverController = shareVC.popoverPresentationController {
             popoverController.barButtonItem = sender as? UIBarButtonItem
         }
@@ -358,16 +359,16 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func listaToString() -> String {
-        var text = "\(self.lista.nombreLista.uppercased())\nTonalidad: \(self.lista.ton_global)\n------------\nRAPIDOS\n"
+        var text = "\(self.lista.nombreLista.uppercased())\n<br/>Tonalidad: \(self.lista.ton_global)\n<br/>------------\n<br/>RAPIDOS\n<br/>"
         for coro in rapidosMediosArray {
-            text += "- \(coro.nombre)\n"
+            text += "- \(coro.nombre)\n<br/>"
         }
-        text += "------------\nLENTOS\n"
+        text += "------------\n<br/>LENTOS\n<br/>"
         for coro in lentosArray {
-            text += "- \(coro.nombre)\n"
+            text += "- \(coro.nombre)\n<br/>"
         }
         
-        text += "\nCreada con la Aplicación Alabadle con Entendimiento."
+        text += "\n<br/>Creada con la Aplicación Alabadle con Entendimiento."
         
         return text
     }
