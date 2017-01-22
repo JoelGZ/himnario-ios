@@ -325,7 +325,7 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 3
+            return 4
         case 1:
             return 2
         case 2:
@@ -419,6 +419,18 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
                         present(alert, animated: true, completion: nil)
                     }
                 }
+                break
+            case 3:
+                let optionsMenu = UIAlertController(title: nil, message: "Seleccione la forma preferencial de compartir listas.", preferredStyle: .actionSheet)
+                let whatsappAction = UIAlertAction(title: "Whatsapp", style: .default, handler: {(alert: UIAlertAction!) -> Void in
+                    self.defaults.set("whatsapp", forKey: "SHARE_PREFERENCE")
+                })
+                let normalAction = UIAlertAction(title: "Otro", style: .default, handler: {(alert: UIAlertAction!) -> Void in
+                    self.defaults.set("normal", forKey: "SHARE_PREFERENCE")
+                })
+                optionsMenu.addAction(whatsappAction)
+                optionsMenu.addAction(normalAction)
+                present(optionsMenu, animated: true, completion: nil)
                 break
             default:
                 break

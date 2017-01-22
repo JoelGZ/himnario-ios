@@ -359,16 +359,23 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func listaToString() -> String {
-        var text = "\(self.lista.nombreLista.uppercased())\n<br/>Tonalidad: \(self.lista.ton_global)\n<br/>------------\n<br/>RAPIDOS\n<br/>"
-        for coro in rapidosMediosArray {
-            text += "- \(coro.nombre)\n<br/>"
+        let defaults = UserDefaults.standard
+        let sharePreference = defaults.string(forKey: "SHARE_PREFERENCE")
+        
+        var newLine = "<br/>"
+        if sharePreference != "whatsapp" || sharePreference == nil {
+            newLine = "\n"
         }
-        text += "------------\n<br/>LENTOS\n<br/>"
+        var text = "\(self.lista.nombreLista.uppercased())\(newLine)Tonalidad: \(self.lista.ton_global)\(newLine)------------\(newLine)RAPIDOS\(newLine)"
+        for coro in rapidosMediosArray {
+            text += "- \(coro.nombre)\(newLine)"
+        }
+        text += "------------\(newLine)LENTOS\(newLine)"
         for coro in lentosArray {
-            text += "- \(coro.nombre)\n<br/>"
+            text += "- \(coro.nombre)\(newLine)"
         }
         
-        text += "\n<br/>Creada con la Aplicación Alabadle con Entendimiento."
+        text += "\(newLine)Creada con la Aplicación Alabadle con Entendimiento."
         
         return text
     }
