@@ -122,7 +122,6 @@ class CoroDetailViewController: UIViewController, UIAlertViewDelegate {
         alert.popoverPresentationController?.sourceRect = self.view.bounds
         self.present(alert, animated: true, completion: nil)
     }*/
-    
 }
 
 

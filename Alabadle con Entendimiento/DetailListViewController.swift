@@ -191,7 +191,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     
     override func viewWillLayoutSubviews() {
         if lista.id != "10000" {
-            if noListView!.tag == 100 {
+            if noListView != nil && noListView!.tag == 100 {
                 noListView!.removeFromSuperview()
             }
             

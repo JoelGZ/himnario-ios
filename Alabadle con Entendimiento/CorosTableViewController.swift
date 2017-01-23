@@ -350,7 +350,6 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
     func keyboardWillShow(notification: NSNotification) {}
     
     func keyboardWillHide(notification: NSNotification) {}
-    
 }
 
 //MARK: Extensions

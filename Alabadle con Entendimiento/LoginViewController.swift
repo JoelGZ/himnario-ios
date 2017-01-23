@@ -406,5 +406,4 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         adjustInsetForKeyboardShow(show: false, notification: notification)
         keyboardIsShowing = false
     }
-
 }
