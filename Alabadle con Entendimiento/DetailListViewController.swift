@@ -27,6 +27,8 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     var noListView: UIView?
     var label: UILabel?
     var createListButton: UIButton?
+    var cantListas: Int?
+    var lastList: Lista?
     
     var lista:Lista! {
         didSet{
@@ -320,7 +322,33 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     //MARK: Deleting, sharing and updating functions
     func deleteList() { 
         listaRef?.removeValue()
-        self.navigationController?.navigationController!.popToRootViewController(animated: true)
+        
+        let splitMode = self.splitViewController?.preferredDisplayMode.rawValue
+        
+        if splitMode != 2 {
+            if cantListas != nil {
+                if cantListas! > 1 {
+                    lista = lastList
+                } else {
+                    lista.id = "10000"
+                    setupNoListView()
+                }
+            } else {
+                lista.id = "10000"
+                setupNoListView()
+            }
+            let navController = self.splitViewController?.viewControllers.first as! UINavigationController
+            let listasVC = navController.topViewController as! ListasTableViewController
+            listasVC.loadListasData()
+            listasVC.tableView.reloadData()
+        } else {
+            self.navigationController?.navigationController!.popToRootViewController(animated: true)
+            if cantListas != nil || cantListas! <= 1 {
+                lista.id = "10000"
+                setupNoListView()
+            }
+        }
+        cantListas? -= 1
     }
     
     func updateTonalidadDeCoro(coro: Coro, tonalidad: String) {

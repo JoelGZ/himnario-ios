@@ -103,7 +103,7 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
             for listaID in snapshot.children {
                 let listaIDStr = (listaID as! FIRDataSnapshot).key
                 let listaRef = self.listasDeUsuarioRef.child(listaIDStr)
-                listaRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshotChild) in
+                listaRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshotChild) in	
                     childrenCounter += 1
                     let lista = Lista(snapshot: snapshotChild, dbRef: listaRef)
                     tempArray.append(lista)
@@ -147,10 +147,6 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
         let lista = self.resultArray[indexPath.row]
         self.delegate1?.listaSelected(newLista: lista)
         
-        //TODO: FIX ERROR: when user signs out, and then signs in thru listastvc it later does not go into the list.
-        //Also when signs out and going back to lists it reveals detail vc instead of master vc first
-        //***********************
-        
         if let detailViewController = self.delegate1 as? DetailListViewController {
             detailViewController.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
             detailViewController.navigationItem.leftItemsSupplementBackButton = true
@@ -162,6 +158,17 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
             if maxScreenMeasurement <= 736 {
                 splitViewController?.showDetailViewController(detailViewController.navigationController!, sender: nil)
             }
+            
+            
+            if resultArray.count > 1 {
+                let lastIndex = resultArray.count - 1
+                if indexPath.row != lastIndex {     //la lista seleccionada no es la ultima lista
+                    detailViewController.lastList = resultArray[lastIndex]
+                } else {
+                    detailViewController.lastList = resultArray[lastIndex - 1]
+                }
+            }
+            detailViewController.cantListas = resultArray.count
         }
 
     }
