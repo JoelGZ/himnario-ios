@@ -265,6 +265,7 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
         } else {
             self.navigationController?.isNavigationBarHidden = true
             self.tabBarController?.tabBar.isHidden = true
+            defaults.set(true, forKey: "LOG_SCREEN_VISIBLE")
             performSegue(withIdentifier: "goToLogScreenSegue", sender: nil)
         }
         

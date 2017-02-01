@@ -35,6 +35,9 @@
 		61A0E31C1DA422DB00DCB7D2 /* GetReadableText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A0E31B1DA422DB00DCB7D2 /* GetReadableText.swift */; };
 		61A17E761DA83C7100737049 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A17E751DA83C7100737049 /* User.swift */; };
 		61A17E781DA8900100737049 /* AjustesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A17E771DA8900100737049 /* AjustesViewController.swift */; };
+		61C1DC5A1E3FDF7600AE08EF /* RootTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C1DC591E3FDF7600AE08EF /* RootTabBarViewController.swift */; };
+		61C1DC5C1E3FE88300AE08EF /* NavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C1DC5B1E3FE88300AE08EF /* NavViewController.swift */; };
+		61C1DC5E1E3FED1F00AE08EF /* AjustesNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C1DC5D1E3FED1F00AE08EF /* AjustesNavViewController.swift */; };
 		61C873781DB6CF0E00E2DD79 /* SelectCorosForListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C873771DB6CF0E00E2DD79 /* SelectCorosForListViewController.swift */; };
 		61C8737A1DB72C4000E2DD79 /* SelectCorosForListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C873791DB72C4000E2DD79 /* SelectCorosForListTableViewCell.swift */; };
 		61DC1F8F1DB5DE5B002C3238 /* NewListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DC1F8E1DB5DE5B002C3238 /* NewListViewController.swift */; };
@@ -95,6 +98,9 @@
 		61A0E31B1DA422DB00DCB7D2 /* GetReadableText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetReadableText.swift; sourceTree = "<group>"; };
 		61A17E751DA83C7100737049 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		61A17E771DA8900100737049 /* AjustesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AjustesViewController.swift; sourceTree = "<group>"; };
+		61C1DC591E3FDF7600AE08EF /* RootTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootTabBarViewController.swift; sourceTree = "<group>"; };
+		61C1DC5B1E3FE88300AE08EF /* NavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavViewController.swift; sourceTree = "<group>"; };
+		61C1DC5D1E3FED1F00AE08EF /* AjustesNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AjustesNavViewController.swift; sourceTree = "<group>"; };
 		61C873771DB6CF0E00E2DD79 /* SelectCorosForListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectCorosForListViewController.swift; sourceTree = "<group>"; };
 		61C873791DB72C4000E2DD79 /* SelectCorosForListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectCorosForListTableViewCell.swift; sourceTree = "<group>"; };
 		61DC1F8E1DB5DE5B002C3238 /* NewListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewListViewController.swift; sourceTree = "<group>"; };
@@ -189,6 +195,9 @@
 				615057641D9ABC020008CC96 /* Main.storyboard */,
 				6150576C1D9ABC020008CC96 /* Info.plist */,
 				6113BD2A1DA47BFD00FB7A64 /* GoogleService-Info.plist */,
+				61C1DC591E3FDF7600AE08EF /* RootTabBarViewController.swift */,
+				61C1DC5B1E3FE88300AE08EF /* NavViewController.swift */,
+				61C1DC5D1E3FED1F00AE08EF /* AjustesNavViewController.swift */,
 			);
 			path = "Alabadle con Entendimiento";
 			sourceTree = "<group>";
@@ -517,14 +526,17 @@
 				611EC5CC1DBB0A0C00F546F0 /* MusicaPagerItemViewController.swift in Sources */,
 				611EF5631DADE252009AD4DF /* ListasTableViewController.swift in Sources */,
 				616F0C8E1DA5F90300830F84 /* MusicaViewController.swift in Sources */,
+				61C1DC5E1E3FED1F00AE08EF /* AjustesNavViewController.swift in Sources */,
 				61A0E3161DA41FF800DCB7D2 /* Coro.swift in Sources */,
 				61A0E31C1DA422DB00DCB7D2 /* GetReadableText.swift in Sources */,
 				611EC5CE1DBB0CF500F546F0 /* MusicaPagerParentViewController.swift in Sources */,
 				611EF56D1DADF1BE009AD4DF /* CoroEnListaTableViewCell.swift in Sources */,
 				616F0C8C1DA5E58700830F84 /* CoroDetailViewController.swift in Sources */,
 				61A17E761DA83C7100737049 /* User.swift in Sources */,
+				61C1DC5C1E3FE88300AE08EF /* NavViewController.swift in Sources */,
 				61A0E3181DA4201900DCB7D2 /* VelButton.swift in Sources */,
 				611EF56B1DADEC07009AD4DF /* CoroEnLista.swift in Sources */,
+				61C1DC5A1E3FDF7600AE08EF /* RootTabBarViewController.swift in Sources */,
 				6194135E1DBC875100EE35A4 /* CoroDetailWPagerViewController.swift in Sources */,
 				61C873781DB6CF0E00E2DD79 /* SelectCorosForListViewController.swift in Sources */,
 			);

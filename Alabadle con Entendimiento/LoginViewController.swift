@@ -23,6 +23,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     var keyboardIsShowing = false
     var userUID: String?
+    let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,9 +65,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         
                         guard let userData = user else { return }
                         let user = User(authData: userData)
-                        let defaults = UserDefaults.standard
-                        defaults.set(user.uid, forKey: "USER_UID")
-                        defaults.set(user.email, forKey: "USER_EMAIL")
+                        self.defaults.set(user.uid, forKey: "USER_UID")
+                        self.defaults.set(user.email, forKey: "USER_EMAIL")
                     }
                 }
             }
@@ -98,6 +98,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             let splitViewController = tabBarController.viewControllers![1] as! UISplitViewController
             let rightNavController = splitViewController.viewControllers.last as! UINavigationController
             let detailViewController = rightNavController.topViewController as! DetailListViewController
+            
+            defaults.set(false, forKey: "LOG_SCREEN_VISIBLE")
             
             let listasDeUsuarioRef = FIRDatabase.database().reference().child("listas/\(userUID!)")
             listasDeUsuarioRef.observeSingleEvent(of: FIRDataEventType.value, with: {

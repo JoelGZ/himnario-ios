@@ -64,7 +64,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         let navigationController = spViewController.viewControllers[spViewController.viewControllers.count-1] as! UINavigationController
         navigationController.topViewController!.navigationItem.leftBarButtonItem = spViewController.displayModeButtonItem
         
-        
         return true
     }
 

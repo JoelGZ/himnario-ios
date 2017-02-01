@@ -58,7 +58,7 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
                         self.tabBarController?.selectedIndex = 2
                     })
                     let cancelarAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: {_ in
-                        self.tabBarController?.selectedIndex = 2
+                        self.tabBarController?.selectedIndex = 0
                     })
                     alert.addAction(inicarSesionAction)
                     alert.addAction(cancelarAction)
@@ -103,7 +103,7 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
             for listaID in snapshot.children {
                 let listaIDStr = (listaID as! FIRDataSnapshot).key
                 let listaRef = self.listasDeUsuarioRef.child(listaIDStr)
-                listaRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshotChild) in	
+                listaRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshotChild) in
                     childrenCounter += 1
                     let lista = Lista(snapshot: snapshotChild, dbRef: listaRef)
                     tempArray.append(lista)
