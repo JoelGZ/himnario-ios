@@ -70,9 +70,10 @@ class NewListViewController: UIViewController, UITextFieldDelegate {
             
             //Create row list
             let calendarFormatter = DateFormatter()
-            calendarFormatter.dateFormat = "yyyyMMddHHmms"
+            calendarFormatter.dateFormat = "yyMMddHHmmss"
             let date = calendarFormatter.string(from: Date())
-            let newListID = date
+            let index = date.index(date.startIndex, offsetBy: 12)
+            let newListID = date.substring(to: index)
                     
             let newListDic: Dictionary<String,Any> = ["nombre": nameOfList,
                               "ton_global": "$",
