@@ -431,6 +431,7 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
                 })
                 optionsMenu.addAction(whatsappAction)
                 optionsMenu.addAction(normalAction)
+                optionsMenu.popoverPresentationController?.sourceView = self.view
                 present(optionsMenu, animated: true, completion: nil)
                 break
             default:
