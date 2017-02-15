@@ -42,6 +42,24 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
             downloadAudiosProgressLabel.text = "\(Int(progressAudiosPercentage!))"
         }
         
+        // check if partituras and audios have been downloaded.
+        
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let url = NSURL(fileURLWithPath: path)
+        let partituraFilePath = url.appendingPathComponent("partituras/a_cristo_coronad.jpg")?.path
+        let audioFilePath = url.appendingPathComponent("audios/a_cristo_coronad.mp3")?.path
+        let fileManager = FileManager.default
+        
+        if fileManager.fileExists(atPath: partituraFilePath!) {
+            downloadDeleteFlag = false
+            descargaLabel.text = "Eliminar partituras descargadas"
+        }
+        
+        if fileManager.fileExists(atPath: audioFilePath!) {
+            downloadAudioDeleteFlag = false
+            descargaAudiosLabel.text = "Eliminar audios descargados"
+        }
+        
         do {
             try reachability.startNotifier()
         } catch {
