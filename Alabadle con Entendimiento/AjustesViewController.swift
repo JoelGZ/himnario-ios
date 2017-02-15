@@ -113,7 +113,7 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
                 let musicaString = sName.replacingOccurrences(of: " ", with:"_")                            
                 
                 // Create local filesystem URL
-                let localURL = self.getDocumentsDirectory().appendingPathComponent("partitura/\(musicaString).jpg")
+                let localURL = self.getDocumentsDirectory().appendingPathComponent("partituras/\(musicaString).jpg")
                 
                 // Download to the local filesystem
                 _ = coroPartituraRef.write(toFile: localURL) { url, error in
@@ -153,7 +153,7 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
                 let musicaString = sName.replacingOccurrences(of: " ", with:"_")
                 
                 // Create local filesystem URL
-                let localURL = self.getDocumentsDirectory().appendingPathComponent("partitura/\(musicaString).jpg")
+                let localURL = self.getDocumentsDirectory().appendingPathComponent("partituras/\(musicaString).jpg")
                 
                 partituraURLsArray.append(localURL)
             }

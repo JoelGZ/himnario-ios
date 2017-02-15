@@ -167,6 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				61A17E771DA8900100737049 /* AjustesViewController.swift */,
+				61C1DC5D1E3FED1F00AE08EF /* AjustesNavViewController.swift */,
 				6150575E1D9ABC020008CC96 /* AppDelegate.swift */,
 				61A0E3151DA41FF800DCB7D2 /* Coro.swift */,
 				611EF56A1DADEC07009AD4DF /* CoroEnLista.swift */,
@@ -184,7 +185,9 @@
 				616F0C8D1DA5F90300830F84 /* MusicaViewController.swift */,
 				611EC5CB1DBB0A0C00F546F0 /* MusicaPagerItemViewController.swift */,
 				611EC5CD1DBB0CF500F546F0 /* MusicaPagerParentViewController.swift */,
+				61C1DC5B1E3FE88300AE08EF /* NavViewController.swift */,
 				61DC1F8E1DB5DE5B002C3238 /* NewListViewController.swift */,
+				61C1DC591E3FDF7600AE08EF /* RootTabBarViewController.swift */,
 				61C873791DB72C4000E2DD79 /* SelectCorosForListTableViewCell.swift */,
 				61C873771DB6CF0E00E2DD79 /* SelectCorosForListViewController.swift */,
 				78D739B11DFC5A8D0024896F /* Reachability.swift */,
@@ -195,9 +198,6 @@
 				615057641D9ABC020008CC96 /* Main.storyboard */,
 				6150576C1D9ABC020008CC96 /* Info.plist */,
 				6113BD2A1DA47BFD00FB7A64 /* GoogleService-Info.plist */,
-				61C1DC591E3FDF7600AE08EF /* RootTabBarViewController.swift */,
-				61C1DC5B1E3FE88300AE08EF /* NavViewController.swift */,
-				61C1DC5D1E3FED1F00AE08EF /* AjustesNavViewController.swift */,
 			);
 			path = "Alabadle con Entendimiento";
 			sourceTree = "<group>";

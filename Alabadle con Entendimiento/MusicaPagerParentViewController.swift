@@ -35,7 +35,7 @@ class MusicaPagerParentViewController: UIViewController, UIPageViewControllerDat
         
         let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
         let url = NSURL(fileURLWithPath: path)
-        let filePath = url.appendingPathComponent("partitura/a_cristo_coronad.jpg")?.path
+        let filePath = url.appendingPathComponent("partituras/a_cristo_coronad.jpg")?.path
         let fileManager = FileManager.default
         if !fileManager.fileExists(atPath: filePath!) {
             checkReachability()

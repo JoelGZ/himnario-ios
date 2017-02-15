@@ -49,7 +49,7 @@ class MusicaViewController: UIViewController {
        
         let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
         let url = NSURL(fileURLWithPath: path)
-        let filePath = url.appendingPathComponent("partitura/\(musicaString!).jpg")?.path
+        let filePath = url.appendingPathComponent("partituras/\(musicaString!).jpg")?.path
         let fileManager = FileManager.default
         if fileManager.fileExists(atPath: filePath!) {
             partituraImageView.image = UIImage(contentsOfFile: filePath!)
