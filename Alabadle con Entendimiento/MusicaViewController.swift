@@ -46,6 +46,7 @@ class MusicaViewController: UIViewController {
         
         sName = coro?.sName
         musicaString = sName?.replacingOccurrences(of: " ", with:"_")
+        storageRef = storage.reference(forURL: "gs://alabadle-con-entendimiento.appspot.com/")
        
         let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
         let url = NSURL(fileURLWithPath: path)
@@ -59,7 +60,6 @@ class MusicaViewController: UIViewController {
         } else {
             self.activityIndicator.startAnimating()
             self.activityIndicator.isHidden = false
-            storageRef = storage.reference(forURL: "gs://alabadle-con-entendimiento.appspot.com/")
             checkReachability()
         }
     }
@@ -161,6 +161,12 @@ class MusicaViewController: UIViewController {
             }
         } else {
             let audioRef = storageRef.child("audios/\(musicaString!).mp3")
+            
+            /* TODO: Need this when partituras have been downloaded and audios haven't
+            let reachability = Reachability()
+            if reachability?.isReachable {
+                
+            }*/
             
             // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
             audioRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) -> Void in
