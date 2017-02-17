@@ -323,24 +323,33 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     func deleteList() { 
         listaRef?.removeValue()
         
-        let splitMode = self.splitViewController?.preferredDisplayMode.rawValue
-        
-        if splitMode != 2 {
-            if cantListas != nil {
-                if cantListas! > 1 {
-                    lista = lastList
+        let screenSize: CGRect = UIScreen.main.bounds
+        let maxSize = max(screenSize.width,screenSize.height)
+        if maxSize >= 736 {
+            let specialCase = (UIDevice.current.userInterfaceIdiom == .phone && UIDevice.current.orientation.isPortrait)
+            if !specialCase {
+                if cantListas != nil {
+                    if cantListas! > 1 {
+                        lista = lastList
+                    } else {
+                        lista.id = "10000"
+                        setupNoListView()
+                    }
                 } else {
                     lista.id = "10000"
                     setupNoListView()
                 }
+                let navController = self.splitViewController?.viewControllers.first as! UINavigationController
+                let listasVC = navController.topViewController as! ListasTableViewController
+                listasVC.loadListasData()
+                listasVC.tableView.reloadData()
             } else {
-                lista.id = "10000"
-                setupNoListView()
+                self.navigationController?.navigationController!.popToRootViewController(animated: true)
+                if cantListas != nil || cantListas! <= 1 {
+                    lista.id = "10000"
+                    setupNoListView()
+                }
             }
-            let navController = self.splitViewController?.viewControllers.first as! UINavigationController
-            let listasVC = navController.topViewController as! ListasTableViewController
-            listasVC.loadListasData()
-            listasVC.tableView.reloadData()
         } else {
             self.navigationController?.navigationController!.popToRootViewController(animated: true)
             if cantListas != nil || cantListas! <= 1 {
