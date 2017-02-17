@@ -532,16 +532,17 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == UITableViewCellEditingStyle.delete {
             if indexPath.section == 0 {
-                
                 rapidosMediosRef?.observeSingleEvent(of: FIRDataEventType.value, with: {(snapshot) in
                     for coroEnListaSnap in snapshot.children {
                         let coro = CoroEnLista(snapshot: coroEnListaSnap as! FIRDataSnapshot)
                         let coroRef = self.rapidosMediosRef?.child("\((coroEnListaSnap as! FIRDataSnapshot).key)")
                         if coro.orden == indexPath.row {
                             coroRef?.removeValue()
+                            self.updateTableValues()
                         } else if coro.orden > indexPath.row {
                             let update = ["orden": (coro.orden - 1)]
                             coroRef?.updateChildValues(update)
+                            self.updateTableValues()
                         }
                     }
                 })
@@ -552,14 +553,29 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
                         let coroRef = self.lentosRef?.child("\((coroEnListaSnap as! FIRDataSnapshot).key)")
                         if coro.orden == indexPath.row {
                             coroRef?.removeValue()
+                            self.updateTableValues()
                         } else if coro.orden > indexPath.row {
                             let update = ["orden": (coro.orden - 1)]
                             coroRef?.updateChildValues(update)
+                            self.updateTableValues()
                         }
                     }
                 })
             }
         }
+    }
+    
+    func updateTableValues() {
+        loadDataWhenReady(completion: {(isReady:Bool) in
+            if isReady {
+                self.todosArray = self.rapidosMediosArray + self.lentosArray
+                self.partiturasArray = self.partiturasRapidosArray + self.partiturasLentosArray
+                if self.tableView != nil {
+                    self.tableView.reloadData()
+                    self.setupLabels()
+                }
+            }
+        })
     }
     
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
