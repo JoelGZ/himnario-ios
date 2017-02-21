@@ -10,7 +10,6 @@
 		34610DF7255A98A9846C7894 /* Pods_Alabadle_con_EntendimientoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88ABAAB3DC8AA2284E8A8592 /* Pods_Alabadle_con_EntendimientoUITests.framework */; };
 		3E6261177A9525C368E61831 /* Pods_Alabadle_con_Entendimiento.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ADC7D7DC64D37F98611500F /* Pods_Alabadle_con_Entendimiento.framework */; };
 		610D844E1DA7654600F525A2 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610D844D1DA7654600F525A2 /* LoginViewController.swift */; };
-		6113BD2B1DA47BFD00FB7A64 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6113BD2A1DA47BFD00FB7A64 /* GoogleService-Info.plist */; };
 		611EC5CC1DBB0A0C00F546F0 /* MusicaPagerItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611EC5CB1DBB0A0C00F546F0 /* MusicaPagerItemViewController.swift */; };
 		611EC5CE1DBB0CF500F546F0 /* MusicaPagerParentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611EC5CD1DBB0CF500F546F0 /* MusicaPagerParentViewController.swift */; };
 		611EF5631DADE252009AD4DF /* ListasTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611EF5621DADE251009AD4DF /* ListasTableViewController.swift */; };
@@ -35,6 +34,7 @@
 		61A0E31C1DA422DB00DCB7D2 /* GetReadableText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A0E31B1DA422DB00DCB7D2 /* GetReadableText.swift */; };
 		61A17E761DA83C7100737049 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A17E751DA83C7100737049 /* User.swift */; };
 		61A17E781DA8900100737049 /* AjustesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A17E771DA8900100737049 /* AjustesViewController.swift */; };
+		61AF8BC61E5CD02B0075F67D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 61AF8BC51E5CD02B0075F67D /* GoogleService-Info.plist */; };
 		61C1DC5A1E3FDF7600AE08EF /* RootTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C1DC591E3FDF7600AE08EF /* RootTabBarViewController.swift */; };
 		61C1DC5C1E3FE88300AE08EF /* NavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C1DC5B1E3FE88300AE08EF /* NavViewController.swift */; };
 		61C1DC5E1E3FED1F00AE08EF /* AjustesNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C1DC5D1E3FED1F00AE08EF /* AjustesNavViewController.swift */; };
@@ -67,7 +67,6 @@
 		415A691A1E659C6D10182ACE /* Pods-Alabadle con Entendimiento.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alabadle con Entendimiento.release.xcconfig"; path = "Pods/Target Support Files/Pods-Alabadle con Entendimiento/Pods-Alabadle con Entendimiento.release.xcconfig"; sourceTree = "<group>"; };
 		604F214152BA922485DDE262 /* Pods-Alabadle con EntendimientoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alabadle con EntendimientoTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Alabadle con EntendimientoTests/Pods-Alabadle con EntendimientoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		610D844D1DA7654600F525A2 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		6113BD2A1DA47BFD00FB7A64 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		611EC5CB1DBB0A0C00F546F0 /* MusicaPagerItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicaPagerItemViewController.swift; sourceTree = "<group>"; };
 		611EC5CD1DBB0CF500F546F0 /* MusicaPagerParentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicaPagerParentViewController.swift; sourceTree = "<group>"; };
 		611EF5621DADE251009AD4DF /* ListasTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListasTableViewController.swift; sourceTree = "<group>"; };
@@ -98,6 +97,7 @@
 		61A0E31B1DA422DB00DCB7D2 /* GetReadableText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetReadableText.swift; sourceTree = "<group>"; };
 		61A17E751DA83C7100737049 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		61A17E771DA8900100737049 /* AjustesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AjustesViewController.swift; sourceTree = "<group>"; };
+		61AF8BC51E5CD02B0075F67D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		61C1DC591E3FDF7600AE08EF /* RootTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootTabBarViewController.swift; sourceTree = "<group>"; };
 		61C1DC5B1E3FE88300AE08EF /* NavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavViewController.swift; sourceTree = "<group>"; };
 		61C1DC5D1E3FED1F00AE08EF /* AjustesNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AjustesNavViewController.swift; sourceTree = "<group>"; };
@@ -197,7 +197,7 @@
 				615057691D9ABC020008CC96 /* LaunchScreen.storyboard */,
 				615057641D9ABC020008CC96 /* Main.storyboard */,
 				6150576C1D9ABC020008CC96 /* Info.plist */,
-				6113BD2A1DA47BFD00FB7A64 /* GoogleService-Info.plist */,
+				61AF8BC51E5CD02B0075F67D /* GoogleService-Info.plist */,
 			);
 			path = "Alabadle con Entendimiento";
 			sourceTree = "<group>";
@@ -362,7 +362,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6150576B1D9ABC020008CC96 /* LaunchScreen.storyboard in Resources */,
-				6113BD2B1DA47BFD00FB7A64 /* GoogleService-Info.plist in Resources */,
+				61AF8BC61E5CD02B0075F67D /* GoogleService-Info.plist in Resources */,
 				615057681D9ABC020008CC96 /* Assets.xcassets in Resources */,
 				615057661D9ABC020008CC96 /* Main.storyboard in Resources */,
 			);
@@ -696,7 +696,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 9DGVWVEX4L;
 				INFOPLIST_FILE = "Alabadle con Entendimiento/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Innovate-Ideas.Alabadle-con-Entendimiento";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -713,7 +713,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				DEVELOPMENT_TEAM = 9DGVWVEX4L;
 				INFOPLIST_FILE = "Alabadle con Entendimiento/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Innovate-Ideas.Alabadle-con-Entendimiento";
 				PRODUCT_NAME = "$(TARGET_NAME)";
