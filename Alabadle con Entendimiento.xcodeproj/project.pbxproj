@@ -698,7 +698,7 @@
 				INFOPLIST_FILE = "Alabadle con Entendimiento/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "innovateideas.Alabadle-con-Entendimiento";
+				PRODUCT_BUNDLE_IDENTIFIER = "Innovate-Ideas.Alabadle-con-Entendimiento";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -715,7 +715,7 @@
 				INFOPLIST_FILE = "Alabadle con Entendimiento/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "innovateideas.Alabadle-con-Entendimiento";
+				PRODUCT_BUNDLE_IDENTIFIER = "Innovate-Ideas.Alabadle-con-Entendimiento";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
