@@ -62,7 +62,7 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
                 }
                 let user = User(authData: FIRuser!)
                 if !self.dataIsLoaded {
-                    let targetDtAllowedStr = "24-02-2017"
+                    let targetDtAllowedStr = "27-02-2017"
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "dd-MM-yyyy"
                     let releaseDate = dateFormatter.date(from: targetDtAllowedStr)

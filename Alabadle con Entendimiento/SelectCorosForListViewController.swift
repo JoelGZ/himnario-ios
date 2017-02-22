@@ -48,7 +48,7 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
             if FIRuser != nil {
                 let user = User(authData: FIRuser!)
                 
-                let targetDtAllowedStr = "24-02-2017"
+                let targetDtAllowedStr = "27-02-2017"
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "dd-MM-yyyy"
                 let releaseDate = dateFormatter.date(from: targetDtAllowedStr)
