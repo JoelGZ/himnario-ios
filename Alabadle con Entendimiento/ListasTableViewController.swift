@@ -35,8 +35,6 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
         let defaults = UserDefaults.standard
         let userUID = defaults.string(forKey: "USER_UID")
         if userUID != nil {
-            listasDeUsuarioRef = rootRef.child("listas/\(userUID!)")
-            
             // TODO: localize
             navBar.title = "Mis Listas"
             flag = true
@@ -47,38 +45,22 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
                 self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailListViewController
                 self.delegate1 = detailViewController
             }
-            
-            FIRAuth.auth()?.addStateDidChangeListener { auth, user in
-                if user != nil {
-                    self.loadListasData()
-                } else {
-                    let alert = UIAlertController(title: "Inicie sesión", message: "Para poder visualizar sus listas, por favor inicie sesión.", preferredStyle: .alert)
-                    let inicarSesionAction = UIAlertAction(title: "Iniciar sesión", style: .default, handler: {_ in
-                        self.navigationController?.navigationBar.isHidden = true
-                        self.tabBarController?.selectedIndex = 2
-                    })
-                    let cancelarAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: {_ in
-                        self.tabBarController?.selectedIndex = 0
-                    })
-                    alert.addAction(inicarSesionAction)
-                    alert.addAction(cancelarAction)
-                    self.present(alert, animated: true, completion: nil)
-                }
-            }
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.navigationController?.navigationBar.isHidden = false
+        
         FIRAuth.auth()?.addStateDidChangeListener { auth, user in
             if user != nil {
+                self.listasDeUsuarioRef = self.rootRef.child("listas/\((user?.uid)!)")
                 self.loadListasData()
             } else {
-                let alert = UIAlertController(title: "Inicie sesión", message: "Para poder visualizar sus listas, por favor inicie sesión.", preferredStyle: .alert)
+                let alert = UIAlertController(title: "Inicie sesión", message: "Para poder crear ó visualizar sus listas, por favor inicie sesión.", preferredStyle: .alert)
                 let inicarSesionAction = UIAlertAction(title: "Iniciar sesión", style: .default, handler: {_ in
-                    self.navigationController?.navigationBar.isHidden = true
-                    self.tabBarController?.selectedIndex = 2
+                    self.performSegue(withIdentifier: "listasToLogginSegue", sender: nil)
                 })
                 let cancelarAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: {_ in
                     self.tabBarController?.selectedIndex = 0
@@ -183,7 +165,7 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
             //TODO: fix bug when deleting coros
             if resultArray.count != 0 {
                 if indexPath.row == 0 {
-                    self.delegate1?.listaSelected(newLista: resultArray[indexPath.row])      // indexPath.row = 0
+                    self.delegate1?.listaSelected(newLista: resultArray[indexPath.row])
                 } else {
                     self.delegate1?.listaSelected(newLista: resultArray[indexPath.row - 1])
                 }
@@ -196,13 +178,5 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
-    
-   /* func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController:UIViewController, onto primaryViewController:UIViewController) -> Bool {
-        guard let secondaryAsNavController = secondaryViewController as? UINavigationController else { return false }
-        guard let topAsDetailController = secondaryAsNavController.topViewController as? DetailListViewController else { return false }
-        
-        return true
-    }*/
-    
 }
 

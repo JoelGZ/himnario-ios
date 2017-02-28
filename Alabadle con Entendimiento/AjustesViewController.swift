@@ -21,6 +21,7 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     @IBOutlet weak var downloadAudiosProgressLabel: UILabel!
     @IBOutlet weak var descargaLabel: UILabel!
     @IBOutlet weak var signInOutLabel: UILabel!
+    @IBOutlet weak var userEmailLabel: UILabel!
     
     let APP_ID = "1118729781"
     var progressPercentage: Double?
@@ -28,6 +29,7 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     var downloadDeleteFlag: Bool = true    //true= can download; false = can't download, just delete
     var downloadAudioDeleteFlag: Bool = true
     var defaults = UserDefaults.standard
+    var S_STATUS_FLAG = "SIGNED_IN_STATUS"
     
     let reachability = Reachability()!
     
@@ -69,6 +71,22 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     
     override func viewDidAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.navigationBar.isHidden = false
+        
+        defaults = UserDefaults.standard            // updating user defaults
+        
+        FIRAuth.auth()?.addStateDidChangeListener { auth, user in
+            if user != nil {
+                self.defaults.set(true, forKey: "SIGNED_IN_STATUS")
+                let userEmail = self.defaults.string(forKey: "USER_EMAIL")
+                self.signInOutLabel.text = "Salir"
+                self.userEmailLabel.text = (userEmail)!
+            } else {
+                self.defaults.set(false, forKey: "SIGNED_IN_STATUS")
+                self.signInOutLabel.text = "Iniciar sesión"
+                self.userEmailLabel.text = ""
+            }
+        }
     }
     
     func rateAppAlert() {
@@ -268,9 +286,12 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     }
     
     func signInOut() {
-        if signInOutLabel.text! == "Salir" {
+        
+        let isSignedIn = defaults.bool(forKey: S_STATUS_FLAG)
+
+        if isSignedIn {
             try! FIRAuth.auth()?.signOut()
-            
+            defaults.setValue(false, forKey: S_STATUS_FLAG)
             let alert = UIAlertController(title: "Éxito", message: "Ha salido con exito. Para visualizar sus listas es necesario que vuelva a ingresar.", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default)
             
@@ -278,12 +299,12 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
             present(alert, animated: true, completion: nil)
             
             signInOutLabel.text = "Iniciar sesión"
-            _ = tableView(self.tableView, titleForHeaderInSection: 1)
-            tableView.reloadData()
+            userEmailLabel.text = ""
         } else {
             self.navigationController?.isNavigationBarHidden = true
             self.tabBarController?.tabBar.isHidden = true
             defaults.set(true, forKey: "LOG_SCREEN_VISIBLE")
+            signInOutLabel.text = "Salir"
             performSegue(withIdentifier: "goToLogScreenSegue", sender: nil)
         }
         
@@ -359,12 +380,7 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
         case 0:
             return "GENERAL"
         case 1:
-            if signInOutLabel.text! == "Salir" {
-                let userEmail = defaults.value(forKey: "USER_EMAIL") as! String
-                return "CUENTA - \(userEmail)"
-            } else {
-                return "CUENTA"
-            }
+            return "CUENTA"
         case 2:
             return "CONTACTO"
         default:
