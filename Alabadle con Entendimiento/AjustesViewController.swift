@@ -311,26 +311,35 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     }
     
     func changePassword() {
-        let userEmail = defaults.value(forKey: "USER_EMAIL") as! String
-        
-        FIRAuth.auth()?.sendPasswordReset(withEmail: userEmail) {
-            error in
+        let isSignedIn = defaults.bool(forKey: S_STATUS_FLAG)
+        if isSignedIn {
+            let userEmail = defaults.value(forKey: "USER_EMAIL") as! String
             
-            if error == nil {
-                let alert = UIAlertController(title: "Solicitud enviada", message: "Su solicitud de cambio de contraseña ha sido enviada. Revise su correo.", preferredStyle: .alert)
-                let okAction = UIAlertAction(title: "OK", style: .default)
+            FIRAuth.auth()?.sendPasswordReset(withEmail: userEmail) {
+                error in
                 
-                alert.addAction(okAction)
-                
-                self.present(alert, animated: true, completion: nil)
-            } else {
-                let alert = UIAlertController(title: "Error", message: "Su solicitud no pudo ser enviada. Porfavor intente mas tarde.", preferredStyle: .alert)
-                let okAction = UIAlertAction(title: "OK", style: .default)
-                
-                alert.addAction(okAction)
-                
-                self.present(alert, animated: true, completion: nil)
+                if error == nil {
+                    let alert = UIAlertController(title: "Solicitud enviada", message: "Su solicitud de cambio de contraseña ha sido enviada. Revise su correo.", preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default)
+                    
+                    alert.addAction(okAction)
+                    
+                    self.present(alert, animated: true, completion: nil)
+                } else {
+                    let alert = UIAlertController(title: "Error", message: "Su solicitud no pudo ser enviada. Porfavor intente mas tarde.", preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default)
+                    
+                    alert.addAction(okAction)
+                    
+                    self.present(alert, animated: true, completion: nil)
+                }
             }
+        } else {
+            let alert = UIAlertController(title: "Solicitud no completada", message: "Para poder solicitar un cambio de contraseña debe iniciar sesión primero.", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alert.addAction(okAction)
+            
+            self.present(alert, animated: true, completion: nil)
         }
     }
     
