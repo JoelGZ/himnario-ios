@@ -48,6 +48,7 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
                 self.delegate1 = detailViewController
             }
         }
+        userAuthentication()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,6 +56,12 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
         
         self.navigationController?.navigationBar.isHidden = false
         
+        userAuthentication()
+        
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    func userAuthentication() {
         FIRAuth.auth()?.addStateDidChangeListener { auth, user in
             if user != nil {
                 self.listasDeUsuarioRef = self.rootRef.child("listas/\((user?.uid)!)")
@@ -79,8 +86,6 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
                 self.present(alert, animated: true, completion: nil)
             }
         }
-
-        self.tabBarController?.tabBar.isHidden = false
     }
     
     func loadListasData(){

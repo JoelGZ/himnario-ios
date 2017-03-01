@@ -51,7 +51,7 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
         
         loadFakeData()
         
-        let targetDtAllowedStr = "27-02-2017"               //************CHANGE THIS DATE******************
+        let targetDtAllowedStr = "12-03-2017"               //************CHANGE THIS DATE******************
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy"
         let releaseDate = dateFormatter.date(from: targetDtAllowedStr)
