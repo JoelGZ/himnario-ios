@@ -65,7 +65,7 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
                     let screenSize: CGRect = UIScreen.main.bounds
                     let maxSize = max(screenSize.width,screenSize.height)
                     if maxSize >= 736 {
-                        
+                        self.tabBarController?.selectedIndex = 2
                     } else {
                         self.performSegue(withIdentifier: "listasToLogginSegue", sender: nil)
                     }
