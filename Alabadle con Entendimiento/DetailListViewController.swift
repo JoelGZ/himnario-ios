@@ -99,7 +99,7 @@ class DetailListViewController: UIViewController, UITableViewDataSource, UITable
     override func viewWillAppear(_ animated: Bool) {
         let screenSize: CGRect = UIScreen.main.bounds
         let maxSize = max(screenSize.width,screenSize.height)
-        if maxSize >= 736 {         //If it is iPhone 6s Plus or iPad
+        if maxSize >= 736 {         //If it is iPhone 6s Plus or iPad  can it be in splitviewmode
             self.navigationItem.rightBarButtonItems = [editButtonItem, addCorosButton, actionInListButton, deleteListButton]
             self.tabBarController?.tabBar.isHidden = false
         } else {

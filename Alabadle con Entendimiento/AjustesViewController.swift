@@ -308,8 +308,8 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
         } else {
             self.tabBarController?.tabBar.isHidden = true
             defaults.set(true, forKey: "LOG_SCREEN_VISIBLE")
-            signInOutLabel.text = "Salir"
             performSegue(withIdentifier: "goToLogScreenSegue", sender: nil)
+            signInOutLabel.text = "Salir"
         }
         
     }

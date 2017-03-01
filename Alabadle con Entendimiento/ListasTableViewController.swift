@@ -62,7 +62,13 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
             } else {
                 let alert = UIAlertController(title: "Inicie sesión", message: "Para poder crear ó visualizar sus listas, por favor inicie sesión.", preferredStyle: .alert)
                 let inicarSesionAction = UIAlertAction(title: "Iniciar sesión", style: .default, handler: {_ in
-                    self.performSegue(withIdentifier: "listasToLogginSegue", sender: nil)
+                    let screenSize: CGRect = UIScreen.main.bounds
+                    let maxSize = max(screenSize.width,screenSize.height)
+                    if maxSize >= 736 {
+                        
+                    } else {
+                        self.performSegue(withIdentifier: "listasToLogginSegue", sender: nil)
+                    }
                 })
                 let cancelarAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: {_ in
                     self.tabBarController?.selectedIndex = 0
