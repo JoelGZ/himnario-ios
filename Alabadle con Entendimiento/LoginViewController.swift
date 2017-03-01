@@ -68,7 +68,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         self.defaults.set(user.email, forKey: "USER_EMAIL")
                         self.defaults.set(true,forKey: "SIGNED_IN_STATUS")
                         
-                        self.navigationController?.popViewController(animated: false)
+                        self.navigationController?.popViewController(animated: true)
                     }
                 }
             }

@@ -32,11 +32,13 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navBar.title = "Mis Listas"
+        
         let defaults = UserDefaults.standard
         let userUID = defaults.string(forKey: "USER_UID")
         if userUID != nil {
             // TODO: localize
-            navBar.title = "Mis Listas"
+            
             flag = true
             
             navigationItem.leftBarButtonItem = editButtonItem

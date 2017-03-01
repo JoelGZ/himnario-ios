@@ -80,7 +80,12 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
                 self.defaults.set(true, forKey: "SIGNED_IN_STATUS")
                 let userEmail = self.defaults.string(forKey: "USER_EMAIL")
                 self.signInOutLabel.text = "Salir"
-                self.userEmailLabel.text = (userEmail)!
+                
+                if userEmail != nil {
+                    self.userEmailLabel.text = (userEmail)!
+                } else {
+                    self.userEmailLabel.text = ""
+                }
             } else {
                 self.defaults.set(false, forKey: "SIGNED_IN_STATUS")
                 self.signInOutLabel.text = "Iniciar sesión"
@@ -301,7 +306,6 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
             signInOutLabel.text = "Iniciar sesión"
             userEmailLabel.text = ""
         } else {
-            self.navigationController?.isNavigationBarHidden = true
             self.tabBarController?.tabBar.isHidden = true
             defaults.set(true, forKey: "LOG_SCREEN_VISIBLE")
             signInOutLabel.text = "Salir"
