@@ -31,7 +31,6 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
     let rootRef = FIRDatabase.database().reference()
     var corosRef: FIRDatabaseReference!
     var safeCorosRef: FIRDatabaseReference!
-    var isSafeToDisplayFlag = false      /// change this later to FALSE
     var dataIsLoaded: Bool = false
     
     override func viewDidLoad() {

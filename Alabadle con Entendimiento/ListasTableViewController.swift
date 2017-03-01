@@ -33,15 +33,12 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
         super.viewDidLoad()
         
         navBar.title = "Mis Listas"
+        navigationItem.leftBarButtonItem = editButtonItem
         
         let defaults = UserDefaults.standard
-        let userUID = defaults.string(forKey: "USER_UID")
-        if userUID != nil {
-            // TODO: localize
-            
+        let isSignedIn = defaults.bool(forKey: "SIGNED_IN_STATUS")
+        if isSignedIn {
             flag = true
-            
-            navigationItem.leftBarButtonItem = editButtonItem
             if let split = self.splitViewController {
                 let controllers = split.viewControllers
                 self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailListViewController
