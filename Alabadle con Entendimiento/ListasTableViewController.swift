@@ -32,53 +32,47 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navBar.title = "Mis Listas"
+        navigationItem.leftBarButtonItem = editButtonItem
+        
         let defaults = UserDefaults.standard
-        let userUID = defaults.string(forKey: "USER_UID")
-        if userUID != nil {
-            listasDeUsuarioRef = rootRef.child("listas/\(userUID!)")
-            
-            // TODO: localize
-            navBar.title = "Mis Listas"
+        let isSignedIn = defaults.bool(forKey: "SIGNED_IN_STATUS")
+        if isSignedIn {
             flag = true
-            
-            navigationItem.leftBarButtonItem = editButtonItem
             if let split = self.splitViewController {
                 let controllers = split.viewControllers
                 self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailListViewController
                 self.delegate1 = detailViewController
             }
-            
-            FIRAuth.auth()?.addStateDidChangeListener { auth, user in
-                if user != nil {
-                    self.loadListasData()
-                } else {
-                    let alert = UIAlertController(title: "Inicie sesión", message: "Para poder visualizar sus listas, por favor inicie sesión.", preferredStyle: .alert)
-                    let inicarSesionAction = UIAlertAction(title: "Iniciar sesión", style: .default, handler: {_ in
-                        self.navigationController?.navigationBar.isHidden = true
-                        self.tabBarController?.selectedIndex = 2
-                    })
-                    let cancelarAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: {_ in
-                        self.tabBarController?.selectedIndex = 0
-                    })
-                    alert.addAction(inicarSesionAction)
-                    alert.addAction(cancelarAction)
-                    self.present(alert, animated: true, completion: nil)
-                }
-            }
         }
+        userAuthentication()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.navigationController?.navigationBar.isHidden = false
+        
+        userAuthentication()
+        
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    func userAuthentication() {
         FIRAuth.auth()?.addStateDidChangeListener { auth, user in
             if user != nil {
+                self.listasDeUsuarioRef = self.rootRef.child("listas/\((user?.uid)!)")
                 self.loadListasData()
             } else {
-                let alert = UIAlertController(title: "Inicie sesión", message: "Para poder visualizar sus listas, por favor inicie sesión.", preferredStyle: .alert)
+                let alert = UIAlertController(title: "Inicie sesión", message: "Para poder crear ó visualizar sus listas, por favor inicie sesión.", preferredStyle: .alert)
                 let inicarSesionAction = UIAlertAction(title: "Iniciar sesión", style: .default, handler: {_ in
-                    self.navigationController?.navigationBar.isHidden = true
-                    self.tabBarController?.selectedIndex = 2
+                    let screenSize: CGRect = UIScreen.main.bounds
+                    let maxSize = max(screenSize.width,screenSize.height)
+                    if maxSize >= 736 {
+                        self.tabBarController?.selectedIndex = 2
+                    } else {
+                        self.performSegue(withIdentifier: "listasToLogginSegue", sender: nil)
+                    }
                 })
                 let cancelarAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: {_ in
                     self.tabBarController?.selectedIndex = 0
@@ -89,8 +83,6 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
                 self.present(alert, animated: true, completion: nil)
             }
         }
-
-        self.tabBarController?.tabBar.isHidden = false
     }
     
     func loadListasData(){
@@ -183,7 +175,7 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
             //TODO: fix bug when deleting coros
             if resultArray.count != 0 {
                 if indexPath.row == 0 {
-                    self.delegate1?.listaSelected(newLista: resultArray[indexPath.row])      // indexPath.row = 0
+                    self.delegate1?.listaSelected(newLista: resultArray[indexPath.row])
                 } else {
                     self.delegate1?.listaSelected(newLista: resultArray[indexPath.row - 1])
                 }
@@ -196,13 +188,5 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
-    
-   /* func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController:UIViewController, onto primaryViewController:UIViewController) -> Bool {
-        guard let secondaryAsNavController = secondaryViewController as? UINavigationController else { return false }
-        guard let topAsDetailController = secondaryAsNavController.topViewController as? DetailListViewController else { return false }
-        
-        return true
-    }*/
-    
 }
 

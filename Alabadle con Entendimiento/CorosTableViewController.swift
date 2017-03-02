@@ -31,7 +31,6 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
     let rootRef = FIRDatabase.database().reference()
     var corosRef: FIRDatabaseReference!
     var safeCorosRef: FIRDatabaseReference!
-    var isSafeToDisplayFlag = false      /// change this later to FALSE
     var dataIsLoaded: Bool = false
     
     override func viewDidLoad() {
@@ -50,31 +49,17 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
         defaults.set(Int(tabBarHeight), forKey: "tabBarHeight")
         
         loadFakeData()
-        FIRAuth.auth()!.addStateDidChangeListener { auth, FIRuser in
-            if FIRuser == nil {        //not signed in
-                self.performSegue(withIdentifier: "logInScreenSegue", sender: nil)
-            } else {
-                let defaults = UserDefaults.standard
-                let userUID = defaults.string(forKey: "USER_UID")
-                if userUID == nil {
-                    defaults.set((FIRuser?.uid)!, forKey: "USER_UID")
-                    defaults.set((FIRuser?.email)!, forKey: "USER_EMAIL")
-                }
-                let user = User(authData: FIRuser!)
-                if !self.dataIsLoaded {
-                    let targetDtAllowedStr = "27-02-2017"
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "dd-MM-yyyy"
-                    let releaseDate = dateFormatter.date(from: targetDtAllowedStr)
-                    let today = Date()
-                    
-                    if user.email == "test@nomail.com" || today < releaseDate! {
-                        self.loadSafeData()
-                    } else {
-                        self.loadData()
-                    }
-                }
-            }
+        
+        let targetDtAllowedStr = "12-03-2017"               //************CHANGE THIS DATE******************
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        let releaseDate = dateFormatter.date(from: targetDtAllowedStr)
+        let today = Date()
+        
+        if today < releaseDate! {
+            self.loadSafeData()
+        } else {
+            self.loadData()
         }
     }
     

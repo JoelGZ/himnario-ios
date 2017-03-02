@@ -34,7 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         let defaults = UserDefaults.standard
         let userUID = defaults.string(forKey: "USER_UID")
-        if userUID != nil {
+        let isSignedIn = defaults.bool(forKey: "SIGNED_IN_STATUS")
+        if isSignedIn {
             let listasDeUsuarioRef = FIRDatabase.database().reference().child("listas/\(userUID!)")
             listasDeUsuarioRef.observeSingleEvent(of: FIRDataEventType.value, with: {
                 (snapshot) in

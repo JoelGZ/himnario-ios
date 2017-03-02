@@ -11,7 +11,8 @@ import UIKit
 class RootTabBarViewController: UITabBarController {
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        let navController = self.viewControllers![0] as! NavViewController
+        let splitVC = self.viewControllers![1] as! UISplitViewController
+        let navController = splitVC.viewControllers[0] as! NavViewController
         let ajustesNavController = self.viewControllers![2] as! AjustesNavViewController
         if navController.supportedInterfaceOrientations == .portrait || ajustesNavController.supportedInterfaceOrientations == .portrait {
             return .portrait

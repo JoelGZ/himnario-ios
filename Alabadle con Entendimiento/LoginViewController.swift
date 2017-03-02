@@ -29,7 +29,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         self.tabBarController?.tabBar.isHidden = true
-        self.navigationController?.navigationBar.isHidden = true
+        self.navigationController?.navigationBar.isHidden = false
      
         setupUI()
         
@@ -53,7 +53,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 FIRAuth.auth()?.addStateDidChangeListener() {auth, user in
                     if user != nil {
                         self.userUID = user?.uid
-                        self.performSegue(withIdentifier: "loggedInSegue", sender: nil)
                         
                         //add user to db if it does not exist
                         let userToAdd = User(authData: user!)
@@ -67,6 +66,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         let user = User(authData: userData)
                         self.defaults.set(user.uid, forKey: "USER_UID")
                         self.defaults.set(user.email, forKey: "USER_EMAIL")
+                        self.defaults.set(true,forKey: "SIGNED_IN_STATUS")
+                        
+                        self.navigationController?.popViewController(animated: true)
                     }
                 }
             }
