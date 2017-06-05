@@ -46,19 +46,7 @@ class SelectCorosForListViewController: UIViewController, UITableViewDataSource,
         loadFakeData()
         FIRAuth.auth()!.addStateDidChangeListener { auth, FIRuser in
             if FIRuser != nil {
-                let user = User(authData: FIRuser!)
-                
-                let targetDtAllowedStr = "12-03-2017"           //*********CHANGE THIS DATE************
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "dd-MM-yyyy"
-                let releaseDate = dateFormatter.date(from: targetDtAllowedStr)
-                let today = Date()
-                
-                if user.email == "test@nomail.com" || today < releaseDate! {
-                    self.loadSafeData()
-                } else {
-                    self.loadData()
-                }
+                self.loadData()
             }
         }
         

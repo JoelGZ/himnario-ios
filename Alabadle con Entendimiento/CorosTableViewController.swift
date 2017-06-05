@@ -50,17 +50,7 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
         
         loadFakeData()
         
-        let targetDtAllowedStr = "12-03-2017"               //************CHANGE THIS DATE******************
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd-MM-yyyy"
-        let releaseDate = dateFormatter.date(from: targetDtAllowedStr)
-        let today = Date()
-        
-        if today < releaseDate! {
-            self.loadSafeData()
-        } else {
-            self.loadData()
-        }
+        self.loadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -87,33 +77,6 @@ class CorosTableViewController: UIViewController, UITableViewDataSource, UITable
             
             self.corosArray = tempCoroArray
             self.tableView.reloadData()
-        })
-        
-        loadFakeData()
-    }
-    
-    func loadSafeData() {
-        self.dataIsLoaded = true
-        var tempCoroArray2 = [Coro]()
-        safeCorosRef = rootRef.child("safeCoros")
-        safeCorosRef.observe(FIRDataEventType.value, with: {(snapshot) in
-            for coroSnap in snapshot.children {
-                let coroId = (coroSnap as! FIRDataSnapshot).value
-                self.safeCoros.append(coroId as! Int)
-            }
-            
-            for coroId in self.safeCoros {
-                let coroRef = self.corosRef.child(String(coroId))
-                
-                coroRef.observe(FIRDataEventType.value, with: {(sp) in
-                    let coro = Coro(snapshot: sp, coroId: coroId)
-                    tempCoroArray2.append(coro)
-                    if tempCoroArray2.count == self.safeCoros.count {
-                        self.corosArray = tempCoroArray2
-                        self.tableView.reloadData()
-                    }
-                })
-            }
         })
         
         loadFakeData()
