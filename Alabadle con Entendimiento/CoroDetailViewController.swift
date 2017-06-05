@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import AVFoundation
+import FirebaseStorage
+import FirebaseDatabase
 
 class CoroDetailViewController: UIViewController, UIAlertViewDelegate {
     
@@ -37,9 +40,22 @@ class CoroDetailViewController: UIViewController, UIAlertViewDelegate {
     @IBOutlet weak var scrollView: UIScrollView!
     // Coro que viene del table view
     var coro:Coro?
+    var audioPlayer: AVAudioPlayer!
+    var rootViewController: UIViewController!
+    
+    let storage = FIRStorage.storage()
+    var sName: String?
+    var musicaString: String?
+    
+    // Create a storage reference from our storage service
+    var storageRef: FIRStorageReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        sName = coro?.sName
+        musicaString = sName?.replacingOccurrences(of: " ", with:"_")
+        storageRef = storage.reference(forURL: "gs://alabadle-con-entendimiento.appspot.com/")
         
         //setup content of labels
         self.setupViews()
@@ -50,6 +66,16 @@ class CoroDetailViewController: UIViewController, UIAlertViewDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = false
+        if let aP = audioPlayer {
+            aP.stop()
+        }
+       // rootViewController!.navigationItem.rightBarButtonItem = nil
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        rootViewController = self.navigationController?.topViewController   
+        let playBarButtonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(self.playSong(sender:)))
+        rootViewController!.navigationItem.rightBarButtonItem = playBarButtonItem
     }
     
     func setupViews(){
@@ -122,6 +148,102 @@ class CoroDetailViewController: UIViewController, UIAlertViewDelegate {
         alert.popoverPresentationController?.sourceRect = self.view.bounds
         self.present(alert, animated: true, completion: nil)
     }*/
+    
+    
+    @IBAction func pauseSong(sender: UIBarButtonItem) {
+        
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let url = NSURL(fileURLWithPath: path)
+        let filePath = url.appendingPathComponent("audios/\(musicaString!).mp3")?.path
+        let fileManager = FileManager.default
+        
+        if fileManager.fileExists(atPath: filePath!) {
+            let url = NSURL(fileURLWithPath: filePath!)
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: url as URL, fileTypeHint: nil)
+                audioPlayer.prepareToPlay()
+                audioPlayer.pause()
+                audioPlayer.numberOfLoops = -1
+            } catch {
+                errorPlayingSong()
+            }
+        } else {
+            let audioRef = storageRef.child("audios/\(musicaString!).mp3")
+            
+            /* TODO: Need this when partituras have been downloaded and audios haven't
+             let reachability = Reachability()
+             if reachability?.isReachable {
+             
+             }*/
+            
+            // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
+            audioRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) -> Void in
+                if (error != nil) {
+                    self.errorPlayingSong()
+                } else {
+                    do {
+                        self.audioPlayer = try AVAudioPlayer(data: data!)
+                        self.audioPlayer.prepareToPlay()
+                        self.audioPlayer.pause()
+                    } catch {
+                        self.errorPlayingSong()
+                    }
+                }
+            }
+        }
+        
+        let newBarButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.play, target: self, action: #selector(self.playSong(sender:)))
+        rootViewController!.navigationItem.rightBarButtonItem = newBarButton
+    }
+    
+    @IBAction func playSong(sender: UIBarButtonItem) {
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let url = NSURL(fileURLWithPath: path)
+        let filePath = url.appendingPathComponent("audios/\(musicaString!).mp3")?.path
+        let fileManager = FileManager.default
+        
+        if fileManager.fileExists(atPath: filePath!) {
+            let url = NSURL(fileURLWithPath: filePath!)
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: url as URL, fileTypeHint: nil)
+                audioPlayer.prepareToPlay()
+                audioPlayer.play()
+                audioPlayer.numberOfLoops = -1
+            } catch {
+                errorPlayingSong()
+            }
+            
+        } else {
+            // Create a reference to the file you want to download
+            let audioRef = storageRef.child("audios/\(musicaString!).mp3")
+            
+            // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
+            audioRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) -> Void in
+                if (error != nil) {
+                    self.errorPlayingSong()
+                } else {
+                    do {
+                        self.audioPlayer = try AVAudioPlayer(data: data!)
+                        self.audioPlayer.prepareToPlay()
+                        self.audioPlayer.play()
+                        self.audioPlayer.numberOfLoops = -1
+                    } catch {
+                        self.errorPlayingSong()
+                    }
+                }
+            }
+        }
+        
+        let newBarButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.pause, target: self, action: #selector(self.pauseSong(sender:)))
+        rootViewController!.navigationItem.rightBarButtonItem = newBarButton
+    }
+    
+    func errorPlayingSong() {
+        let alert = UIAlertController(title: "Error", message: "Lo sentimos. Este audio no esta disponible o no puede ser ejecutado.", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(okAction)
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 
 

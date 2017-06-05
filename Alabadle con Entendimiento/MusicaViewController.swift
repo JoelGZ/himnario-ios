@@ -135,7 +135,6 @@ class MusicaViewController: UIViewController {
         if let aP = audioPlayer {
             aP.stop()
         }
-        rootViewController!.navigationItem.rightBarButtonItem = nil
     }
     
     func goBackWhenNoConnection() {
@@ -200,6 +199,7 @@ class MusicaViewController: UIViewController {
         }
         
     }
+    
     @IBAction func playSong(sender: UIBarButtonItem) {
         let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
         let url = NSURL(fileURLWithPath: path)
