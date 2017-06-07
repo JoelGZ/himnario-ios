@@ -320,7 +320,7 @@
 					6150575A1D9ABC020008CC96 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = 9DGVWVEX4L;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 					615057701D9ABC020008CC96 = {
 						CreatedOnToolsVersion = 8.0;
@@ -693,15 +693,15 @@
 			baseConfigurationReference = D16D657289DEFBB63D5272ED /* Pods-Alabadle con Entendimiento.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				DEVELOPMENT_TEAM = 9DGVWVEX4L;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Alabadle con Entendimiento/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Innovate-Ideas.Alabadle-con-Entendimiento";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b74db6f9-5b65-45cd-b7d7-b4af218d3c27";
-				PROVISIONING_PROFILE_SPECIFIER = "XC iOS: Innovate-Ideas.Alabadle-con-Entendimiento";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -713,15 +713,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				DEVELOPMENT_TEAM = 9DGVWVEX4L;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Alabadle con Entendimiento/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Innovate-Ideas.Alabadle-con-Entendimiento";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b74db6f9-5b65-45cd-b7d7-b4af218d3c27";
-				PROVISIONING_PROFILE_SPECIFIER = "XC iOS: Innovate-Ideas.Alabadle-con-Entendimiento";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
