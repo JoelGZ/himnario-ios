@@ -69,6 +69,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         self.defaults.set(true,forKey: "SIGNED_IN_STATUS")
                         
                         self.navigationController?.popViewController(animated: true)
+                    } else {
+                        self.defaults.set(false, forKey: "SIGNED_IN_STATUS")
                     }
                 }
             }
