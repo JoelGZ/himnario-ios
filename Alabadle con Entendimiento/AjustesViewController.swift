@@ -29,7 +29,6 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     var downloadDeleteFlag: Bool = true    //true= can download; false = can't download, just delete
     var downloadAudioDeleteFlag: Bool = true
     var defaults = UserDefaults.standard
-    var S_STATUS_FLAG = "SIGNED_IN_STATUS"
     
     let reachability = Reachability()!
     
@@ -77,7 +76,6 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
         
         FIRAuth.auth()?.addStateDidChangeListener { auth, user in
             if user != nil {
-                self.defaults.set(true, forKey: "SIGNED_IN_STATUS")
                 let userEmail = self.defaults.string(forKey: "USER_EMAIL")
                 self.signInOutLabel.text = "Salir"
                 
@@ -87,7 +85,6 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
                     self.userEmailLabel.text = ""
                 }
             } else {
-                self.defaults.set(false, forKey: "SIGNED_IN_STATUS")
                 self.signInOutLabel.text = "Iniciar sesión"
                 self.userEmailLabel.text = ""
             }
@@ -291,12 +288,9 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     }
     
     func signInOut() {
-        
-        let isSignedIn = defaults.bool(forKey: S_STATUS_FLAG)
 
-        if isSignedIn {
+        if FIRAuth.auth()?.currentUser != nil {
             try! FIRAuth.auth()?.signOut()
-            defaults.setValue(false, forKey: S_STATUS_FLAG)
             let alert = UIAlertController(title: "Éxito", message: "Ha salido con exito. Para visualizar sus listas es necesario que vuelva a ingresar.", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default)
             
@@ -315,8 +309,7 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     }
     
     func changePassword() {
-        let isSignedIn = defaults.bool(forKey: S_STATUS_FLAG)
-        if isSignedIn {
+        if FIRAuth.auth()?.currentUser != nil {
             let userEmail = defaults.value(forKey: "USER_EMAIL") as! String
             
             FIRAuth.auth()?.sendPasswordReset(withEmail: userEmail) {

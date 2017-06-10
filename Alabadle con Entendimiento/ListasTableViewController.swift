@@ -36,8 +36,7 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
         navigationItem.leftBarButtonItem = editButtonItem
         
         let defaults = UserDefaults.standard
-        let isSignedIn = defaults.bool(forKey: "SIGNED_IN_STATUS")
-        if isSignedIn {
+        if FIRAuth.auth()?.currentUser != nil {
             flag = true
             if let split = self.splitViewController {
                 let controllers = split.viewControllers

@@ -66,11 +66,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         let user = User(authData: userData)
                         self.defaults.set(user.uid, forKey: "USER_UID")
                         self.defaults.set(user.email, forKey: "USER_EMAIL")
-                        self.defaults.set(true,forKey: "SIGNED_IN_STATUS")
                         
                         self.navigationController?.popViewController(animated: true)
-                    } else {
-                        self.defaults.set(false, forKey: "SIGNED_IN_STATUS")
                     }
                 }
             }

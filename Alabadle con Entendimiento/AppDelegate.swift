@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import FirebaseDatabase
+import FirebaseAuth
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
@@ -34,8 +35,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         let defaults = UserDefaults.standard
         let userUID = defaults.string(forKey: "USER_UID")
-        let isSignedIn = defaults.bool(forKey: "SIGNED_IN_STATUS")
-        if isSignedIn {
+        
+        if FIRAuth.auth()?.currentUser != nil {
             let listasDeUsuarioRef = FIRDatabase.database().reference().child("listas/\(userUID!)")
             listasDeUsuarioRef.observeSingleEvent(of: FIRDataEventType.value, with: {
                 (snapshot) in
