@@ -36,7 +36,8 @@ class ListasTableViewController: UITableViewController, UISplitViewControllerDel
         navigationItem.leftBarButtonItem = editButtonItem
         
         let defaults = UserDefaults.standard
-        if FIRAuth.auth()?.currentUser != nil {
+        let userUID = defaults.string(forKey: "USER_UID")
+        if FIRAuth.auth()?.currentUser != nil || userUID != nil {
             flag = true
             if let split = self.splitViewController {
                 let controllers = split.viewControllers

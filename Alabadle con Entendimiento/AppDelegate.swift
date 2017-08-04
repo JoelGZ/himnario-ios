@@ -36,25 +36,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         let defaults = UserDefaults.standard
         let userUID = defaults.string(forKey: "USER_UID")
         
-        if FIRAuth.auth()?.currentUser != nil {
-            let listasDeUsuarioRef = FIRDatabase.database().reference().child("listas/\(userUID!)")
-            listasDeUsuarioRef.observeSingleEvent(of: FIRDataEventType.value, with: {
-                (snapshot) in
-                if snapshot.hasChildren() {
-                    var counter = 0
-                    for listaID in snapshot.children {
-                        counter += 1
-                        if counter == Int(snapshot.childrenCount) {     // display last list
-                            let listaIDStr = (listaID as! FIRDataSnapshot).key
-                            let listaRef = listasDeUsuarioRef.child(listaIDStr)
-                            listaRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snap) in
-                                let list = Lista(snapshot: snap, listaid: snap.key)
-                                detailViewController.lista = list
-                            })
+        let handle = FIRAuth.auth()?.addStateDidChangeListener { (auth, user) in
+            if (user != nil && userUID != nil) {
+                let listasDeUsuarioRef = FIRDatabase.database().reference().child("listas/\(userUID)")
+                listasDeUsuarioRef.observeSingleEvent(of: FIRDataEventType.value, with: {
+                    (snapshot) in
+                    if snapshot.hasChildren() {
+                        var counter = 0
+                        for listaID in snapshot.children {
+                            counter += 1
+                            if counter == Int(snapshot.childrenCount) {     // display last list
+                                let listaIDStr = (listaID as! FIRDataSnapshot).key
+                                let listaRef = listasDeUsuarioRef.child(listaIDStr)
+                                listaRef.observeSingleEvent(of: FIRDataEventType.value, with: {(snap) in
+                                    let list = Lista(snapshot: snap, listaid: snap.key)
+                                    detailViewController.lista = list
+                                })
+                            }
                         }
                     }
-                }
-            })
+                })
+            }
         }
         
         let pageController = UIPageControl.appearance()

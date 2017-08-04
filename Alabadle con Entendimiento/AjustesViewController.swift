@@ -29,11 +29,16 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     var downloadDeleteFlag: Bool = true    //true= can download; false = can't download, just delete
     var downloadAudioDeleteFlag: Bool = true
     var defaults = UserDefaults.standard
+    var userUID: String?
     
     let reachability = Reachability()!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if (defaults.string(forKey: "USER_UID") != nil) {
+            userUID = defaults.string(forKey: "USER_UID")!
+        }
         
       //  activityIndicator.isHidden = true
         if progressPercentage != nil {
@@ -289,7 +294,7 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     
     func signInOut() {
 
-        if FIRAuth.auth()?.currentUser != nil {
+        if FIRAuth.auth()?.currentUser != nil || userUID != nil {
             try! FIRAuth.auth()?.signOut()
             let alert = UIAlertController(title: "Éxito", message: "Ha salido con exito. Para visualizar sus listas es necesario que vuelva a ingresar.", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default)
@@ -309,7 +314,7 @@ class AjustesTableViewController: UITableViewController, MFMailComposeViewContro
     }
     
     func changePassword() {
-        if FIRAuth.auth()?.currentUser != nil {
+        if FIRAuth.auth()?.currentUser != nil || userUID != nil {
             let userEmail = defaults.value(forKey: "USER_EMAIL") as! String
             
             FIRAuth.auth()?.sendPasswordReset(withEmail: userEmail) {
