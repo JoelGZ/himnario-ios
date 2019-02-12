@@ -98,13 +98,13 @@ class CoroDetailWPagerViewController: UIViewController {
         }
         
         if (coro!.autorletra == "") {
-            autorLetraLabel.text = "Desconocido"
+            autorLetraLabel.text = "Anónimo"
         } else {
             autorLetraLabel.text = coro!.autorletra
         }
         
         if (coro!.autormusica == "") {
-            autorMusicaLabel.text = "Desconocido"
+            autorMusicaLabel.text = "Anónimo"
         } else {
             autorMusicaLabel.text = coro!.autormusica
         }
